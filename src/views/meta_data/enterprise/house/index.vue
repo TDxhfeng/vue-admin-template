@@ -1,15 +1,25 @@
 <template>
   <div class="app-container">
     <el-form ref="searchForm" :model="searchForm" label-width="80px">
-      <el-form-item label="ERP名称" prop="erpName">
-        <el-input v-model="searchForm.erpName" />
-      </el-form-item>
-      <el-form-item label="企业号" prop="enterpriseCode">
-        <el-input v-model="searchForm.enterpriseCode" />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="fetchData">搜索</el-button>
-      </el-form-item>
+      <el-row>
+        <el-col :span="4">
+          <el-form-item label="ERP名称" prop="erpName" :rules="[{ required: true, message: '请输入ERP名称', trigger: 'blur' }]">
+            <el-input v-model="searchForm.erpName" style="width: 150px;" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="企业号" prop="enterpriseCode" :rules="[{ required: true, message: '请输入企业号', trigger: 'blur' }]">
+            <el-input v-model="searchForm.enterpriseCode" style="width: 150px;" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4">
+          <el-form-item>
+            <el-button type="primary" @click="fetchData">搜索</el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
     <el-table
       v-loading="listLoading"
