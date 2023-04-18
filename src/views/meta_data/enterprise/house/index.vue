@@ -1,5 +1,16 @@
 <template>
   <div class="app-container">
+    <el-form ref="searchForm" :model="searchForm" label-width="80px">
+      <el-form-item label="ERP名称" prop="erpName">
+        <el-input v-model="searchForm.erpName" />
+      </el-form-item>
+      <el-form-item label="企业号" prop="enterpriseCode">
+        <el-input v-model="searchForm.enterpriseCode" />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="fetchData">搜索</el-button>
+      </el-form-item>
+    </el-form>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -290,6 +301,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 翻页组件，用于控制显示数据条数和页码-->
+    <el-pagination
+      :current-page="page"
+      :page-size="pageSize"
+      :page-sizes="[20, 40, 60, 80]"
+      :total="total"
+      layout="total, sizes, prev, pager, next, jumper"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
   </div>
 </template>
 
@@ -300,27 +321,52 @@ export default {
   data() {
     return {
       list: [],
-      listLoading: true
+      page: 1,
+      pageSize: 40,
+      total: 0,
+      listLoading: false,
+      searchForm: {
+        erpName: '',
+        enterpriseCode: ''
+      }
     }
   },
-  created() {
-    this.fetchData()
-  },
+  created() {},
   methods: {
     fetchData() {
-      const params = {
-        comeFrom: 'FRONTEND',
-        erpName: 'qiaofang_V20',
-        enterpriseCode: '3109',
-        filter: {}
-      }
-      this.listLoading = true
-      queryHouseList(params).then(response => {
-        this.list = response.data.list
-        console.log(response.data.list)
-      }).finally(() => {
-        this.listLoading = false
+      this.$refs.searchForm.validate(valid => {
+        if (valid) {
+          const params = {
+            comeFrom: 'FRONTEND',
+            erpName: this.searchForm.erpName,
+            enterpriseCode: this.searchForm.enterpriseCode,
+            filter: {
+              page: this.page,
+              size: this.pageSize
+            }
+          }
+          this.listLoading = true
+          queryHouseList(params)
+            .then(response => {
+              this.total = response.data.totalCount
+              this.list = response.data.list
+            })
+            .finally(() => {
+              this.listLoading = false
+            })
+        } else {
+          return false
+        }
       })
+    },
+    handleSizeChange(val) {
+      this.pageSize = val
+      this.page = 1
+      this.fetchData()
+    },
+    handleCurrentChange(val) {
+      this.page = val
+      this.fetchData()
     }
   }
 }
