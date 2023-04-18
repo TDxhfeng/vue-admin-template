@@ -12,11 +12,26 @@
             <el-input v-model="searchForm.enterpriseCode" style="width: 150px;" />
           </el-form-item>
         </el-col>
+        <el-col :span="4">
+          <el-form-item label="外部Id" prop="houseId">
+            <el-input v-model="searchForm.houseId" style="width: 150px;" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="房源编号" prop="houseNo">
+            <el-input v-model="searchForm.houseNo" style="width: 150px;" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="城市" prop="city">
+            <el-input v-model="searchForm.city" style="width: 150px;" />
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row>
         <el-col :span="4">
           <el-form-item>
-            <el-button type="primary" @click="fetchData">搜索</el-button>
+            <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="fetchData">搜索</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -344,30 +359,37 @@ export default {
   created() {},
   methods: {
     fetchData() {
-      this.$refs.searchForm.validate(valid => {
-        if (valid) {
-          const params = {
-            comeFrom: 'FRONTEND',
-            erpName: this.searchForm.erpName,
-            enterpriseCode: this.searchForm.enterpriseCode,
-            filter: {
-              page: this.page,
-              size: this.pageSize
-            }
-          }
-          this.listLoading = true
-          queryHouseList(params)
-            .then(response => {
-              this.total = response.data.totalCount
-              this.list = response.data.list
-            })
-            .finally(() => {
-              this.listLoading = false
-            })
-        } else {
-          return false
-        }
-      })
+      const filter = {
+        page: this.page,
+        size: this.pageSize
+      }
+      if (this.searchForm.city) {
+        filter.city = this.searchForm.city
+      }
+
+      if (this.searchForm.houseId) {
+        filter.houseId = this.searchForm.houseId
+      }
+
+      if (this.searchForm.houseNo) {
+        filter.houseNo = this.searchForm.houseNo
+      }
+
+      const params = {
+        comeFrom: 'FRONTEND',
+        filter: filter
+      }
+      params.erpName = this.searchForm.erpName
+      params.enterpriseCode = this.searchForm.enterpriseCode
+
+      this.listLoading = true
+      queryHouseList(params)
+        .then(response => {
+          this.total = response.data.totalCount
+          this.list = response.data.list
+        }).finally(() => {
+          this.listLoading = false
+        })
     },
     handleSizeChange(val) {
       this.pageSize = val
