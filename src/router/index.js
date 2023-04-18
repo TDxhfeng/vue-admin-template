@@ -91,58 +91,44 @@ export const constantRoutes = [
   },
 
   {
-    path: '/nested',
+    path: '/meta_data',
     component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
+    redirect: '/meta_data/enterprise',
+    name: '源数据',
     meta: {
-      title: 'Nested',
+      title: '源数据',
       icon: 'nested'
     },
     children: [
       {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
+        path: 'enterprise',
+        component: () => import('@/views/meta_data/enterprise/index'), // Parent router-view
+        name: '企业数据',
+        meta: { title: '企业数据' },
         children: [
           {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
+            path: 'house',
+            component: () => import('@/views/meta_data/enterprise/house'),
+            name: '房源',
+            meta: { title: '房源' }
           },
           {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
+            path: 'enterprise',
+            component: () => import('@/views/meta_data/enterprise/customer'),
+            name: '客源',
+            meta: { title: '客源' }
           },
           {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
+            path: 'house_follow',
+            component: () => import('@/views/meta_data/enterprise/house_follow'),
+            name: '房源跟进',
+            meta: { title: '房源跟进' }
           }
         ]
       },
       {
         path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
+        component: () => import('@/views/meta_data/menu2/index'),
         name: 'Menu2',
         meta: { title: 'menu2' }
       }
