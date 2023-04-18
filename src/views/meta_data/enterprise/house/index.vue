@@ -43,7 +43,7 @@
       border
       fit
       highlight-current-row
-      max-height="800"
+      max-height="650"
     >
       <el-table-column label="企业号">
         <template slot-scope="scope">
@@ -292,12 +292,17 @@
       </el-table-column>
       <el-table-column label="钥匙编号">
         <template slot-scope="scope">
-          {{ scope.row.keyNo }}
+          <el-tooltip :content="scope.row.keyNo">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.keyNo }}</div>
+          </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="业主信息">
+      <el-table-column label="业主信息" width="200">
         <template slot-scope="scope">
-          {{ scope.row.ownerPhoneList }}
+          <div v-for="(item, index) in scope.row.ownerPhoneList" :key="index">
+            <span>{{ item.name }}</span><span style="color: #999; margin: 0 4px;">/</span><span>{{ item.phone }}</span>
+            <!--换行组件 <el-divider v-if="index < scope.row.ownerPhoneList.length - 1" content-position="center">|</el-divider> -->
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="备注">
