@@ -52,12 +52,16 @@
       </el-table-column>
       <el-table-column label="原系统房源ID" width="110">
         <template slot-scope="scope">
-          {{ scope.row.houseId }}
+          <el-tooltip :content="scope.row.houseId">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.houseId }}</div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="原系统房源编号" width="120">
         <template slot-scope="scope">
-          {{ scope.row.houseNo }}
+          <el-tooltip :content="scope.row.houseNo">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.houseNo }}</div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="放盘类型">
@@ -87,12 +91,16 @@
       </el-table-column>
       <el-table-column label="小区名">
         <template slot-scope="scope">
-          {{ scope.row.communityName }}
+          <el-tooltip :content="scope.row.communityName">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.communityName }}</div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="楼栋名称">
         <template slot-scope="scope">
-          {{ scope.row.buildName }}
+          <el-tooltip :content="scope.row.buildName">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.buildName }}</div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="单元名称">
@@ -157,7 +165,9 @@
       </el-table-column>
       <el-table-column label="放盘时间">
         <template slot-scope="scope">
-          {{ scope.row.offerTime }}
+          <el-tooltip :content="scope.row.offerTime">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.offerTime }}</div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="底价">
@@ -292,7 +302,9 @@
       </el-table-column>
       <el-table-column label="备注">
         <template slot-scope="scope">
-          {{ scope.row.remark }}
+          <el-tooltip :content="scope.row.remark">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.remark }}</div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="现状">
@@ -310,7 +322,7 @@
           {{ scope.row.property }}
         </template>
       </el-table-column>
-      <el-table-column label="等级">
+      <el-table-column label="等级" width="100">
         <template slot-scope="scope">
           {{ scope.row.level }}
         </template>
