@@ -3,8 +3,27 @@
     <el-form ref="searchForm" :model="searchForm" label-width="80px">
       <el-row>
         <el-col :span="4">
-          <el-form-item label="ERP名称" prop="erpName" :rules="[{ required: true, message: '请输入ERP名称', trigger: 'blur' }]">
-            <el-input v-model="searchForm.erpName" style="width: 150px;" />
+          <el-form-item
+            label="ERP名称"
+            prop="erpName"
+            :rules="[{
+              required: true,
+              message: '请输入ERP名称',
+              trigger: 'blur'
+            }]"
+          >
+            <el-select
+              v-model="searchForm.erpName"
+              style="width: 150px;"
+              placeholder="请选择ERP名称"
+            >
+              <el-option
+                v-for="(option, index) in erpOptions"
+                :key="index"
+                :label="option.label"
+                :value="option.value"
+              />
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="4">
@@ -370,7 +389,34 @@ export default {
       searchForm: {
         erpName: '',
         enterpriseCode: ''
-      }
+      },
+      // erp系统映射
+      erpOptions: [
+        { label: '巧房v1', value: 'qiaofang_V1' },
+        { label: '巧房v10', value: 'qiaofang_V10' },
+        { label: '巧房V20', value: 'qiaofang_V20' },
+        { label: 'e网房介通', value: 'ew_fangjietong' },
+        { label: '房管家', value: 'fanguanjia' },
+        { label: '房车宝', value: 'fangchebao' },
+        { label: '房多多', value: 'fangduoduo' },
+        { label: '房极客', value: 'fanggeek' },
+        { label: '房介宝', value: 'fangjiebao' },
+        { label: '房介通', value: 'FANGJIETONG' },
+        { label: '房在线', value: 'fangline' },
+        { label: '房朋', value: 'fangpeng' },
+        { label: '房友v11-12', value: 'local_fangyou' },
+        { label: '房友v1', value: 'line_fangyou' },
+        { label: '房讯', value: 'fanxun' },
+        { label: '谷粒', value: 'guli' },
+        { label: '荟居360', value: 'huiju360' },
+        { label: '汇智凌云', value: 'huizhilingyun' },
+        { label: '扫房', value: 'saofang' },
+        { label: '易遨', value: 'yiao' },
+        { label: '易房大师', value: 'yifangdashi' },
+        { label: '讯房', value: 'xunfang' },
+        { label: '易房通', value: 'yifangtong' },
+        { label: '易居房友/ETC门店管理系统', value: 'yiju_fangyou' }
+      ]
     }
   },
   created() {},
