@@ -377,6 +377,7 @@
 
 <script>
 import { queryHouseList } from '@/api/enterprise/house'
+import { erpOptions } from '@/store/constants'
 
 export default {
   data() {
@@ -391,32 +392,7 @@ export default {
         enterpriseCode: ''
       },
       // erp系统映射
-      erpOptions: [
-        { label: '巧房v1', value: 'qiaofang_V1' },
-        { label: '巧房v10', value: 'qiaofang_V10' },
-        { label: '巧房V20', value: 'qiaofang_V20' },
-        { label: 'e网房介通', value: 'ew_fangjietong' },
-        { label: '房管家', value: 'fanguanjia' },
-        { label: '房车宝', value: 'fangchebao' },
-        { label: '房多多', value: 'fangduoduo' },
-        { label: '房极客', value: 'fanggeek' },
-        { label: '房介宝', value: 'fangjiebao' },
-        { label: '房介通', value: 'FANGJIETONG' },
-        { label: '房在线', value: 'fangline' },
-        { label: '房朋', value: 'fangpeng' },
-        { label: '房友v11-12', value: 'local_fangyou' },
-        { label: '房友v1', value: 'line_fangyou' },
-        { label: '房讯', value: 'fanxun' },
-        { label: '谷粒', value: 'guli' },
-        { label: '荟居360', value: 'huiju360' },
-        { label: '汇智凌云', value: 'huizhilingyun' },
-        { label: '扫房', value: 'saofang' },
-        { label: '易遨', value: 'yiao' },
-        { label: '易房大师', value: 'yifangdashi' },
-        { label: '讯房', value: 'xunfang' },
-        { label: '易房通', value: 'yifangtong' },
-        { label: '易居房友/ETC门店管理系统', value: 'yiju_fangyou' }
-      ]
+      erpOptions: erpOptions
     }
   },
   created() {},
