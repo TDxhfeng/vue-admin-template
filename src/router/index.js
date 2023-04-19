@@ -56,28 +56,6 @@ export const constantRoutes = [
   },
 
   {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
     path: '/form',
     component: Layout,
     children: [
@@ -93,7 +71,6 @@ export const constantRoutes = [
   {
     path: '/meta_data',
     component: Layout,
-    redirect: '/meta_data/enterprise',
     name: '源数据',
     meta: {
       title: '源数据',
@@ -131,6 +108,27 @@ export const constantRoutes = [
         component: () => import('@/views/meta_data/menu2/index'),
         name: 'Menu2',
         meta: { title: 'menu2' }
+      }
+    ]
+  },
+
+  {
+    path: '/transfer',
+    component: Layout,
+    name: '清洗配置',
+    meta: { title: '清洗配置', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'enterprise_basic',
+        name: '企业信息',
+        component: () => import('@/views/transfer/enterprise_basic'),
+        meta: { title: '企业信息', icon: 'table' }
+      },
+      {
+        path: 'tree',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: 'Tree', icon: 'tree' }
       }
     ]
   },
