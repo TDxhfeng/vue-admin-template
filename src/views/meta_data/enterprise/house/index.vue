@@ -361,6 +361,13 @@
           {{ scope.row.flatShareNum }}
         </template>
       </el-table-column>
+      <el-table-column label="爬取时间" width="100">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.createTime">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.createTime }}</div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 翻页组件，用于控制显示数据条数和页码-->
     <el-pagination
