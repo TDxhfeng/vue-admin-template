@@ -105,9 +105,9 @@ export const constantRoutes = [
     children: [
       {
         path: 'enterprise_basic',
-        name: '企业信息',
+        name: '企业信息配置',
         component: () => import('@/views/transfer/enterprise_basic'),
-        meta: { title: '企业信息', icon: 'el-icon-set-up' }
+        meta: { title: '企业信息配置', icon: 'el-icon-set-up' }
       },
       {
         path: 'tree',

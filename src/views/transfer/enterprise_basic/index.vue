@@ -42,7 +42,6 @@
       v-loading="listLoading"
       :data="list"
       element-loading-text="Loading"
-      border
       fit
       highlight-current-row
       max-height="650"
