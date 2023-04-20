@@ -24,6 +24,46 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
+          <el-form-item
+            label="任务归属"
+            prop="taskBelong"
+          >
+            <el-select
+              v-model="searchForm.taskBelong"
+              style="width: 150px;"
+              clearable
+              placeholder="请选择任务归属"
+            >
+              <el-option
+                v-for="(option, index) in taskBelong"
+                :key="index"
+                :label="option.label"
+                :value="option.value"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item
+            label="任务类型"
+            prop="taskType"
+          >
+            <el-select
+              v-model="searchForm.taskType"
+              style="width: 150px;"
+              clearable
+              placeholder="请选择任务类型"
+            >
+              <el-option
+                v-for="(option, index) in taskType"
+                :key="index"
+                :label="option.label"
+                :value="option.value"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
           <el-form-item label="企业号" prop="enterpriseCode">
             <el-input v-model="searchForm.enterpriseCode" style="width: 150px;" />
           </el-form-item>
@@ -42,19 +82,24 @@
       v-loading="listLoading"
       :data="list"
       element-loading-text="Loading"
-      border
+      stripe="true"
       fit
       highlight-current-row
       max-height="650"
     >
-      <el-table-column label="城市" width="150">
+      <el-table-column label="任务归属" width="200">
         <template slot-scope="scope">
-          {{ scope.row.city }}
+          {{ taskBelongMap[scope.row.taskBelong] }}
         </template>
       </el-table-column>
-      <el-table-column label="企业号" width="150">
+      <el-table-column label="任务类型" width="100">
         <template slot-scope="scope">
-          {{ scope.row.enterpriseCode }}
+          {{ taskTypeMap[scope.row.taskType] }}
+        </template>
+      </el-table-column>
+      <el-table-column label="任务名称" width="250">
+        <template slot-scope="scope">
+          {{ scope.row.taskName }}
         </template>
       </el-table-column>
       <el-table-column label="ERP名称" width="150">
@@ -62,66 +107,31 @@
           {{ erpNameMap[scope.row.erpName] }}
         </template>
       </el-table-column>
-      <el-table-column label="teamID">
+      <el-table-column label="企业teamCode" width="150">
         <template slot-scope="scope">
-          <el-tooltip :content="scope.row.teamId">
-            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.teamId }}</div>
-          </el-tooltip>
+          {{ scope.row.enterpriseCode }}
         </template>
       </el-table-column>
-      <el-table-column label="企业名称" width="150">
+      <el-table-column label="任务状态" width="150">
         <template slot-scope="scope">
-          {{ scope.row.enterpriseName }}
+          <el-tag :type="taskTap[scope.row.status]" effect="dark" size="small ">
+            <span>{{ taskStatusMap[scope.row.status] }}</span>
+          </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间">
+      <el-table-column label="完成时间" width="220">
         <template slot-scope="scope">
-          <el-tooltip :content="scope.row.createTime">
-            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.createTime }}</div>
+          <el-tooltip :content="scope.row.finishTime">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.finishTime }}</div>
           </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="showDialogByTransferRule(scope.row)">清洗规则</el-button>
+          <el-button size="mini" type="warning" @click="retry(scope.row)">重试</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <!-- 清洗规则展示对话框 -->
-    <el-dialog :visible.sync="transferRuleDialogVisible" title="清洗规则">
-      <!-- 添加规则 -->
-      <el-form ref="searchForm" :model="searchForm">
-        <el-button size="mini" type="primary" @click="addRule">添加规则</el-button>
-      </el-form>
-      <!-- 清洗规则展示对话框列表 -->
-      <el-table v-if="transferRuleDialogVisible" :data="ruleData">
-        <el-table-column label="清洗类型" width="100">
-          <template slot-scope="scope">
-            {{ scope.row.transferType }}
-          </template>
-        </el-table-column>
-        <el-table-column label="创建时间" width="100">
-          <template slot-scope="scope">
-            <el-tooltip :content="scope.row.createTime">
-              <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.createTime }}</div>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column label="清洗详情">
-          <template slot-scope="scope">
-            <div v-for="(item, index) in scope.row.ruleList" :key="index">
-              <span>启用</span><span style="color: #FF0000">{{ item.targetField }}</span><span>映射：</span><span>{{ item.isEnableOption === 1 ? '是' : '否' }}</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="createTask(scope.row)">创建清洗任务</el-button>
-            <el-button size="mini" type="danger" @click="deleteRule(scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dialog>
     <!-- 翻页组件，用于控制显示数据条数和页码-->
     <el-pagination
       :current-page="page"
@@ -136,9 +146,12 @@
 </template>
 
 <script>
-import { queryeEnterpriseInfoList } from '@/api/enterprise/enterprise_info'
-import { queryeEnterpriseRuleList } from '@/api/enterprise/enterprise_info'
+import { queryTaskInfo } from '@/api/task'
 import { erpOptions } from '@/store/constants'
+import { taskBelong } from '@/store/constants'
+import { taskType } from '@/store/constants'
+import { taskStatus } from '@/store/constants'
+import { taskTap } from '@/store/constants'
 
 export default {
   data() {
@@ -151,11 +164,17 @@ export default {
       total: 0,
       listLoading: false,
       searchForm: {
-        erpName: '',
-        enterpriseCode: ''
+        taskBelong: '',
+        taskType: '',
+        enterpriseCode: '',
+        erpName: ''
       },
-      // erp系统映射
-      erpOptions: erpOptions
+      // 系统映射
+      erpOptions: erpOptions,
+      taskBelong: taskBelong,
+      taskType: taskType,
+      taskStatus: taskStatus,
+      taskTap: taskTap
     }
   },
   computed: {
@@ -164,6 +183,27 @@ export default {
       const map = {}
       for (let i = 0; i < erpOptions.length; i++) {
         map[erpOptions[i].value] = erpOptions[i].label
+      }
+      return map
+    },
+    taskBelongMap() {
+      const map = {}
+      for (let i = 0; i < taskBelong.length; i++) {
+        map[taskBelong[i].value] = taskBelong[i].label
+      }
+      return map
+    },
+    taskTypeMap() {
+      const map = {}
+      for (let i = 0; i < taskType.length; i++) {
+        map[taskType[i].value] = taskType[i].label
+      }
+      return map
+    },
+    taskStatusMap() {
+      const map = {}
+      for (let i = 0; i < taskStatus.length; i++) {
+        map[taskStatus[i].value] = taskStatus[i].label
       }
       return map
     }
@@ -178,6 +218,12 @@ export default {
         page: this.page,
         size: this.pageSize
       }
+      if (this.searchForm.taskBelong) {
+        filter.taskBelong = this.searchForm.taskBelong
+      }
+      if (this.searchForm.taskType) {
+        filter.taskType = this.searchForm.taskType
+      }
       if (this.searchForm.erpName) {
         filter.erpName = this.searchForm.erpName
       }
@@ -190,7 +236,7 @@ export default {
       }
 
       this.listLoading = true
-      queryeEnterpriseInfoList(params)
+      queryTaskInfo(params)
         .then(response => {
           this.total = response.data.totalCount
           this.list = response.data.list
@@ -208,24 +254,6 @@ export default {
     handleCurrentChange(val) {
       this.page = val
       this.fetchData()
-    },
-    // 打开弹出框
-    showDialogByTransferRule(row) {
-      // 请求获取规则
-      const ruleParams = {
-        comeFrom: 'FRONTEND',
-        filter: {
-          enterpriseCode: row.enterpriseCode,
-          erpName: row.erpName
-        }
-      }
-      queryeEnterpriseRuleList(ruleParams)
-        .then(response => {
-          // this.ruleTotal = response.data.totalCount
-          this.ruleData = response.data.list
-        })
-      console.log('ruleData: ', this.ruleData)
-      this.transferRuleDialogVisible = true
     }
   }
 }

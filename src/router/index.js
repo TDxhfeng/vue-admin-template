@@ -121,8 +121,14 @@ export const constantRoutes = [
   {
     path: '/taskInfo',
     component: Layout,
+    redirect: '/taskInfo',
     name: '任务管理',
-    meta: { title: '任务管理', icon: 'el-icon-timer' }
+    children: [{
+      path: 'taskInfo',
+      name: '任务管理',
+      component: () => import('@/views/task/index'),
+      meta: { title: '任务管理', icon: 'el-icon-timer' }
+    }]
   },
 
   // 404 page must be placed at the end !!!

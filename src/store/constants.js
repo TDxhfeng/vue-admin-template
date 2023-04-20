@@ -24,3 +24,43 @@ export const erpOptions = [
   { label: '易房通', value: 'yifangtong' },
   { label: '易居房友/ETC门店管理系统', value: 'yiju_fangyou' }
 ]
+
+export const taskBelong = [
+  { label: '爬虫', value: 'SPIDER' },
+  { label: '数据清洗', value: 'TRANSFER' },
+  { label: '企业数据清洗', value: 'ENTERPRISE_TRANSFER' },
+  { label: '数据上线', value: 'ONLINE' },
+  { label: '导出数据', value: 'EXPORT' }
+]
+
+export const taskType = [
+  { label: '房源', value: 'HOUSE' },
+  { label: '房源跟进', value: 'HOUSE_FOLLOW' },
+  { label: '房源图片', value: 'HOUSE_PHOTO' },
+  { label: '房源视频', value: 'HOUSE_VIDEO' },
+  { label: '房源全景图', value: 'HOUSE_PANORAMA' },
+  { label: '客源', value: 'CUSTOMER' },
+  { label: '客源跟进', value: 'CUSTOMER_FOLLOW' }
+]
+
+export const taskStatus = [
+  { label: '待处理', value: 0 },
+  { label: '正在执行', value: 1 },
+  { label: '任务完成', value: 2 },
+  { label: '等待中', value: 3 },
+  { label: '任务出错', value: 4 }
+]
+
+export const taskTap = {
+  0: 'info',
+  1: '',
+  2: 'success',
+  3: 'warning',
+  4: 'danger'
+}
+//   { type: 'info', value: 0 },
+//   { type: '', value: 1 },
+//   { type: 'success', value: 2 },
+//   { type: 'warning', value: 3 },
+//   { type: 'danger', value: 4 }
+// ]
