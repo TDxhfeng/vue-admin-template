@@ -47,67 +47,52 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
+    name: '仪表板',
     children: [{
       path: 'dashboard',
-      name: 'Dashboard',
+      name: '仪表板',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '仪表板', icon: 'dashboard' }
     }]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
   },
 
   {
     path: '/meta_data',
     component: Layout,
     name: '源数据',
-    meta: {
-      title: '源数据',
-      icon: 'nested'
-    },
+    meta: { title: '源数据', icon: 'el-icon-collection' },
     children: [
       {
         path: 'enterprise',
         component: () => import('@/views/meta_data/enterprise/index'), // Parent router-view
         name: '企业数据',
-        meta: { title: '企业数据' },
+        meta: { title: '企业数据', icon: 'el-icon-s-data' },
         children: [
           {
             path: 'house',
             component: () => import('@/views/meta_data/enterprise/house'),
             name: '房源',
-            meta: { title: '房源' }
+            meta: { title: '房源', icon: 'el-icon-s-grid' }
           },
           {
             path: 'enterprise',
             component: () => import('@/views/meta_data/enterprise/customer'),
             name: '客源',
-            meta: { title: '客源' }
+            meta: { title: '客源', icon: 'el-icon-s-grid' }
           },
           {
             path: 'house_follow',
             component: () => import('@/views/meta_data/enterprise/house_follow'),
             name: '房源跟进',
-            meta: { title: '房源跟进' }
+            meta: { title: '房源跟进', icon: 'el-icon-s-grid' }
           }
         ]
       },
       {
         path: 'menu2',
         component: () => import('@/views/meta_data/menu2/index'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
+        name: '暂未完成',
+        meta: { title: '暂未完成', icon: 'el-icon-s-data' }
       }
     ]
   },
@@ -116,32 +101,28 @@ export const constantRoutes = [
     path: '/transfer',
     component: Layout,
     name: '清洗配置',
-    meta: { title: '清洗配置', icon: 'el-icon-s-help' },
+    meta: { title: '清洗配置', icon: 'el-icon-s-operation' },
     children: [
       {
         path: 'enterprise_basic',
         name: '企业信息',
         component: () => import('@/views/transfer/enterprise_basic'),
-        meta: { title: '企业信息', icon: 'table' }
+        meta: { title: '企业信息', icon: 'el-icon-set-up' }
       },
       {
         path: 'tree',
-        name: 'Tree',
+        name: '暂未完成',
         component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        meta: { title: '暂未完成', icon: 'el-icon-set-up' }
       }
     ]
   },
 
   {
-    path: 'external-link',
+    path: '/taskInfo',
     component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
+    name: '任务管理',
+    meta: { title: '任务管理', icon: 'el-icon-timer' }
   },
 
   // 404 page must be placed at the end !!!
