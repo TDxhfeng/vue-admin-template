@@ -23,3 +23,15 @@ export function queryeEnterpriseRuleList(params) {
     }
   })
 }
+
+// 清洗任务创建接口
+export function createTaskInfo(params) {
+  return request({
+    url: '/v3/system/task/record/modify',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-HU5BupyGe5D0hi19'
+    }
+  })
+}

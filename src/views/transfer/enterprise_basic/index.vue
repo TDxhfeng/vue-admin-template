@@ -152,7 +152,11 @@
         </el-table-column>
         <el-table-column label="操作" width="400">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="createTask(scope.row)">创建清洗任务</el-button>
+            <el-popconfirm
+              title="这是一段内容确定删除吗？"
+            >
+              <el-button slot="reference" size="mini" type="primary" @click="createTask(scope.row)">创建清洗任务</el-button>
+            </el-popconfirm>
             <el-button size="mini" type="danger" @click="deleteRule(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -175,6 +179,7 @@
 import { queryeEnterpriseInfoList } from '@/api/enterprise/enterprise_info'
 import { queryeEnterpriseRuleList } from '@/api/enterprise/enterprise_info'
 import { erpOptions } from '@/store/constants'
+import { createTaskInfo } from '@/api/enterprise/enterprise_info'
 
 export default {
   data() {
@@ -262,6 +267,20 @@ export default {
         })
       console.log('ruleData: ', this.ruleData)
       this.transferRuleDialogVisible = true
+    },
+    // 创建清洗任务
+    createTask(row) {
+      const taskData = {
+        comeFrom: 'FRONTEND',
+        tasks: [{
+          taskBelong: 'ENTERPRISE_TRANSFER',
+          taskType: row.transferType,
+          ruleId: row.ruleId
+        }]
+      }
+      createTaskInfo(taskData)
+        .then(response => {
+        })
     }
   }
 }
