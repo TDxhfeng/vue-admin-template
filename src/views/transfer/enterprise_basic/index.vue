@@ -87,7 +87,7 @@
       </el-table-column>
     </el-table>
     <!-- 清洗规则展示对话框 -->
-    <el-dialog :visible.sync="transferRuleDialogVisible" title="清洗规则">
+    <el-dialog :visible.sync="transferRuleDialogVisible" width="70%" title="清洗规则">
       <!-- 添加规则 -->
       <el-form ref="searchForm" :model="searchForm">
         <el-button size="mini" type="primary" @click="addRule">添加规则</el-button>
@@ -108,12 +108,49 @@
         </el-table-column>
         <el-table-column label="清洗详情">
           <template slot-scope="scope">
-            <div v-for="(item, index) in scope.row.ruleList" :key="index">
-              <span>启用</span><span style="color: #FF0000">{{ item.targetField }}</span><span>映射：</span><span>{{ item.isEnableOption === 1 ? '是' : '否' }}</span>
+            <div>
+              <span>原系统房源录入人字段为：</span>
+              <span style="color: #FF0000">【{{ scope.row.inputUserOriginField }}】</span>
+              <span>默认：录入人</span>
+            </div>
+            <div>
+              <span>原系统房源售维护人字段为：</span>
+              <span style="color: #FF0000">【{{ scope.row.saleUserOriginField }}】</span>
+              <span>默认：售盘源人</span>
+            </div>
+            <div>
+              <span>原系统房源租维护人字段为：</span>
+              <span style="color: #FF0000">【{{ scope.row.rentUserOriginField }}】</span>
+              <span>默认：租盘源人</span>
+            </div>
+            <div>
+              <span>原系统房源钥匙人字段为：</span>
+              <span style="color: #FF0000">【{{ scope.row.keyUserOriginField }}】</span>
+              <span>默认：钥匙人</span>
+            </div>
+            <div>
+              <span>原系统房源实勘人字段为：</span>
+              <span style="color: #FF0000">【{{ scope.row.imgUserOriginField }}】</span>
+              <span>默认：实勘人</span>
+            </div>
+            <div>
+              <span>是否启用私盘标记：</span>
+              <span style="color: #FF0000">【{{ scope.row.isUseHouseProperty == 1 ? '是': '否' }}】</span>
+              <span>默认：否</span>
+            </div>
+            <div>
+              <span>是否启用公盘部门映射：</span>
+              <span style="color: #FF0000">【{{ scope.row.isUseHousePublicDepartmentsMap == 1 ? '是': '否' }}】</span>
+              <span>默认：否</span>
+            </div>
+            <div>
+              <span>是否启用录入人部门映射：</span>
+              <span style="color: #FF0000">【{{ scope.row.isUseHouseInputUserMap == 1 ? '是': '否' }}】</span>
+              <span>默认：否</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="400">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="createTask(scope.row)">创建清洗任务</el-button>
             <el-button size="mini" type="danger" @click="deleteRule(scope.row)">删除</el-button>
