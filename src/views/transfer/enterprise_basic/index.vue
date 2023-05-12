@@ -152,11 +152,7 @@
         </el-table-column>
         <el-table-column label="操作" width="400">
           <template slot-scope="scope">
-            <el-popconfirm
-              title="这是一段内容确定删除吗？"
-            >
-              <el-button slot="reference" size="mini" type="primary" @click="createTask(scope.row)">创建清洗任务</el-button>
-            </el-popconfirm>
+            <el-button size="mini" type="primary" @click="createTask(scope.row)">创建清洗任务</el-button>
             <el-button size="mini" type="danger" @click="deleteRule(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -280,6 +276,7 @@ export default {
       }
       createTaskInfo(taskData)
         .then(response => {
+          console.log(response.data)
         })
     }
   }
