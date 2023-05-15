@@ -82,16 +82,125 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="showDialogByTransferRule(scope.row)">清洗规则</el-button>
+          <el-button size="mini" type="primary" @click="showDialogByTransferRule(scope.row)">查询规则</el-button>
+          <el-button size="mini" type="success" @click="showAddRule(scope.row)">添加规则</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <!-- 清洗规则展示对话框 -->
-    <el-dialog :visible.sync="transferRuleDialogVisible" width="70%" title="清洗规则">
-      <!-- 添加规则 -->
-      <el-form ref="searchForm" :model="searchForm">
-        <el-button size="mini" type="primary" @click="addRule">添加规则</el-button>
+    <!-- 添加规则对话框 -->
+    <el-dialog width="30%" title="添加规则" :visible.sync="addRuleVisible">
+      <el-form ref="addRuleForm" :model="addRuleForm" label-width="80px">
+        <el-form-item
+          label="原系统录入人对应："
+          prop="inputUserOriginField"
+          label-width="180px"
+          :rules="[{
+            required: true,
+            message: '原系统录入人对应',
+            trigger: 'blur'
+          }]"
+        >
+          <el-select v-model="addRuleForm.inputUserOriginField" style="width: 220px;" clearable placeholder="请选择原系统录入人字段">
+            <el-option
+              v-for="(value, index) in agentList"
+              :key="index"
+              :value="value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="原系统售维护人对应："
+          prop="saleUserOriginField"
+          label-width="180px"
+          :rules="[{
+            required: true,
+            message: '原系统售维护人对应',
+            trigger: 'blur'
+          }]"
+        >
+          <el-select v-model="addRuleForm.saleUserOriginField" style="width: 220px;" clearable placeholder="请选择原系统售维护人字段">
+            <el-option
+              v-for="(value, index) in agentList"
+              :key="index"
+              :value="value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="原系统租维护人对应："
+          prop="rentUserOriginField"
+          label-width="180px"
+          :rules="[{
+            required: true,
+            message: '原系统租维护人对应',
+            trigger: 'blur'
+          }]"
+        >
+          <el-select v-model="addRuleForm.rentUserOriginField" style="width: 220px;" clearable placeholder="请选择原系统租维护人字段">
+            <el-option
+              v-for="(value, index) in agentList"
+              :key="index"
+              :value="value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="原系统钥匙人对应："
+          prop="keyUserOriginField"
+          label-width="180px"
+        >
+          <el-select v-model="addRuleForm.keyUserOriginField" style="width: 220px;" clearable placeholder="系统默认值keyUser">
+            <el-option
+              v-for="(value, index) in agentList"
+              :key="index"
+              :value="value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="原系统实勘人对应："
+          prop="imgUserOriginField"
+          label-width="180px"
+        >
+          <el-select v-model="addRuleForm.imgUserOriginField" style="width: 220px;" clearable placeholder="系统默认值imgUser">
+            <el-option
+              v-for="(value, index) in agentList"
+              :key="index"
+              :value="value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="是否启用公私盘标记："
+          prop="isUseHouseProperty"
+          label-width="180px"
+        >
+          <el-radio v-model="addRuleForm.isUseHouseProperty" :label="1">是</el-radio>
+          <el-radio v-model="addRuleForm.isUseHouseProperty" :label="0">否</el-radio>
+        </el-form-item>
+        <el-form-item
+          label="是否启用公盘部门映射"
+          prop="isUseHousePublicDepartmentsMap"
+          label-width="180px"
+        >
+          <el-radio v-model="addRuleForm.isUseHousePublicDepartmentsMap" :label="1">是</el-radio>
+          <el-radio v-model="addRuleForm.isUseHousePublicDepartmentsMap" :label="0">否</el-radio>
+        </el-form-item>
+        <el-form-item
+          label="是否启用录入人部门映射："
+          prop="isUseHouseInputUserMap"
+          label-width="180px"
+        >
+          <el-radio v-model="addRuleForm.isUseHouseInputUserMap" :label="1">是</el-radio>
+          <el-radio v-model="addRuleForm.isUseHouseInputUserMap" :label="0">否</el-radio>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmitRule">立即添加</el-button>
+        </el-form-item>
       </el-form>
+    </el-dialog>
+    <!-- 清洗规则详情查询对话框 -->
+    <el-dialog :visible.sync="transferRuleDialogVisible" width="70%" title="规则详情">
       <!-- 清洗规则展示对话框列表 -->
       <el-table v-if="transferRuleDialogVisible" :data="ruleData">
         <el-table-column label="清洗类型" width="100">
@@ -176,13 +285,18 @@ import { queryeEnterpriseInfoList } from '@/api/enterprise/enterprise_info'
 import { queryeEnterpriseRuleList } from '@/api/enterprise/enterprise_info'
 import { erpOptions } from '@/store/constants'
 import { createTaskInfo } from '@/api/enterprise/enterprise_info'
+import { deleteEnterpriseRule } from '@/api/enterprise/enterprise_info'
+import { queryEntepriseHouseAgent } from '@/api/enterprise/enterprise_info'
+import { addEnterpriseRule } from '@/api/enterprise/enterprise_info'
 
 export default {
   data() {
     return {
       ruleData: [],
       transferRuleDialogVisible: false,
+      addRuleVisible: false,
       list: [],
+      agentList: [],
       page: 1,
       pageSize: 40,
       total: 0,
@@ -190,6 +304,21 @@ export default {
       searchForm: {
         erpName: '',
         enterpriseCode: ''
+      },
+      // 添加规则表单
+      addRuleForm: {
+        comeFrom: 'FRONTEND',
+        erpName: '',
+        transferType: 'HOUSE',
+        enterpriseCode: '',
+        inputUserOriginField: '',
+        saleUserOriginField: '',
+        rentUserOriginField: '',
+        keyUserOriginField: 'keyUser',
+        imgUserOriginField: 'imgUser',
+        isUseHouseProperty: 0,
+        isUseHousePublicDepartmentsMap: 0,
+        isUseHouseInputUserMap: 0
       },
       // erp系统映射
       erpOptions: erpOptions
@@ -264,6 +393,35 @@ export default {
       console.log('ruleData: ', this.ruleData)
       this.transferRuleDialogVisible = true
     },
+    // 打开添加房源映射弹出框
+    showAddRule(row) {
+      const ruleParams = {
+        comeFrom: 'FRONTEND',
+        enterpriseCode: row.enterpriseCode,
+        erpName: row.erpName
+      }
+      queryEntepriseHouseAgent(ruleParams)
+        .then(response => {
+          this.agentList = response.data.list
+        })
+      console.log('agentList: ', this.agentList)
+      this.addRuleVisible = true
+      this.addRuleForm.erpName = row.erpName
+      this.addRuleForm.enterpriseCode = row.enterpriseCode
+      this.addRuleForm.keyUserOriginField = 'keyUser'
+      this.addRuleForm.imgUserOriginField = 'imgUser'
+      this.addRuleForm.isUseHouseProperty = 0
+      this.addRuleForm.isUseHousePublicDepartmentsMap = 0
+      this.addRuleForm.isUseHouseInputUserMap = 0
+    },
+    // 添加规则
+    onSubmitRule() {
+      addEnterpriseRule(this.addRuleForm)
+        .then(response => {
+          console.log('addRuleRes: ', this.data.list)
+        })
+      this.addRuleVisible = false
+    },
     // 创建清洗任务
     createTask(row) {
       const taskData = {
@@ -278,6 +436,19 @@ export default {
         .then(response => {
           console.log(response.data)
         })
+      this.transferRuleDialogVisible = false
+    },
+    // 删除规则
+    deleteRule(row) {
+      const ruleData = {
+        comeFrom: 'FRONTEND',
+        ruleIds: [row.ruleId]
+      }
+      deleteEnterpriseRule(ruleData)
+        .then(response => {
+          console.log(response.data.list)
+        })
+      this.transferRuleDialogVisible = false
     }
   }
 }

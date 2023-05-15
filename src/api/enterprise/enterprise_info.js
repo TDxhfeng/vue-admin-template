@@ -11,6 +11,17 @@ export function queryeEnterpriseInfoList(params) {
     }
   })
 }
+// 企业房源经济人类型映射查询
+export function queryEntepriseHouseAgent(params) {
+  return request({
+    url: '/v3/enterprise/house/allUser/query',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-x3R01P1HhNHUy6Oq'
+    }
+  })
+}
 
 // 企业规则查询接口
 export function queryeEnterpriseRuleList(params) {
@@ -20,6 +31,29 @@ export function queryeEnterpriseRuleList(params) {
     data: params,
     headers: {
       'X-Access-Token': 'token-8UklVFWsjuzCUh6Q'
+    }
+  })
+}
+// 删除企业规则
+export function deleteEnterpriseRule(params) {
+  return request({
+    url: '/v3/enterprise/rule/modify',
+    method: 'delete',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-ki3PhemkadLlzVbW'
+    }
+  })
+}
+
+// 添加规则
+export function addEnterpriseRule(params) {
+  return request({
+    url: '/v3/enterprise/rule/modify',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-bTsQ0caIDsHizDgz'
     }
   })
 }
