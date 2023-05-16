@@ -84,6 +84,7 @@
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="showDialogByTransferRule(scope.row)">查询规则</el-button>
           <el-button size="mini" type="success" @click="showAddRule(scope.row)">添加规则</el-button>
+          <el-button size="mini" type="info" @click="exportHouseDep(scope.row)">导出部门</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -288,6 +289,7 @@ import { createTaskInfo } from '@/api/enterprise/enterprise_info'
 import { deleteEnterpriseRule } from '@/api/enterprise/enterprise_info'
 import { queryEntepriseHouseAgent } from '@/api/enterprise/enterprise_info'
 import { addEnterpriseRule } from '@/api/enterprise/enterprise_info'
+import { exportHouseDepartments } from '@/api/enterprise/enterprise_info'
 
 export default {
   data() {
@@ -449,7 +451,53 @@ export default {
           console.log(response.data.list)
         })
       this.transferRuleDialogVisible = false
+    },
+    // 导出所有房源部门
+    exportHouseDep(row) {
+      const postData = {
+        comeFrom: 'FRONTEND',
+        enterpriseCode: row.enterpriseCode,
+        erpName: row.erpName
+      }
+      exportHouseDepartments(postData)
+        .then(response => {
+          this.exportExcel(row, response.data.list)
+          this.openExportMessage()
+        })
+    },
+    exportExcel(row, allDepartments) {
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['原系统所有部门', '所对应的(公盘部门/公共账号)', '录入人部门公共账号(默认0001)']
+        const filterVal = ['originDepartments', 'targetDepartmentsOrUserCode', 'targetInputUserCode']
+        const data = this.formatJson(filterVal, allDepartments)
+        const tfileName = row.enterpriseName + '_房源数据映射'
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: tfileName,
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        return v[j]
+      }))
+    },
+    // 弹框提示重要事项
+    openExportMessage() {
+      this.$alert('<li>1、【所对应的(公盘部门/公共账号)】如果填写的是部门，如：小鹿系统/技术部，如果维护人账号不匹配则会导为改公盘部门</li><li>2、【所对应的(公盘部门/公共账号)】如果填写的是账号，如：10010001，如果维护人账号不匹配则会导为该账号</li><li>3、【录入人部门公共账号(默认0001)】 录入人不存在默认是导为0001，也可以给指定的部门导为指定的账号</li><li>4、系统提供默认行：【部门不存在时导为】填写账号or部门亦可，当维护人既不匹配部门也不匹配，又或者部门和经纪人都不存在则会导为该情况</li><li>5、系统提供默认行：【部门不存在时导为】填写账号，当录入人部门不存在或不匹配则会导为该账号</li>', '部门清洗事项', {
+        confirmButtonText: '确定',
+        dangerouslyUseHTMLString: true,
+        customClass: 'msgBox'
+      })
     }
   }
 }
 </script>
+<style>
+.msgBox {
+  width: 60%;
+}
+</style>

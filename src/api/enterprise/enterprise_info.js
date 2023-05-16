@@ -57,6 +57,17 @@ export function addEnterpriseRule(params) {
     }
   })
 }
+// 导出所有部门
+export function exportHouseDepartments(params) {
+  return request({
+    url: '/v3/enterprise/house/departments/export',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-9iPTGgzNmuLVOx3j'
+    }
+  })
+}
 
 // 清洗任务创建接口
 export function createTaskInfo(params) {
