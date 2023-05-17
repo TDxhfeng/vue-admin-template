@@ -231,7 +231,9 @@
       </el-table-column>
       <el-table-column label="公盘部门">
         <template slot-scope="scope">
-          {{ scope.row.publicDepartment }}
+          <el-tooltip :content="scope.row.publicDepartment">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.publicDepartment }}</div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="录入人">
@@ -301,7 +303,9 @@
       </el-table-column>
       <el-table-column label="委托时间">
         <template slot-scope="scope">
-          {{ scope.row.delegateDate }}
+          <el-tooltip :content="scope.row.delegateDate">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.delegateDate }}</div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="是否有钥匙" width="110">
@@ -316,7 +320,7 @@
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="业主信息" width="200">
+      <el-table-column label="业主信息" width="300">
         <template slot-scope="scope">
           <div v-for="(item, index) in scope.row.ownerPhoneList" :key="index">
             <span>{{ item.name }}</span><span style="color: #999; margin: 0 4px;">/</span><span>{{ item.phone }}</span>
