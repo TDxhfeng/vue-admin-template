@@ -104,3 +104,15 @@ export function queryEnterpriseCustomers(params) {
     }
   })
 }
+
+// 房源跟进查询
+export function queryEnterpriseHouseFollow(params) {
+  return request({
+    url: '/v3/enterprise/house/follow/query',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-pImL3U6OYO0TfMFa'
+    }
+  })
+}
