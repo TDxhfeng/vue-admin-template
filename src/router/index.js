@@ -97,6 +97,12 @@ export const constantRoutes = [
             component: () => import('@/views/meta_data/enterprise/house_photo'),
             name: '房源图片',
             meta: { title: '房源图片', icon: 'el-icon-s-grid' }
+          },
+          {
+            path: 'house_video',
+            component: () => import('@/views/meta_data/enterprise/house_video'),
+            name: '房源视频',
+            meta: { title: '房源视频', icon: 'el-icon-s-grid' }
           }
         ]
       },

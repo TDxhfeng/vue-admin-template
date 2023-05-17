@@ -59,7 +59,7 @@
           {{ scope.row.enterpriseCode }}
         </template>
       </el-table-column>
-      <el-table-column label="原系统房源ID" width="110">
+      <el-table-column label="原系统房源ID" width="200">
         <template slot-scope="scope">
           {{ scope.row.houseId }}
         </template>
@@ -88,7 +88,7 @@
           {{ scope.row.tag }}
         </template>
       </el-table-column>
-      <el-table-column label="跟进内容" width="850">
+      <el-table-column label="跟进内容" width="750">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.content">
             <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.content }}</div>

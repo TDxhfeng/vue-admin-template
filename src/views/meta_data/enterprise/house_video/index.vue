@@ -83,20 +83,17 @@
           {{ scope.row.uploadTime }}
         </template>
       </el-table-column>
-      <el-table-column label="图片标签" width="100">
+      <el-table-column label="视频标签" width="100">
         <template slot-scope="scope">
           {{ scope.row.tag }}
         </template>
       </el-table-column>
-      <el-table-column label="图片链接" width="850">
+      <el-table-column label="视频链接" width="100">
         <template slot-scope="scope">
-          <el-popover placement="right" trigger="hover">
-            <img :src="scope.row.imageUrl" style="width:600px;height:450px;" referrerPolicy="no-referrer">
-            <img slot="reference" :src="scope.row.imageUrl" style="max-width: 50px;max-height: 150px" referrerPolicy="no-referrer">
-          </el-popover>
+          <el-link :href="scope.row.url" target="_blank" type="primary">跳转</el-link>
         </template>
       </el-table-column>
-      <el-table-column label="爬取时间" width="100">
+      <el-table-column label="爬取时间" width="200">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.createTime">
             <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.createTime }}</div>
@@ -118,7 +115,7 @@
 </template>
 
 <script>
-import { queryEnterpriseHousePhoto } from '@/api/enterprise/enterprise_info'
+import { queryEnterpriseHouseVideo } from '@/api/enterprise/enterprise_info'
 import { erpOptions } from '@/store/constants'
 
 export default {
@@ -157,7 +154,7 @@ export default {
       params.enterpriseCode = this.searchForm.enterpriseCode
 
       this.listLoading = true
-      queryEnterpriseHousePhoto(params)
+      queryEnterpriseHouseVideo(params)
         .then(response => {
           this.total = response.data.totalCount
           this.list = response.data.list

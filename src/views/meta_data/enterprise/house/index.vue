@@ -64,6 +64,13 @@
       highlight-current-row
       max-height="650"
     >
+      <el-table-column label="原系统相关人" width="300">
+        <template slot-scope="scope">
+          <div v-for="(item, index) in scope.row.allUsers" :key="index">
+            <span style="color: #FF0000">{{ item.userFieldName }}:</span><span>{{ item.userName }}</span><span style="color: #999; margin: 0 4px;">|</span><span style="color: #FF0000">部门:</span><span>{{ item.userDepartment }}</span>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column label="企业号">
         <template slot-scope="scope">
           {{ scope.row.enterpriseCode }}

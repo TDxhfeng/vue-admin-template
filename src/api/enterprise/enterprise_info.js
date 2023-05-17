@@ -140,3 +140,15 @@ export function queryEnterpriseHousePhoto(params) {
     }
   })
 }
+
+// 房源视频查询
+export function queryEnterpriseHouseVideo(params) {
+  return request({
+    url: '/v3/enterprise/house/video/query',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-GED0nvPxHYugMUx4'
+    }
+  })
+}
