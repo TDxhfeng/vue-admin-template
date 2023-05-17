@@ -80,14 +80,19 @@
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="400">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="showDialogByTransferRule(scope.row)">查询规则</el-button>
-          <el-button size="mini" type="success" @click="showAddRule(scope.row)">添加规则</el-button>
+          <el-button size="mini" type="info" @click="showDialogByTransferRule(scope.row)">查询规则</el-button>
+          <el-button size="mini" type="info" @click="showAddRule(scope.row)">添加规则</el-button>
           <el-button size="mini" type="info" @click="exportHouseDep(scope.row)">导出部门</el-button>
+          <el-button size="mini" type="info" @click="showExportHouse(scope.row)">导入部门</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <!-- 导入部门对话框 -->
+    <el-dialog width="40%" :visible.sync="importDepVisble">
+      <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
+    </el-dialog>
     <!-- 添加规则对话框 -->
     <el-dialog width="30%" title="添加规则" :visible.sync="addRuleVisible">
       <el-form ref="addRuleForm" :model="addRuleForm" label-width="80px">
@@ -221,42 +226,34 @@
             <div>
               <span>原系统房源录入人字段为：</span>
               <span style="color: #FF0000">【{{ scope.row.inputUserOriginField }}】</span>
-              <span>默认：录入人</span>
             </div>
             <div>
               <span>原系统房源售维护人字段为：</span>
               <span style="color: #FF0000">【{{ scope.row.saleUserOriginField }}】</span>
-              <span>默认：售盘源人</span>
             </div>
             <div>
               <span>原系统房源租维护人字段为：</span>
               <span style="color: #FF0000">【{{ scope.row.rentUserOriginField }}】</span>
-              <span>默认：租盘源人</span>
             </div>
             <div>
               <span>原系统房源钥匙人字段为：</span>
               <span style="color: #FF0000">【{{ scope.row.keyUserOriginField }}】</span>
-              <span>默认：钥匙人</span>
             </div>
             <div>
               <span>原系统房源实勘人字段为：</span>
               <span style="color: #FF0000">【{{ scope.row.imgUserOriginField }}】</span>
-              <span>默认：实勘人</span>
             </div>
             <div>
               <span>是否启用私盘标记：</span>
               <span style="color: #FF0000">【{{ scope.row.isUseHouseProperty == 1 ? '是': '否' }}】</span>
-              <span>默认：否</span>
             </div>
             <div>
               <span>是否启用公盘部门映射：</span>
               <span style="color: #FF0000">【{{ scope.row.isUseHousePublicDepartmentsMap == 1 ? '是': '否' }}】</span>
-              <span>默认：否</span>
             </div>
             <div>
               <span>是否启用录入人部门映射：</span>
               <span style="color: #FF0000">【{{ scope.row.isUseHouseInputUserMap == 1 ? '是': '否' }}】</span>
-              <span>默认：否</span>
             </div>
           </template>
         </el-table-column>
@@ -290,19 +287,30 @@ import { deleteEnterpriseRule } from '@/api/enterprise/enterprise_info'
 import { queryEntepriseHouseAgent } from '@/api/enterprise/enterprise_info'
 import { addEnterpriseRule } from '@/api/enterprise/enterprise_info'
 import { exportHouseDepartments } from '@/api/enterprise/enterprise_info'
+import { importHouseDepartments } from '@/api/enterprise/enterprise_info'
+import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 
 export default {
+  components: { UploadExcelComponent },
   data() {
     return {
+      // 清洗规则展示对话框数据
       ruleData: [],
       transferRuleDialogVisible: false,
       addRuleVisible: false,
-      list: [],
+      importDepVisble: false,
+      // 经纪人列表
       agentList: [],
+      // 导入部门该行的参数
+      exportRow: '',
+      // 页码参数
       page: 1,
       pageSize: 40,
       total: 0,
+      // 表格加载
       listLoading: false,
+      list: [],
+      // 搜索表单
       searchForm: {
         erpName: '',
         enterpriseCode: ''
@@ -492,6 +500,39 @@ export default {
         dangerouslyUseHTMLString: true,
         customClass: 'msgBox'
       })
+    },
+    // 导入部门
+    showExportHouse(row) {
+      this.importDepVisble = true
+      this.exportRow = row
+    },
+    beforeUpload(file) {
+      const isLt1M = file.size / 1024 / 1024 < 1
+
+      if (isLt1M) {
+        return true
+      }
+
+      this.$message({
+        message: 'Please do not upload files larger than 1m in size.',
+        type: 'warning'
+      })
+      return false
+    },
+    handleSuccess({ results, header }) {
+      const data = results.map(({ '原系统所有部门': originDepartments = '', '所对应的(公盘部门/公共账号)': targetDepartmentsOrUserCode = '', '录入人部门公共账号(默认0001)': targetInputUserCode = '' }) => ({ originDepartments, targetDepartmentsOrUserCode, targetInputUserCode }))
+      console.log(data)
+      const postData = {
+        comeFrom: 'FRONTEND',
+        enterpriseCode: this.exportRow.enterpriseCode,
+        erpName: this.exportRow.erpName,
+        mapping: data
+      }
+      importHouseDepartments(postData)
+        .then(response => {
+          console.log(response.data)
+          this.importDepVisble = false
+        })
     }
   }
 }

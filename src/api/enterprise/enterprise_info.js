@@ -80,3 +80,15 @@ export function createTaskInfo(params) {
     }
   })
 }
+
+// 导入部门
+export function importHouseDepartments(params) {
+  return request({
+    url: '/v3/enterprise/house/departments/export',
+    method: 'put',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-NQyTZNDhV42qE5ya'
+    }
+  })
+}
