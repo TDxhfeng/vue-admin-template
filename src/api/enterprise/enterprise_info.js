@@ -116,3 +116,15 @@ export function queryEnterpriseHouseFollow(params) {
     }
   })
 }
+
+// 客源跟进查询
+export function queryEnterpriseCustomerFollow(params) {
+  return request({
+    url: '/v3/enterprise/customer/follows/query',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-MTxBoLEzeY8Vkjm5'
+    }
+  })
+}

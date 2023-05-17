@@ -85,6 +85,12 @@ export const constantRoutes = [
             component: () => import('@/views/meta_data/enterprise/house_follow'),
             name: '房源跟进',
             meta: { title: '房源跟进', icon: 'el-icon-s-grid' }
+          },
+          {
+            path: 'customer_follow',
+            component: () => import('@/views/meta_data/enterprise/customer_follow'),
+            name: '客源跟进',
+            meta: { title: '客源跟进', icon: 'el-icon-s-grid' }
           }
         ]
       },

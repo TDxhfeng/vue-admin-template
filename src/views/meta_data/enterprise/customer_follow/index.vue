@@ -32,8 +32,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="房源ID" prop="houseId">
-            <el-input v-model="searchForm.houseId" style="width: 180px;" />
+          <el-form-item label="客源ID" prop="customerId">
+            <el-input v-model="searchForm.customerId" style="width: 180px;" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -59,9 +59,9 @@
           {{ scope.row.enterpriseCode }}
         </template>
       </el-table-column>
-      <el-table-column label="原系统房源ID" width="110">
+      <el-table-column label="原系统客源ID" width="110">
         <template slot-scope="scope">
-          {{ scope.row.houseId }}
+          {{ scope.row.customerId }}
         </template>
       </el-table-column>
       <el-table-column label="跟进人" width="100">
@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import { queryEnterpriseHouseFollow } from '@/api/enterprise/enterprise_info'
+import { queryEnterpriseCustomerFollow } from '@/api/enterprise/enterprise_info'
 import { erpOptions } from '@/store/constants'
 
 export default {
@@ -144,8 +144,8 @@ export default {
         size: this.pageSize
       }
 
-      if (this.searchForm.houseId) {
-        filter.houseId = this.searchForm.houseId
+      if (this.searchForm.customerId) {
+        filter.customerId = this.searchForm.customerId
       }
 
       const params = {
@@ -156,7 +156,7 @@ export default {
       params.enterpriseCode = this.searchForm.enterpriseCode
 
       this.listLoading = true
-      queryEnterpriseHouseFollow(params)
+      queryEnterpriseCustomerFollow(params)
         .then(response => {
           this.total = response.data.totalCount
           this.list = response.data.list
