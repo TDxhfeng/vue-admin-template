@@ -128,3 +128,15 @@ export function queryEnterpriseCustomerFollow(params) {
     }
   })
 }
+
+// 房源图片查询
+export function queryEnterpriseHousePhoto(params) {
+  return request({
+    url: '/v3/enterprise/house/photo/query',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-40M1ByK8CRsiGPpC'
+    }
+  })
+}
