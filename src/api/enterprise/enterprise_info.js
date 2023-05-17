@@ -92,3 +92,15 @@ export function importHouseDepartments(params) {
     }
   })
 }
+
+// 客源查询
+export function queryEnterpriseCustomers(params) {
+  return request({
+    url: '/v3/enterprise/customer/query',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-yS4Q0Yowf9Iso4HF'
+    }
+  })
+}
