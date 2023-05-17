@@ -46,46 +46,49 @@
       highlight-current-row
       max-height="650"
     >
-      <el-table-column label="城市" width="150">
+      <el-table-column label="城市" width="80">
         <template slot-scope="scope">
           {{ scope.row.city }}
         </template>
       </el-table-column>
-      <el-table-column label="企业号" width="150">
+      <el-table-column label="企业号" width="80">
         <template slot-scope="scope">
           {{ scope.row.enterpriseCode }}
         </template>
       </el-table-column>
-      <el-table-column label="ERP名称" width="150">
+      <el-table-column label="ERP名称" width="100">
         <template slot-scope="scope">
           {{ erpNameMap[scope.row.erpName] }}
         </template>
       </el-table-column>
-      <el-table-column label="teamID">
+      <el-table-column label="teamID" width="80">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.teamId">
             <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.teamId }}</div>
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="企业名称" width="150">
+      <el-table-column label="企业名称" width="240">
         <template slot-scope="scope">
           {{ scope.row.enterpriseName }}
         </template>
       </el-table-column>
-      <el-table-column label="创建时间">
+      <el-table-column label="创建时间" width="110">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.createTime">
             <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.createTime }}</div>
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="400">
+      <el-table-column label="操作" width="900">
         <template slot-scope="scope">
           <el-button size="mini" type="info" @click="showDialogByTransferRule(scope.row)">查询规则</el-button>
-          <el-button size="mini" type="info" @click="showAddRule(scope.row)">添加规则</el-button>
-          <el-button size="mini" type="info" @click="exportHouseDep(scope.row)">导出部门</el-button>
-          <el-button size="mini" type="info" @click="showExportHouse(scope.row)">导入部门</el-button>
+          <el-button size="mini" type="info" icon="el-icon-house" @click="showAddRule(scope.row)">添加房源规则</el-button>
+          <el-button size="mini" type="info" icon="el-icon-house" @click="exportHouseDep(scope.row)">导出房源部门</el-button>
+          <el-button size="mini" type="info" icon="el-icon-house" @click="showExportHouse(scope.row)">导入房源部门</el-button>
+          <el-button size="mini" type="info" icon="el-icon-s-custom" @click="showAddCustomRule(scope.row)">添加客源规则</el-button>
+          <el-button size="mini" type="info" icon="el-icon-s-custom" @click="showAddCustomRule(scope.row)">导出客源部门</el-button>
+          <el-button size="mini" type="info" icon="el-icon-s-custom" @click="showAddCustomRule(scope.row)">导入客源部门</el-button>
         </template>
       </el-table-column>
     </el-table>
