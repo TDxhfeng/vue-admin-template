@@ -82,13 +82,12 @@
       </el-table-column>
       <el-table-column label="操作" width="900">
         <template slot-scope="scope">
-          <el-button size="mini" type="info" @click="showDialogByTransferRule(scope.row)">查询规则</el-button>
+          <el-button size="mini" type="info" icon="el-icon-house" @click="showDialogByTransferRule(scope.row)">查询房源规则</el-button>
           <el-button size="mini" type="info" icon="el-icon-house" @click="showAddRule(scope.row)">添加房源规则</el-button>
-          <el-button size="mini" type="info" icon="el-icon-house" @click="exportHouseDep(scope.row)">导出房源部门</el-button>
-          <el-button size="mini" type="info" icon="el-icon-house" @click="showExportHouse(scope.row)">导入房源部门</el-button>
-          <el-button size="mini" type="info" icon="el-icon-s-custom" @click="showAddCustomRule(scope.row)">添加客源规则</el-button>
-          <el-button size="mini" type="info" icon="el-icon-s-custom" @click="showAddCustomRule(scope.row)">导出客源部门</el-button>
-          <el-button size="mini" type="info" icon="el-icon-s-custom" @click="showAddCustomRule(scope.row)">导入客源部门</el-button>
+          <el-button size="mini" type="info" icon="el-icon-s-custom" @click="showCustomerRule(scope.row)">查询客源规则</el-button>
+          <el-button size="mini" type="info" icon="el-icon-s-custom" @click="showAddCustomerRule(scope.row)">添加客源规则</el-button>
+          <el-button size="mini" type="info" @click="exportHouseDep(scope.row)">导出部门</el-button>
+          <el-button size="mini" type="info" @click="showExportHouse(scope.row)">导入部门</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -96,7 +95,7 @@
     <el-dialog width="40%" :visible.sync="importDepVisble">
       <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
     </el-dialog>
-    <!-- 添加规则对话框 -->
+    <!-- 添加房源规则对话框 -->
     <el-dialog width="30%" title="添加规则" :visible.sync="addRuleVisible">
       <el-form ref="addRuleForm" :model="addRuleForm" label-width="80px">
         <el-form-item
@@ -208,8 +207,76 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <!-- 清洗规则详情查询对话框 -->
-    <el-dialog :visible.sync="transferRuleDialogVisible" width="70%" title="规则详情">
+    <!-- 添加客源规则对话框 -->
+    <el-dialog width="30%" title="添加规则" :visible.sync="addCustomerRuleVisible">
+      <el-form ref="addCustomerRuleForm" :model="addCustomerRuleForm" label-width="80px">
+        <el-form-item
+          label="原系统录入人对应："
+          prop="inputUserOriginField"
+          label-width="180px"
+          :rules="[{
+            required: true,
+            message: '原系统录入人对应',
+            trigger: 'blur'
+          }]"
+        >
+          <el-select v-model="addCustomerRuleForm.inputUserOriginField" style="width: 220px;" clearable placeholder="请选择原系统录入人字段">
+            <el-option
+              v-for="(value, index) in agentList"
+              :key="index"
+              :value="value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="原系统客源人对应："
+          prop="chargeUserOriginField"
+          label-width="180px"
+          :rules="[{
+            required: true,
+            message: '原系统客源人对应',
+            trigger: 'blur'
+          }]"
+        >
+          <el-select v-model="addCustomerRuleForm.chargeUserOriginField" style="width: 220px;" clearable placeholder="请选择原系统售维护人字段">
+            <el-option
+              v-for="(value, index) in agentList"
+              :key="index"
+              :value="value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="是否启用公私客标记："
+          prop="isUseCustomerProperty"
+          label-width="180px"
+        >
+          <el-radio v-model="addCustomerRuleForm.isUseCustomerProperty" :label="1">是</el-radio>
+          <el-radio v-model="addCustomerRuleForm.isUseCustomerProperty" :label="0">否</el-radio>
+        </el-form-item>
+        <el-form-item
+          label="是否启用公盘部门映射"
+          prop="isUseCustomerPublicDepartmentsMap"
+          label-width="180px"
+        >
+          <el-radio v-model="addCustomerRuleForm.isUseCustomerPublicDepartmentsMap" :label="1">是</el-radio>
+          <el-radio v-model="addCustomerRuleForm.isUseCustomerPublicDepartmentsMap" :label="0">否</el-radio>
+        </el-form-item>
+        <el-form-item
+          label="是否启用录入人部门映射："
+          prop="isUseCustomerInputUserMap"
+          label-width="180px"
+        >
+          <el-radio v-model="addCustomerRuleForm.isUseCustomerInputUserMap" :label="1">是</el-radio>
+          <el-radio v-model="addCustomerRuleForm.isUseCustomerInputUserMap" :label="0">否</el-radio>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmitCustomerRule">立即添加</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+    <!-- 房源清洗规则详情查询对话框 -->
+    <el-dialog :visible.sync="transferRuleDialogVisible" width="70%" title="房源规则详情">
       <!-- 清洗规则展示对话框列表 -->
       <el-table v-if="transferRuleDialogVisible" :data="ruleData">
         <el-table-column label="清洗类型" width="100">
@@ -268,6 +335,54 @@
         </el-table-column>
       </el-table>
     </el-dialog>
+    <!-- 客源清洗规则详情查询对话框 -->
+    <el-dialog :visible.sync="transferCustomerRuleDialogVisible" width="70%" title="房源规则详情">
+      <!-- 清洗规则展示对话框列表 -->
+      <el-table v-if="transferCustomerRuleDialogVisible" :data="ruleData">
+        <el-table-column label="清洗类型" width="100">
+          <template slot-scope="scope">
+            {{ scope.row.transferType }}
+          </template>
+        </el-table-column>
+        <el-table-column label="创建时间" width="100">
+          <template slot-scope="scope">
+            <el-tooltip :content="scope.row.createTime">
+              <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.createTime }}</div>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column label="清洗详情">
+          <template slot-scope="scope">
+            <div>
+              <span>原系统客源录入人字段为：</span>
+              <span style="color: #FF0000">【{{ scope.row.inputUserOriginField }}】</span>
+            </div>
+            <div>
+              <span>原系统客源人字段为：</span>
+              <span style="color: #FF0000">【{{ scope.row.chargeUserOriginField }}】</span>
+            </div>
+            <div>
+              <span>是否启用私盘标记：</span>
+              <span style="color: #FF0000">【{{ scope.row.isUseCustomerProperty == 1 ? '是': '否' }}】</span>
+            </div>
+            <div>
+              <span>是否启用公客部门映射：</span>
+              <span style="color: #FF0000">【{{ scope.row.isUseCustomerPublicDepartmentsMap == 1 ? '是': '否' }}】</span>
+            </div>
+            <div>
+              <span>是否启用录入人部门映射：</span>
+              <span style="color: #FF0000">【{{ scope.row.isUseCustomerInputUserMap == 1 ? '是': '否' }}】</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="400">
+          <template slot-scope="scope">
+            <el-button size="mini" type="primary" @click="createTask(scope.row)">创建清洗任务</el-button>
+            <el-button size="mini" type="danger" @click="deleteRule(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
     <!-- 翻页组件，用于控制显示数据条数和页码-->
     <el-pagination
       :current-page="page"
@@ -291,6 +406,10 @@ import { queryEntepriseHouseAgent } from '@/api/enterprise/enterprise_info'
 import { addEnterpriseRule } from '@/api/enterprise/enterprise_info'
 import { exportHouseDepartments } from '@/api/enterprise/enterprise_info'
 import { importHouseDepartments } from '@/api/enterprise/enterprise_info'
+import { queryCustomerAgent } from '@/api/enterprise/enterprise_info'
+import { addEnterpriseCustomerRule } from '@/api/enterprise/enterprise_info'
+import { queryEnterpriseCustomerRule } from '@/api/enterprise/enterprise_info'
+import { deleteEnterpriseCustomerRule } from '@/api/enterprise/enterprise_info'
 import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 
 export default {
@@ -300,6 +419,8 @@ export default {
       // 清洗规则展示对话框数据
       ruleData: [],
       transferRuleDialogVisible: false,
+      transferCustomerRuleDialogVisible: false,
+      addCustomerRuleVisible: false,
       addRuleVisible: false,
       importDepVisble: false,
       // 经纪人列表
@@ -318,7 +439,7 @@ export default {
         erpName: '',
         enterpriseCode: ''
       },
-      // 添加规则表单
+      // 添加房源规则表单
       addRuleForm: {
         comeFrom: 'FRONTEND',
         erpName: '',
@@ -332,6 +453,18 @@ export default {
         isUseHouseProperty: 0,
         isUseHousePublicDepartmentsMap: 0,
         isUseHouseInputUserMap: 0
+      },
+      // 添加客源规则表单
+      addCustomerRuleForm: {
+        comeFrom: 'FRONTEND',
+        erpName: '',
+        transferType: 'CUSTOMER',
+        enterpriseCode: '',
+        inputUserOriginField: '',
+        chargeUserOriginField: '',
+        isUseCustomerProperty: 0,
+        isUseCustomerPublicDepartmentsMap: 0,
+        isUseCustomerInputUserMap: 0
       },
       // erp系统映射
       erpOptions: erpOptions
@@ -388,7 +521,7 @@ export default {
       this.page = val
       this.fetchData()
     },
-    // 打开弹出框
+    // 打开房源弹出框
     showDialogByTransferRule(row) {
       // 请求获取规则
       const ruleParams = {
@@ -450,6 +583,7 @@ export default {
           console.log(response.data)
         })
       this.transferRuleDialogVisible = false
+      this.transferCustomerRuleDialogVisible = false
     },
     // 删除规则
     deleteRule(row) {
@@ -457,11 +591,19 @@ export default {
         comeFrom: 'FRONTEND',
         ruleIds: [row.ruleId]
       }
-      deleteEnterpriseRule(ruleData)
-        .then(response => {
-          console.log(response.data.list)
-        })
+      if (row.transferType === 'HOUSE') {
+        deleteEnterpriseRule(ruleData)
+          .then(response => {
+            console.log(response.data.list)
+          })
+      } else if (row.transferType === 'CUSTOMER') {
+        deleteEnterpriseCustomerRule(ruleData)
+          .then(response => {
+            console.log(response.data.list)
+          })
+      }
       this.transferRuleDialogVisible = false
+      this.transferCustomerRuleDialogVisible = false
     },
     // 导出所有房源部门
     exportHouseDep(row) {
@@ -481,7 +623,7 @@ export default {
         const tHeader = ['原系统所有部门', '所对应的(公盘部门/公共账号)', '录入人部门公共账号(默认0001)']
         const filterVal = ['originDepartments', 'targetDepartmentsOrUserCode', 'targetInputUserCode']
         const data = this.formatJson(filterVal, allDepartments)
-        const tfileName = row.enterpriseName + '_房源数据映射'
+        const tfileName = row.enterpriseName + '_数据映射'
         excel.export_json_to_excel({
           header: tHeader,
           data,
@@ -536,6 +678,51 @@ export default {
           console.log(response.data)
           this.importDepVisble = false
         })
+    },
+    // 添加客源规则
+    showAddCustomerRule(row) {
+      const ruleParams = {
+        comeFrom: 'FRONTEND',
+        enterpriseCode: row.enterpriseCode,
+        erpName: row.erpName
+      }
+      queryCustomerAgent(ruleParams)
+        .then(response => {
+          this.agentList = response.data.list
+        })
+      console.log('agentList: ', this.agentList)
+      this.addCustomerRuleVisible = true
+      this.addCustomerRuleForm.erpName = row.erpName
+      this.addCustomerRuleForm.enterpriseCode = row.enterpriseCode
+      this.addCustomerRuleForm.isUseCustomerProperty = 0
+      this.addCustomerRuleForm.isUseCustomerPublicDepartmentsMap = 0
+      this.addCustomerRuleForm.isUseCustomerInputUserMap = 0
+    },
+    // 添加规则
+    onSubmitCustomerRule() {
+      addEnterpriseCustomerRule(this.addCustomerRuleForm)
+        .then(response => {
+          console.log('addCustomerRuleRes: ', this.data.list)
+        })
+      this.addCustomerRuleVisible = false
+    },
+    // 打开客源弹出框
+    showCustomerRule(row) {
+      // 请求获取规则
+      const ruleParams = {
+        comeFrom: 'FRONTEND',
+        filter: {
+          enterpriseCode: row.enterpriseCode,
+          erpName: row.erpName
+        }
+      }
+      queryEnterpriseCustomerRule(ruleParams)
+        .then(response => {
+          // this.ruleTotal = response.data.totalCount
+          this.ruleData = response.data.list
+        })
+      console.log('ruleData: ', this.ruleData)
+      this.transferCustomerRuleDialogVisible = true
     }
   }
 }

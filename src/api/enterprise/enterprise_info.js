@@ -60,7 +60,7 @@ export function addEnterpriseRule(params) {
 // 导出所有部门
 export function exportHouseDepartments(params) {
   return request({
-    url: '/v3/enterprise/house/departments/export',
+    url: '/v3/enterprise/departments/export',
     method: 'post',
     data: params,
     headers: {
@@ -84,7 +84,7 @@ export function createTaskInfo(params) {
 // 导入部门
 export function importHouseDepartments(params) {
   return request({
-    url: '/v3/enterprise/house/departments/export',
+    url: '/v3/enterprise/departments/export',
     method: 'put',
     data: params,
     headers: {
@@ -149,6 +149,54 @@ export function queryEnterpriseHouseVideo(params) {
     data: params,
     headers: {
       'X-Access-Token': 'token-GED0nvPxHYugMUx4'
+    }
+  })
+}
+
+// 客源人员查询
+export function queryCustomerAgent(params) {
+  return request({
+    url: '/v3/enterprise/customer/allUser/query',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-C38VpG7qVgTQzvZV'
+    }
+  })
+}
+
+// 客源规则添加
+export function addEnterpriseCustomerRule(params) {
+  return request({
+    url: '/v3/customer/rule/modify',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-6Vzudv4lXhgRaXaW'
+    }
+  })
+}
+
+// 客源规则删除
+export function deleteEnterpriseCustomerRule(params) {
+  return request({
+    url: '/v3/customer/rule/modify',
+    method: 'delete',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-zQ419FlvMcsv2kbW'
+    }
+  })
+}
+
+// 客源规则查询
+export function queryEnterpriseCustomerRule(params) {
+  return request({
+    url: '/v3/customer/rule/record/query',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-t3rSMWKBCcNwPF5V'
     }
   })
 }
