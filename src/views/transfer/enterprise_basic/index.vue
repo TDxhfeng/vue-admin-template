@@ -255,7 +255,7 @@
           <el-radio v-model="addCustomerRuleForm.isUseCustomerProperty" :label="0">否</el-radio>
         </el-form-item>
         <el-form-item
-          label="是否启用公盘部门映射"
+          label="是否启用公客部门映射"
           prop="isUseCustomerPublicDepartmentsMap"
           label-width="180px"
         >
