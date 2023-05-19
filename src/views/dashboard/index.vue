@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">还没想好搞些什么！！</div>
+    <div class="dashboard-text">清洗一体化平台 作者:feng</div>
     <div class="dashboard-text">当前用户: {{ name }}</div>
   </div>
 </template>
