@@ -90,7 +90,7 @@
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="900">
+      <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-dropdown>
             <el-button type="info" size="mini">
@@ -103,6 +103,23 @@
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-s-custom" @click="showAddCustomerRule(scope.row)">添加客源规则</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" @click="exportHouseDep(scope.row)">导出部门</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" @click="showExportHouse(scope.row)">导入部门</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row)">创建其它清洗任务</el-button></el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </template>
+      </el-table-column>
+      <el-table-column label="创建其它任务" width="120">
+        <template slot-scope="scope">
+          <el-dropdown>
+            <el-button type="info" size="mini">
+              详情<i class="el-icon-arrow-down el-icon--right" />
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_FOLLOW')">房源跟进</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_PHOTO')">房源图片</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_VIDEO')">房源视频</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_PANORAMA')">房源全景图</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'CUSTOMER_FOLLOW')">客源跟进</el-button></el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -740,6 +757,22 @@ export default {
         })
       console.log('ruleData: ', this.ruleData)
       this.transferCustomerRuleDialogVisible = true
+    },
+    // 创建其它清洗任务
+    createOtherTask(row, transferType) {
+      const taskData = {
+        comeFrom: 'FRONTEND',
+        tasks: [{
+          taskBelong: 'ENTERPRISE_TRANSFER',
+          taskType: transferType,
+          enterpriseCode: row.enterpriseCode
+        }]
+      }
+      createTaskInfo(taskData)
+        .then(response => {
+          this.$message({ message: '创建成功', type: 'success' })
+          console.log(response.data)
+        })
     }
   }
 }

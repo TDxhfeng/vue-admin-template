@@ -102,6 +102,11 @@
           {{ scope.row.taskName }}
         </template>
       </el-table-column>
+      <el-table-column label="数据总量" width="80">
+        <template slot-scope="scope">
+          {{ scope.row.totalCount }}
+        </template>
+      </el-table-column>
       <el-table-column label="ERP名称" width="150">
         <template slot-scope="scope">
           {{ erpNameMap[scope.row.erpName] }}
