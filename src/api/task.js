@@ -11,3 +11,15 @@ export function queryTaskInfo(params) {
     }
   })
 }
+
+// 任务重试接口
+export function retryTaskTimes(params) {
+  return request({
+    url: '/v3/system/task/record/modify',
+    method: 'put',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-MmdL0D8RVDLYZZoA'
+    }
+  })
+}
