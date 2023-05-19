@@ -46,29 +46,29 @@
       highlight-current-row
       max-height="650"
     >
-      <el-table-column label="城市" width="80">
+      <el-table-column label="城市" width="100">
         <template slot-scope="scope">
           {{ scope.row.city }}
         </template>
       </el-table-column>
-      <el-table-column label="企业号" width="80">
+      <el-table-column label="企业号" width="100">
         <template slot-scope="scope">
           {{ scope.row.enterpriseCode }}
         </template>
       </el-table-column>
-      <el-table-column label="ERP名称" width="100">
+      <el-table-column label="ERP名称" width="200">
         <template slot-scope="scope">
           {{ erpNameMap[scope.row.erpName] }}
         </template>
       </el-table-column>
-      <el-table-column label="teamID" width="80">
+      <el-table-column label="teamID" width="250">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.teamId">
             <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.teamId }}</div>
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="企业名称" width="240">
+      <el-table-column label="企业名称" width="300">
         <template slot-scope="scope">
           {{ scope.row.enterpriseName }}
         </template>
@@ -92,12 +92,19 @@
       </el-table-column>
       <el-table-column label="操作" width="900">
         <template slot-scope="scope">
-          <el-button size="mini" type="info" icon="el-icon-house" @click="showDialogByTransferRule(scope.row)">查询房源规则</el-button>
-          <el-button size="mini" type="info" icon="el-icon-house" @click="showAddRule(scope.row)">添加房源规则</el-button>
-          <el-button size="mini" type="info" icon="el-icon-s-custom" @click="showCustomerRule(scope.row)">查询客源规则</el-button>
-          <el-button size="mini" type="info" icon="el-icon-s-custom" @click="showAddCustomerRule(scope.row)">添加客源规则</el-button>
-          <el-button size="mini" type="info" @click="exportHouseDep(scope.row)">导出部门</el-button>
-          <el-button size="mini" type="info" @click="showExportHouse(scope.row)">导入部门</el-button>
+          <el-dropdown>
+            <el-button type="info" size="mini">
+              更多<i class="el-icon-arrow-down el-icon--right" />
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-house" @click="showDialogByTransferRule(scope.row)">查询房源规则</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-house" @click="showAddRule(scope.row)">添加房源规则</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-s-custom" @click="showCustomerRule(scope.row)">查询客源规则</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-s-custom" @click="showAddCustomerRule(scope.row)">添加客源规则</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" @click="exportHouseDep(scope.row)">导出部门</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" @click="showExportHouse(scope.row)">导入部门</el-button></el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
