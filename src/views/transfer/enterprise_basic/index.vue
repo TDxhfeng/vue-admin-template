@@ -35,11 +35,6 @@
             <el-button type="primary" @click="fetchData">搜索</el-button>
           </el-form-item>
         </el-col>
-        <el-col :span="2">
-          <el-form-item>
-            <el-button type="danger" @click="updateAllRules">一键更新系统清洗规则</el-button>
-          </el-form-item>
-        </el-col>
       </el-row>
     </el-form>
     <!-- 表格 -->
@@ -415,7 +410,6 @@ import { queryCustomerAgent } from '@/api/enterprise/enterprise_info'
 import { addEnterpriseCustomerRule } from '@/api/enterprise/enterprise_info'
 import { queryEnterpriseCustomerRule } from '@/api/enterprise/enterprise_info'
 import { deleteEnterpriseCustomerRule } from '@/api/enterprise/enterprise_info'
-import { updateSysRule } from '@/api/enterprise/enterprise_info'
 import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 
 export default {
@@ -729,16 +723,6 @@ export default {
         })
       console.log('ruleData: ', this.ruleData)
       this.transferCustomerRuleDialogVisible = true
-    },
-    // 更新企业清洗规则
-    updateAllRules() {
-      const parmas = {
-        comeFrom: 'FRONTEND'
-      }
-      updateSysRule(parmas)
-        .then(response => {
-          this.$message({ message: '已更新系统规则', type: 'success' })
-        })
     }
   }
 }

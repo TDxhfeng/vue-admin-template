@@ -200,15 +200,3 @@ export function queryEnterpriseCustomerRule(params) {
     }
   })
 }
-
-// 一键重置企业规则
-export function updateSysRule(params) {
-  return request({
-    url: '/v3/system/rule/action',
-    method: 'put',
-    data: params,
-    headers: {
-      'X-Access-Token': 'token-U2TgfS8Nvpv8YrcO'
-    }
-  })
-}
