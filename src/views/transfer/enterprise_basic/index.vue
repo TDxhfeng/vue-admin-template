@@ -73,6 +73,16 @@
           {{ scope.row.enterpriseName }}
         </template>
       </el-table-column>
+      <el-table-column label="是否导入部门映射" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.isImportPublicDepartmentsMapping == 1 ? '是': '否' }}
+        </template>
+      </el-table-column>
+      <el-table-column label="是否导入录入人映射" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.isImportInputUserDepartmentsMapping == 1 ? '是': '否' }}
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" width="110">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.createTime">
