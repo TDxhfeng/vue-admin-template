@@ -103,7 +103,6 @@
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-s-custom" @click="showAddCustomerRule(scope.row)">添加客源规则</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" @click="exportHouseDep(scope.row)">导出部门</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" @click="showExportHouse(scope.row)">导入部门</el-button></el-dropdown-item>
-              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row)">创建其它清洗任务</el-button></el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
