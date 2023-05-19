@@ -105,13 +105,13 @@ export const constantRoutes = [
             meta: { title: '房源视频', icon: 'el-icon-s-grid' }
           }
         ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/meta_data/menu2/index'),
-        name: '暂未完成',
-        meta: { title: '暂未完成', icon: 'el-icon-s-data' }
       }
+      // {
+      //   path: 'menu2',
+      //   component: () => import('@/views/meta_data/menu2/index'),
+      //   name: '暂未完成',
+      //   meta: { title: '暂未完成', icon: 'el-icon-s-data' }
+      // }
     ]
   },
 
@@ -126,13 +126,13 @@ export const constantRoutes = [
         name: '企业信息配置',
         component: () => import('@/views/transfer/enterprise_basic'),
         meta: { title: '企业信息配置', icon: 'el-icon-set-up' }
-      },
-      {
-        path: 'tree',
-        name: '暂未完成',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '暂未完成', icon: 'el-icon-set-up' }
       }
+      // {
+      //   path: 'tree',
+      //   name: '暂未完成',
+      //   component: () => import('@/views/tree/index'),
+      //   meta: { title: '暂未完成', icon: 'el-icon-set-up' }
+      // }
     ]
   },
 
