@@ -50,7 +50,7 @@
       <el-row>
         <el-col :span="4">
           <el-form-item>
-            <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="fetchData">搜索</el-button>
+            <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="handleSearch">搜索</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -455,6 +455,10 @@ export default {
     },
     handleCurrentChange(val) {
       this.page = val
+      this.fetchData()
+    },
+    handleSearch() {
+      this.page = 1 // 添加此行代码
       this.fetchData()
     }
   }

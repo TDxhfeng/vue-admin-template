@@ -200,3 +200,15 @@ export function queryEnterpriseCustomerRule(params) {
     }
   })
 }
+
+// 所有用户查询
+export function queryEnterpriseUser(params) {
+  return request({
+    url: '/v3/enterprise/allUser/map/query',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-PLwaNsVj8U6dsYHL'
+    }
+  })
+}

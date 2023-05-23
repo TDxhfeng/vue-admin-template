@@ -32,7 +32,7 @@
       <el-row>
         <el-col :span="2">
           <el-form-item>
-            <el-button type="primary" @click="fetchData">搜索</el-button>
+            <el-button type="primary" @click="handleSearch">搜索</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -94,7 +94,7 @@
         <template slot-scope="scope">
           <el-dropdown>
             <el-button type="info" size="mini">
-              更多<i class="el-icon-arrow-down el-icon--right" />
+              详情<i class="el-icon-arrow-down el-icon--right" />
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-house" @click="showDialogByTransferRule(scope.row)">查询房源规则</el-button></el-dropdown-item>
@@ -111,7 +111,7 @@
         <template slot-scope="scope">
           <el-dropdown>
             <el-button type="info" size="mini">
-              详情<i class="el-icon-arrow-down el-icon--right" />
+              更多<i class="el-icon-arrow-down el-icon--right" />
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_FOLLOW')">房源跟进</el-button></el-dropdown-item>
@@ -552,6 +552,10 @@ export default {
     // 页码
     handleCurrentChange(val) {
       this.page = val
+      this.fetchData()
+    },
+    handleSearch() {
+      this.page = 1 // 添加此行代码
       this.fetchData()
     },
     // 打开房源弹出框
