@@ -212,3 +212,15 @@ export function queryEnterpriseUser(params) {
     }
   })
 }
+
+// 修改用户
+export function updateEnterpriseUser(params) {
+  return request({
+    url: '/v3/enterprise/allUser/map/modify',
+    method: 'put',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-v78hfdp12nFbWxrV'
+    }
+  })
+}
