@@ -134,6 +134,7 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button size="mini" type="warning" @click="retryTask(scope.row)">重试</el-button>
+          <el-button size="mini" type="danger" @click="deleteTask(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -153,6 +154,7 @@
 <script>
 import { queryTaskInfo } from '@/api/task'
 import { retryTaskTimes } from '@/api/task'
+import { deleteTask } from '@/api/task'
 import { erpOptions } from '@/store/constants'
 import { taskBelong } from '@/store/constants'
 import { taskType } from '@/store/constants'
@@ -274,6 +276,17 @@ export default {
       retryTaskTimes(parmas)
         .then(response => {
           this.$message({ message: '任务已重试', type: 'success' })
+          this.fetchData()
+        })
+    },
+    deleteTask(row) {
+      const parmas = {
+        comeFrom: 'FRONTEND',
+        taskIds: [row.taskId]
+      }
+      deleteTask(parmas)
+        .then(response => {
+          this.$message({ message: '任务已删除', type: 'success' })
           this.fetchData()
         })
     }

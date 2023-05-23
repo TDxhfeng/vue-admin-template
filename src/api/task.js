@@ -23,3 +23,16 @@ export function retryTaskTimes(params) {
     }
   })
 }
+
+// 任务删除接口
+export function deleteTask(params) {
+  return request({
+    url: '/v3/system/task/record/modify',
+    method: 'delete',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-PtyotAgn966vXLSA'
+    }
+  })
+}
+
