@@ -51,6 +51,12 @@ export const taskStatus = [
   { label: '任务出错', value: 4 }
 ]
 
+export const userMatch = [
+  { label: '已匹配', value: 'MATCH' },
+  { label: '未匹配', value: 'NO_MATCH' },
+  { label: '重名', value: 'DUP' }
+]
+
 export const taskTap = {
   0: 'info',
   1: '',

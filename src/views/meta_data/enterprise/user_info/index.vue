@@ -8,14 +8,14 @@
             prop="erpName"
             :rules="[{
               required: true,
-              message: '请输入ERP名称',
+              message: '请输入',
               trigger: 'blur'
             }]"
           >
             <el-select
               v-model="searchForm.erpName"
               style="width: 150px;"
-              placeholder="请选择ERP名称"
+              placeholder="请选择"
             >
               <el-option
                 v-for="(option, index) in erpOptions"
@@ -27,46 +27,57 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="企业号" prop="enterpriseCode" :rules="[{ required: true, message: '请输入企业号', trigger: 'blur' }]">
+          <el-form-item label="企业号:" prop="enterpriseCode" :rules="[{ required: true, message: '请输入', trigger: 'blur' }]">
             <el-input v-model="searchForm.enterpriseCode" style="width: 150px;" />
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item
-            label="原因"
-            prop="erpName"
-            :rules="[{
-              required: true,
-              message: '请选择原因',
-              trigger: 'blur'
-            }]"
+            label="匹配结果:"
+            prop="matchState"
           >
             <el-select
-              v-model="searchForm.reason"
+              v-model="searchForm.matchState"
               style="width: 150px;"
-              placeholder="请选择原因"
+              placeholder="请选择"
               clearable
             >
               <el-option
-                v-for="(value, index) in reasonList"
+                v-for="(option, index) in userMatch"
                 :key="index"
-                :value="value"
+                :label="option.label"
+                :value="option.value"
               />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="经纪人名" prop="userName">
+          <el-form-item label="经纪人名:" prop="userName">
             <el-input v-model="searchForm.userName" style="width: 150px;" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="小鹿账号:" prop="userCode">
+            <el-input v-model="searchForm.userCode" style="width: 150px;" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="4">
-          <el-checkbox-group v-model="searchForm.isExistsUserCode">
-            <el-checkbox :key="1" label="1">有账号</el-checkbox>
-            <el-checkbox :key="0" label="0">无账号</el-checkbox>
-          </el-checkbox-group>
+          <el-form-item label="是否匹配:">
+            <el-checkbox-group v-model="searchForm.isMatch">
+              <el-checkbox :key="1" label="1">有账号</el-checkbox>
+              <el-checkbox :key="0" label="0">无账号</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="是否修改:">
+            <el-checkbox-group v-model="searchForm.isUpdate">
+              <el-checkbox :key="1" label="1">已修改</el-checkbox>
+              <el-checkbox :key="0" label="0">未修改</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
         </el-col>
       </el-row>
       <el-row>
@@ -86,18 +97,6 @@
       highlight-current-row
       max-height="650"
     >
-      <el-table-column label="ID" width="300">
-        <template slot-scope="scope">
-          <el-tooltip :content="scope.row.id">
-            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.id }}</div>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-      <el-table-column label="小鹿系统账号" width="180">
-        <template slot-scope="scope">
-          {{ scope.row.userCode }}
-        </template>
-      </el-table-column>
       <el-table-column label="经纪人名" width="180">
         <template slot-scope="scope">
           {{ scope.row.userName }}
@@ -108,9 +107,30 @@
           {{ scope.row.userDepartment }}
         </template>
       </el-table-column>
-      <el-table-column label="原因" width="200">
+      <el-table-column label="小鹿系统账号" width="180">
         <template slot-scope="scope">
-          {{ scope.row.reason }}
+          {{ scope.row.userCode }}
+        </template>
+      </el-table-column>
+      <el-table-column label="匹配情况" width="200">
+        <template slot-scope="scope">
+          {{ userMatchMap[scope.row.matchState] }}
+        </template>
+      </el-table-column>
+      <el-table-column label="是否匹配" width="200">
+        <template slot-scope="scope">
+          <el-tag
+            :type="scope.row.isMatch === 1 ? 'success' : 'danger'"
+            disable-transitions
+          >{{ scope.row.isMatch == 1 ? '是': '否' }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="是否操作修改" width="200">
+        <template slot-scope="scope">
+          <el-tag
+            :type="scope.row.isUpdate === 1 ? 'success' : 'danger'"
+            disable-transitions
+          >{{ scope.row.isUpdate == 1 ? '是': '否' }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="200">
@@ -147,6 +167,7 @@
 import { queryEnterpriseUser } from '@/api/enterprise/enterprise_info'
 import { updateEnterpriseUser } from '@/api/enterprise/enterprise_info'
 import { erpOptions } from '@/store/constants'
+import { userMatch } from '@/store/constants'
 
 export default {
   data() {
@@ -159,14 +180,24 @@ export default {
       searchForm: {
         erpName: '',
         enterpriseCode: '',
-        isExistsUserCode: []
+        isMatch: [],
+        isUpdate: []
       },
       // erp系统映射
       erpOptions: erpOptions,
-      reasonList: ['重名', '名字一致', '账号不存在'],
+      userMatch: userMatch,
       // 修改账号
       modifyDialogVisible: false,
       newUserCode: ''
+    }
+  },
+  computed: {
+    userMatchMap() {
+      const map = {}
+      for (let i = 0; i < userMatch.length; i++) {
+        map[userMatch[i].value] = userMatch[i].label
+      }
+      return map
     }
   },
   created() {},
@@ -176,15 +207,20 @@ export default {
         page: this.page,
         size: this.pageSize
       }
-      if (this.searchForm.reason) {
-        filter.reason = this.searchForm.reason
+      if (this.searchForm.matchState) {
+        filter.matchState = this.searchForm.matchState
       }
-
       if (this.searchForm.userName) {
         filter.userName = this.searchForm.userName
       }
-      if (this.searchForm.isExistsUserCode.length === 1) {
-        filter.isExistsUserCode = this.searchForm.isExistsUserCode[0]
+      if (this.searchForm.userCode) {
+        filter.userCode = this.searchForm.userCode
+      }
+      if (this.searchForm.isMatch.length === 1) {
+        filter.isMatch = this.searchForm.isMatch[0]
+      }
+      if (this.searchForm.isUpdate.length === 1) {
+        filter.isUpdate = this.searchForm.isUpdate[0]
       }
 
       const params = {
