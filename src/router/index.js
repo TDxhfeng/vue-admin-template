@@ -69,6 +69,12 @@ export const constantRoutes = [
         meta: { title: '企业数据', icon: 'el-icon-s-data' },
         children: [
           {
+            path: 'dashboard_data',
+            component: () => import('@/views/meta_data/enterprise/dashboard_data'),
+            name: '数据统计看板',
+            meta: { title: '数据统计看板', icon: 'dashboard' }
+          },
+          {
             path: 'user_info',
             component: () => import('@/views/meta_data/enterprise/user_info'),
             name: '企业用户数据',

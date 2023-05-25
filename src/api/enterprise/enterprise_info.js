@@ -11,6 +11,19 @@ export function queryeEnterpriseInfoList(params) {
     }
   })
 }
+
+// 企业所有code查询接口
+export function queryEnterpriseCode(params) {
+  return request({
+    url: '/v3/enterprise_code/query',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-Ym6pWSNnfoVzPIbO'
+    }
+  })
+}
+
 // 企业房源经济人类型映射查询
 export function queryEntepriseHouseAgent(params) {
   return request({
@@ -221,6 +234,18 @@ export function updateEnterpriseUser(params) {
     data: params,
     headers: {
       'X-Access-Token': 'token-v78hfdp12nFbWxrV'
+    }
+  })
+}
+
+// 统计房源的信息
+export function totalEnterpriseHouse(params) {
+  return request({
+    url: '/v3/enterprise/house/total',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-HmPzpcemIspkn7Ba'
     }
   })
 }
