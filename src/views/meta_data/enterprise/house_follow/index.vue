@@ -112,7 +112,6 @@
 <script>
 import { queryEnterpriseHouseFollow } from '@/api/enterprise/enterprise_info'
 import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
-import { erpOptions } from '@/store/constants'
 
 export default {
   data() {
@@ -131,7 +130,7 @@ export default {
       codes: []
     }
   },
-   watch: {
+  watch: {
     searchForm: {
       handler(newValue) {
         if (newValue.erpName) {
@@ -146,7 +145,7 @@ export default {
     this.queryCode()
   },
   methods: {
-     queryCode() {
+    queryCode() {
       const params = {
         comeFrom: 'FRONTEND'
       }
