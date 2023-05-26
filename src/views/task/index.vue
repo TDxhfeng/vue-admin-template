@@ -8,18 +8,8 @@
             label="ERP名称"
             prop="erpName"
           >
-            <el-select
-              v-model="searchForm.erpName"
-              style="width: 150px;"
-              clearable
-              placeholder="请选择ERP名称"
-            >
-              <el-option
-                v-for="(option, index) in erpOptions"
-                :key="index"
-                :label="option.label"
-                :value="option.value"
-              />
+            <el-select v-model="searchForm.erpName" placeholder="选择ERP" clearable filterable @change="resetCode">
+              <el-option v-for="option in enterpriseOptions" :key="option.erpName" :label="option.erpCnName" :value="option.erpName" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -65,7 +55,9 @@
         </el-col>
         <el-col :span="4">
           <el-form-item label="企业号" prop="enterpriseCode">
-            <el-input v-model="searchForm.enterpriseCode" style="width: 150px;" />
+            <el-select v-model="searchForm.enterpriseCode" placeholder="选择企业" clearable filterable>
+              <el-option v-for="value in codes" :key="value" :label="value" :value="value" />
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -160,6 +152,7 @@ import { taskBelong } from '@/store/constants'
 import { taskType } from '@/store/constants'
 import { taskStatus } from '@/store/constants'
 import { taskTap } from '@/store/constants'
+import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
 
 export default {
   data() {
@@ -179,6 +172,8 @@ export default {
       },
       // 系统映射
       erpOptions: erpOptions,
+      enterpriseOptions: [],
+      codes: [],
       taskBelong: taskBelong,
       taskType: taskType,
       taskStatus: taskStatus,
@@ -216,10 +211,44 @@ export default {
       return map
     }
   },
+  watch: {
+    searchForm: {
+      handler(newValue) {
+        if (newValue.erpName) {
+          this.codes = this.erpCodeMap(newValue.erpName)
+        }
+      },
+      deep: true, // 深度监听，用以监听对象属性变化
+      immediate: true // 立即执行一次handler函数
+    }
+  },
   created() {
+    this.queryCode()
     this.fetchData()
   },
   methods: {
+    queryCode() {
+      const params = {
+        comeFrom: 'FRONTEND'
+      }
+      queryEnterpriseCode(params)
+        .then(response => {
+          this.enterpriseOptions = response.data.list
+        })
+    },
+    // erp变更时清空codes
+    resetCode() {
+      this.searchForm.enterpriseCode = ''
+    },
+    // 找出erp对应的codes
+    erpCodeMap(erp) {
+      const map = {}
+      const enterpriseOptions = this.enterpriseOptions
+      for (let i = 0; i < enterpriseOptions.length; i++) {
+        map[enterpriseOptions[i].erpName] = enterpriseOptions[i].codes
+      }
+      return map[erp]
+    },
     // 列表数据查询
     fetchData() {
       const filter = {

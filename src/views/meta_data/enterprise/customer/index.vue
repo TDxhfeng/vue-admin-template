@@ -12,23 +12,16 @@
               trigger: 'blur'
             }]"
           >
-            <el-select
-              v-model="searchForm.erpName"
-              style="width: 150px;"
-              placeholder="请选择ERP名称"
-            >
-              <el-option
-                v-for="(option, index) in erpOptions"
-                :key="index"
-                :label="option.label"
-                :value="option.value"
-              />
+            <el-select v-model="searchForm.erpName" placeholder="选择ERP" clearable filterable @change="resetCode">
+              <el-option v-for="option in enterpriseOptions" :key="option.erpName" :label="option.erpCnName" :value="option.erpName" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="企业号" prop="enterpriseCode" :rules="[{ required: true, message: '请输入企业号', trigger: 'blur' }]">
-            <el-input v-model="searchForm.enterpriseCode" style="width: 150px;" />
+            <el-select v-model="searchForm.enterpriseCode" placeholder="选择企业" clearable filterable>
+              <el-option v-for="value in codes" :key="value" :label="value" :value="value" />
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="4">
@@ -211,7 +204,7 @@
 
 <script>
 import { queryEnterpriseCustomers } from '@/api/enterprise/enterprise_info'
-import { erpOptions } from '@/store/constants'
+import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
 
 export default {
   data() {
@@ -226,11 +219,48 @@ export default {
         enterpriseCode: ''
       },
       // erp系统映射
-      erpOptions: erpOptions
+      enterpriseOptions: [],
+      codes: []
     }
   },
-  created() {},
+  watch: {
+    searchForm: {
+      handler(newValue) {
+        if (newValue.erpName) {
+          this.codes = this.erpCodeMap(newValue.erpName)
+        }
+      },
+      deep: true, // 深度监听，用以监听对象属性变化
+      immediate: true // 立即执行一次handler函数
+    }
+  },
+  created() {
+    this.queryCode()
+  },
   methods: {
+    queryCode() {
+      const params = {
+        comeFrom: 'FRONTEND'
+      }
+      queryEnterpriseCode(params)
+        .then(response => {
+          this.enterpriseOptions = response.data.list
+        })
+    },
+    // erp变更时清空codes
+    resetCode() {
+      this.searchForm.enterpriseCode = ''
+    },
+    // 找出erp对应的codes
+    erpCodeMap(erp) {
+      const map = {}
+      const enterpriseOptions = this.enterpriseOptions
+      for (let i = 0; i < enterpriseOptions.length; i++) {
+        map[enterpriseOptions[i].erpName] = enterpriseOptions[i].codes
+      }
+      return map[erp]
+    },
+    // 渲染数据
     fetchData() {
       const filter = {
         page: this.page,
