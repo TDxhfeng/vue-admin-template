@@ -2,13 +2,13 @@
   <div class="dashboard-editor-container">
     <el-row :gutter="8">
       <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 6}" :lg="{span: 6}" :xl="{span: 6}" style="padding-right:8px;margin-bottom:30px;">
-        <el-select v-model="searchForm.erpName" placeholder="选择ERP" clearable>
-          <el-option v-for="option in erpOptions" :key="option.value" :label="option.label" :value="option.value" />
+        <el-select v-model="searchForm.erpName" placeholder="选择ERP" clearable filterable @change="resetCode">
+          <el-option v-for="option in enterpriseOptions" :key="option.erpName" :label="option.erpCnName" :value="option.erpName" />
         </el-select>
       </el-col>
       <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 6}" :lg="{span: 6}" :xl="{span: 6}" style="padding-right:8px;margin-bottom:30px;">
         <el-select v-model="searchForm.enterpriseCode" placeholder="选择企业" clearable filterable>
-          <el-option v-for="value in enterpriseOptions" :key="value" :label="value" :value="value" />
+          <el-option v-for="value in codes" :key="value" :label="value" :value="value" />
         </el-select>
       </el-col>
     </el-row>
@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import { erpOptions } from '@/store/constants'
 import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
 import HousePropertyTypeTable from './components/HousePropertyTypeTable'
 import HouseOfferTypeTable from './components/HouseOfferTypeTable'
@@ -52,13 +51,16 @@ export default {
         erpName: '',
         enterpriseCode: ''
       },
-      erpOptions: erpOptions,
-      enterpriseOptions: []
+      enterpriseOptions: [],
+      codes: []
     }
   },
   watch: {
     searchForm: {
       handler(newValue) {
+        if (newValue.erpName) {
+          this.codes = this.erpCodeMap(newValue.erpName)
+        }
         // 每当searchForm发生变化时，重新调用totalEnterpriseHouse函数获取数据
         if (newValue.erpName && newValue.enterpriseCode) {
           this.$refs.housePropertyTypeTable.fetchData(newValue.erpName, newValue.enterpriseCode)
@@ -82,6 +84,19 @@ export default {
         .then(response => {
           this.enterpriseOptions = response.data.list
         })
+    },
+    // 找出erp对应的codes
+    erpCodeMap(erp) {
+      const map = {}
+      const enterpriseOptions = this.enterpriseOptions
+      for (let i = 0; i < enterpriseOptions.length; i++) {
+        map[enterpriseOptions[i].erpName] = enterpriseOptions[i].codes
+      }
+      return map[erp]
+    },
+    // erp变更时清空codes
+    resetCode() {
+      this.searchForm.enterpriseCode = ''
     }
   }
 }
