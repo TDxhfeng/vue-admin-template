@@ -84,7 +84,7 @@
           {{ taskBelongMap[scope.row.taskBelong] }}
         </template>
       </el-table-column>
-      <el-table-column label="任务类型" width="100">
+      <el-table-column label="任务类型" width="200">
         <template slot-scope="scope">
           {{ taskTypeMap[scope.row.taskType] }}
         </template>
