@@ -84,7 +84,7 @@
       <el-table-column label="图片链接" width="300">
         <template slot-scope="scope">
           <el-popover placement="right" trigger="hover">
-            <!--<img :src="scope.row.imageUrl" style="width:600px;height:450px;" referrerPolicy="no-referrer">-->
+            <img :src="scope.row.imageUrl" style="max-width:600px;max-height:600px;" referrerPolicy="no-referrer">
             <img slot="reference" :src="scope.row.imageUrl" style="max-width: 50px;max-height: 150px" referrerPolicy="no-referrer" @click="handleOpenNewWindow(scope.row.imageUrl)">
           </el-popover>
         </template>
