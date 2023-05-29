@@ -36,9 +36,11 @@ export const taskBelong = [
 export const taskType = [
   { label: '房源', value: 'HOUSE' },
   { label: '房源跟进', value: 'HOUSE_FOLLOW' },
-  { label: '房源图片', value: 'HOUSE_PHOTO' },
+  { label: '房源图片上传', value: 'HOUSE_PHOTO_UPLOAD' },
+  { label: '房源图片导入', value: 'HOUSE_PHOTO_IMPORT' },
   { label: '房源视频', value: 'HOUSE_VIDEO' },
-  { label: '房源全景图', value: 'HOUSE_PANORAMA' },
+  { label: '房源全景图上传', value: 'HOUSE_PANORAMA_UPLOAD' },
+  { label: '房源全景图导入', value: 'HOUSE_PANORAMA_IMPORT' },
   { label: '客源', value: 'CUSTOMER' },
   { label: '客源跟进', value: 'CUSTOMER_FOLLOW' }
 ]

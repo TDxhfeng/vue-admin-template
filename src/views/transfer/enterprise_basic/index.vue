@@ -107,9 +107,11 @@
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_FOLLOW')">房源跟进</el-button></el-dropdown-item>
-              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_PHOTO')">房源图片</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_PHOTO_UPLOAD')">房源图片上传</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_PHOTO_IMPORT')">房源图片导入</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_VIDEO')">房源视频</el-button></el-dropdown-item>
-              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_PANORAMA')">房源全景图</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_PANORAMA_UPLOAD')">房源全景图上传</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_PANORAMA_IMPORT')">房源全景图导入</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'CUSTOMER_FOLLOW')">客源跟进</el-button></el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
