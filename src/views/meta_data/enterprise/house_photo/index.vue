@@ -81,11 +81,11 @@
           {{ scope.row.tag }}
         </template>
       </el-table-column>
-      <el-table-column label="图片链接" width="850">
+      <el-table-column label="图片链接" width="300">
         <template slot-scope="scope">
           <el-popover placement="right" trigger="hover">
-            <img :src="scope.row.imageUrl" style="width:600px;height:450px;" referrerPolicy="no-referrer">
-            <img slot="reference" :src="scope.row.imageUrl" style="max-width: 50px;max-height: 150px" referrerPolicy="no-referrer">
+            <!--<img :src="scope.row.imageUrl" style="width:600px;height:450px;" referrerPolicy="no-referrer">-->
+            <img slot="reference" :src="scope.row.imageUrl" style="max-width: 50px;max-height: 150px" referrerPolicy="no-referrer" @click="handleOpenNewWindow(scope.row.imageUrl)">
           </el-popover>
         </template>
       </el-table-column>
@@ -146,6 +146,9 @@ export default {
     this.queryCode()
   },
   methods: {
+    handleOpenNewWindow(url) {
+      window.open('javascript:window.name;', '<script>location.replace("' + url + '")<\/script>')
+    },
     queryCode() {
       const params = {
         comeFrom: 'FRONTEND'
