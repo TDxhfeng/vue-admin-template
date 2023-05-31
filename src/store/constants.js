@@ -1,4 +1,5 @@
 export const erpOptions = [
+  {label: '鼎尖', value: 'dingjian' },
   { label: '巧房v1', value: 'qiaofang_V1' },
   { label: '巧房v10', value: 'qiaofang_V10' },
   { label: '巧房V20', value: 'qiaofang_V20' },
