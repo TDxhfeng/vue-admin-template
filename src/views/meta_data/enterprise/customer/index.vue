@@ -157,9 +157,11 @@
       </el-table-column>
       <el-table-column label="意向" width="120">
         <template slot-scope="scope">
-          <div v-for="(i, index) in scope.row.intent" :key="index">
-            <span>{{ i }}</span>
-          </div>
+          <el-tooltip :content="scope.row.intent">
+            <div v-for="(i, index) in scope.row.intent" :key="index">
+              <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ i }}</div>
+            </div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="录客时间">
