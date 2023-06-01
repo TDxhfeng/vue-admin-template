@@ -76,7 +76,6 @@
           <el-form-item label="名字包含其它字符:">
             <el-checkbox-group v-model="searchForm.isAlpha">
               <el-checkbox :key="1" label="1">是</el-checkbox>
-              <el-checkbox :key="0" label="0">否</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
         </el-col>
