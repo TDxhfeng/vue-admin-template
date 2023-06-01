@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="searchForm" :model="searchForm" label-width="80px">
+    <el-form ref="searchForm" :model="searchForm" label-width="130px">
       <el-row>
         <el-col :span="4">
           <el-form-item
@@ -59,16 +59,24 @@
         <el-col :span="4">
           <el-form-item label="是否匹配:">
             <el-checkbox-group v-model="searchForm.isMatch">
-              <el-checkbox :key="1" label="1">有账号</el-checkbox>
-              <el-checkbox :key="0" label="0">无账号</el-checkbox>
+              <el-checkbox :key="1" label="1">是</el-checkbox>
+              <el-checkbox :key="0" label="0">否</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="是否修改:">
             <el-checkbox-group v-model="searchForm.isUpdate">
-              <el-checkbox :key="1" label="1">已修改</el-checkbox>
-              <el-checkbox :key="0" label="0">未修改</el-checkbox>
+              <el-checkbox :key="1" label="1">是</el-checkbox>
+              <el-checkbox :key="0" label="0">否</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="名字包含其它字符:">
+            <el-checkbox-group v-model="searchForm.isAlpha">
+              <el-checkbox :key="1" label="1">是</el-checkbox>
+              <el-checkbox :key="0" label="0">否</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
         </el-col>
@@ -174,7 +182,8 @@ export default {
         erpName: '',
         enterpriseCode: '',
         isMatch: [],
-        isUpdate: []
+        isUpdate: [],
+        isAlpha: []
       },
       // erp系统映射
       enterpriseOptions: [],
@@ -250,6 +259,9 @@ export default {
       }
       if (this.searchForm.isUpdate.length === 1) {
         filter.isUpdate = this.searchForm.isUpdate[0]
+      }
+      if (this.searchForm.isAlpha.length === 1) {
+        filter.isAlpha = this.searchForm.isAlpha[0]
       }
 
       const params = {
