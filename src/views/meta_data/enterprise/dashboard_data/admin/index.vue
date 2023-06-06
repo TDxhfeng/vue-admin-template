@@ -28,9 +28,16 @@
           <house-offer-type-table ref="HouseOfferTypeTable" :search-form="searchForm" />
         </div>
       </el-col>
+    </el-row>
+    <el-row :gutter="32">
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
           <house-tags-table ref="HouseTagsTable" :search-form="searchForm" />
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="chart-wrapper">
+          <house-property-table ref="HousePropertyTable" :search-form="searchForm" />
         </div>
       </el-col>
     </el-row>
@@ -43,6 +50,7 @@ import HousePropertyTypeTable from './components/HousePropertyTypeTable'
 import HouseOfferTypeTable from './components/HouseOfferTypeTable'
 import HouseStatusTable from './components/HouseStatusTable'
 import HouseTagsTable from './components/HouseTagsTable'
+import HousePropertyTable from './components/HousePropertyTable'
 
 export default {
   name: 'DashboardAdmin',
@@ -50,7 +58,8 @@ export default {
     'house-property-type-table': HousePropertyTypeTable,
     'house-offer-type-table': HouseOfferTypeTable,
     'house-status-table': HouseStatusTable,
-    'house-tags-table': HouseTagsTable
+    'house-tags-table': HouseTagsTable,
+    'house-property-table': HousePropertyTable
   },
   data() {
     return {
@@ -74,6 +83,7 @@ export default {
           this.$refs.HouseOfferTypeTable.fetchData(newValue.erpName, newValue.enterpriseCode)
           this.$refs.HouseStatusTable.fetchData(newValue.erpName, newValue.enterpriseCode)
           this.$refs.HouseTagsTable.fetchData(newValue.erpName, newValue.enterpriseCode)
+          this.$refs.HousePropertyTable.fetchData(newValue.erpName, newValue.enterpriseCode)
         }
       },
       deep: true, // 深度监听，用以监听对象属性变化
