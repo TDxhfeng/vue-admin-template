@@ -5,7 +5,12 @@
         {{ scope.row.housePropertyType }}
       </template>
     </el-table-column>
-    <el-table-column label="数量" align="center">
+    <el-table-column label="清洗结果" min-width="50">
+      <template slot-scope="scope">
+        {{ scope.row.transferRes }}
+      </template>
+    </el-table-column>
+    <el-table-column label="房源数量" align="center">
       <template slot-scope="scope">
         {{ scope.row.count }}
       </template>

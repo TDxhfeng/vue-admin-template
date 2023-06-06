@@ -5,7 +5,7 @@
         {{ scope.row.houseTag }}
       </template>
     </el-table-column>
-    <el-table-column label="数量" align="center">
+    <el-table-column label="房源数量" align="center">
       <template slot-scope="scope">
         {{ scope.row.count }}
       </template>
