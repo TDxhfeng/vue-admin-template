@@ -28,8 +28,6 @@
           <house-offer-type-table ref="HouseOfferTypeTable" :search-form="searchForm" />
         </div>
       </el-col>
-    </el-row>
-    <el-row :gutter="32">
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
           <house-tags-table ref="HouseTagsTable" :search-form="searchForm" />
