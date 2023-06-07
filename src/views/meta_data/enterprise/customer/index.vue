@@ -152,7 +152,9 @@
       </el-table-column>
       <el-table-column label="备注">
         <template slot-scope="scope">
-          {{ scope.row.remark }}
+          <el-tooltip :content="scope.row.remark">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.remark }}</div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="意向" width="120">
