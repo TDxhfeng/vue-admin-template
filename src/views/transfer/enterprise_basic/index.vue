@@ -801,6 +801,7 @@ export default {
         tasks: [{
           taskBelong: 'ENTERPRISE_TRANSFER',
           taskType: transferType,
+          erpName: row.erpName,
           enterpriseCode: row.enterpriseCode
         }]
       }
