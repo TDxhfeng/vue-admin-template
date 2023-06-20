@@ -114,7 +114,7 @@
               <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_PANORAMA_UPLOAD')">房源全景图上传COS</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'HOUSE_PANORAMA_IMPORT')">房源全景图导入后台</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'CUSTOMER_FOLLOW')">客源跟进清洗上传水星</el-button></el-dropdown-item>
-              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'CUSTOMER_FOLLOW_IMPORT')">客源跟进导入</el-button></el-dropdown-item>
+              <el-dropdown-item><el-button size="mini" type="text" @click="createOtherTask(scope.row, 'CUSTOMER_FOLLOW_IMPORT')">客源跟进导入后台</el-button></el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
