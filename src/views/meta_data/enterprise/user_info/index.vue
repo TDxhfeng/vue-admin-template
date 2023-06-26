@@ -96,7 +96,12 @@
       fit
       highlight-current-row
       max-height="650"
-    >
+    > 
+      <el-table-column label="经纪人原ID" width="180">
+        <template slot-scope="scope">
+          {{ scope.row.userId }}
+        </template>
+      </el-table-column>
       <el-table-column label="经纪人名" width="180">
         <template slot-scope="scope">
           {{ scope.row.userName }}
