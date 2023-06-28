@@ -14,6 +14,33 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
+          <el-form-item label="企业号" prop="enterpriseCode">
+            <el-select v-model="searchForm.enterpriseCode" placeholder="选择企业" clearable filterable>
+              <el-option v-for="value in codes" :key="value" :label="value" :value="value" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item
+            label="任务状态"
+            prop="status"
+          >
+            <el-select
+              v-model="searchForm.status"
+              style="width: 150px;"
+              clearable
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="(option, index) in taskStatus"
+                :key="index"
+                :label="option.label"
+                :value="option.value"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
           <el-form-item
             label="任务归属"
             prop="taskBelong"
@@ -50,13 +77,6 @@
                 :label="option.label"
                 :value="option.value"
               />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="4">
-          <el-form-item label="企业号" prop="enterpriseCode">
-            <el-select v-model="searchForm.enterpriseCode" placeholder="选择企业" clearable filterable>
-              <el-option v-for="value in codes" :key="value" :label="value" :value="value" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -168,7 +188,8 @@ export default {
         taskBelong: '',
         taskType: '',
         enterpriseCode: '',
-        erpName: ''
+        erpName: '',
+        status: ''
       },
       // 系统映射
       erpOptions: erpOptions,
@@ -266,6 +287,9 @@ export default {
       }
       if (this.searchForm.enterpriseCode) {
         filter.enterpriseCode = this.searchForm.enterpriseCode
+      }
+      if (this.searchForm.status !== '') {
+        filter.status = this.searchForm.status
       }
       const params = {
         comeFrom: 'FRONTEND',
