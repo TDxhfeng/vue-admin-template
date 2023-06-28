@@ -231,6 +231,14 @@
           <el-radio v-model="addRuleForm.isUseHouseInputUserMap" :label="1">是</el-radio>
           <el-radio v-model="addRuleForm.isUseHouseInputUserMap" :label="0">否</el-radio>
         </el-form-item>
+        <el-form-item
+          label="是否启用标签清洗："
+          prop="isUseTransferTags"
+          label-width="180px"
+        >
+          <el-radio v-model="addRuleForm.isUseTransferTags" :label="1">是</el-radio>
+          <el-radio v-model="addRuleForm.isUseTransferTags" :label="0">否</el-radio>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmitRule">立即添加</el-button>
         </el-form-item>
@@ -353,6 +361,10 @@
             <div>
               <span>是否启用录入人部门映射：</span>
               <span style="color: #FF0000">【{{ scope.row.isUseHouseInputUserMap == 1 ? '是': '否' }}】</span>
+            </div>
+            <div>
+              <span>是否启用标签清洗：</span>
+              <span style="color: #FF0000">【{{ scope.row.isUseTransferTags == 1 ? '是': '否' }}】</span>
             </div>
           </template>
         </el-table-column>
@@ -482,7 +494,8 @@ export default {
         imgUserOriginField: 'imgUser',
         isUseHouseProperty: 0,
         isUseHousePublicDepartmentsMap: 0,
-        isUseHouseInputUserMap: 0
+        isUseHouseInputUserMap: 0,
+        isUseTransferTags: 0
       },
       // 添加客源规则表单
       addCustomerRuleForm: {
@@ -629,6 +642,7 @@ export default {
       this.addRuleForm.isUseHouseProperty = 0
       this.addRuleForm.isUseHousePublicDepartmentsMap = 0
       this.addRuleForm.isUseHouseInputUserMap = 0
+      this.addRuleForm.isUseTransferTags = 0
     },
     // 添加规则
     onSubmitRule() {
