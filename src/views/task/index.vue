@@ -136,6 +136,13 @@
           </el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="失败原因" width="100">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.failReason">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.failReason }}</div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
       <el-table-column label="完成时间" width="220">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.finishTime">
