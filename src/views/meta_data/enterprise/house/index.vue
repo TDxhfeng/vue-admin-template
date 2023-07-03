@@ -12,14 +12,14 @@
               trigger: 'blur'
             }]"
           >
-            <el-select v-model="searchForm.erpName" placeholder="选择ERP" clearable filterable @change="resetCode">
+            <el-select v-model="searchForm.erpName" placeholder="选择ERP" style="width: 150px;" clearable filterable @change="resetCode">
               <el-option v-for="option in enterpriseOptions" :key="option.erpName" :label="option.erpCnName" :value="option.erpName" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="企业号" prop="enterpriseCode" :rules="[{ required: true, message: '请输入企业号', trigger: 'blur' }]">
-            <el-select v-model="searchForm.enterpriseCode" placeholder="选择企业" clearable filterable>
+            <el-select v-model="searchForm.enterpriseCode" placeholder="选择企业" style="width: 150px;" clearable filterable>
               <el-option v-for="value in codes" :key="value" :label="value" :value="value" />
             </el-select>
           </el-form-item>
@@ -35,8 +35,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="城市" prop="city">
-            <el-input v-model="searchForm.city" style="width: 150px;" />
+          <el-form-item label="经纪人" prop="userNames">
+            <el-input v-model="searchForm.userNames" style="width: 150px;" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -448,8 +448,8 @@ export default {
         page: this.page,
         size: this.pageSize
       }
-      if (this.searchForm.city) {
-        filter.city = this.searchForm.city
+      if (this.searchForm.userNames) {
+        filter.userNames = this.searchForm.userNames
       }
 
       if (this.searchForm.houseId) {
