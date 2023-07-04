@@ -35,6 +35,11 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
+          <el-form-item label="房源编号" prop="teamHouseCode">
+            <el-input v-model="searchForm.teamHouseCode" style="width: 150px;" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
           <el-form-item label="经纪人" prop="userNames">
             <el-input v-model="searchForm.userNames" style="width: 150px;" />
           </el-form-item>
@@ -67,6 +72,13 @@
       <el-table-column label="企业号">
         <template slot-scope="scope">
           {{ scope.row.enterpriseCode }}
+        </template>
+      </el-table-column>
+      <el-table-column label="小鹿编号" width="110">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.teamHouseCode">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.teamHouseCode }}</div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="原系统房源ID" width="110">
@@ -458,6 +470,9 @@ export default {
 
       if (this.searchForm.houseNo) {
         filter.houseNo = this.searchForm.houseNo
+      }
+      if (this.searchForm.teamHouseCode) {
+        filter.teamHouseCode = this.searchForm.teamHouseCode
       }
 
       const params = {
