@@ -35,7 +35,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="房源编号" prop="teamHouseCode">
+          <el-form-item label="小鹿编号" prop="teamHouseCode">
             <el-input v-model="searchForm.teamHouseCode" style="width: 150px;" />
           </el-form-item>
         </el-col>
