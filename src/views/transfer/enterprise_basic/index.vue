@@ -216,7 +216,7 @@
           <el-radio v-model="addRuleForm.isUseHouseProperty" :label="0">否</el-radio>
         </el-form-item>
         <el-form-item
-          label="是否启用公盘部门映射"
+          label="是否启用维护人部门映射"
           prop="isUseHousePublicDepartmentsMap"
           label-width="180px"
         >
@@ -355,7 +355,7 @@
               <span style="color: #FF0000">【{{ scope.row.isUseHouseProperty == 1 ? '是': '否' }}】</span>
             </div>
             <div>
-              <span>是否启用公盘部门映射：</span>
+              <span>是否启用维护人部门映射：</span>
               <span style="color: #FF0000">【{{ scope.row.isUseHousePublicDepartmentsMap == 1 ? '是': '否' }}】</span>
             </div>
             <div>
