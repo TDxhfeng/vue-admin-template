@@ -159,24 +159,9 @@
           {{ scope.row.internalBuildArea }}
         </template>
       </el-table-column>
-      <el-table-column label="户型(室)">
+      <el-table-column label="户型(室厅卫阳)">
         <template slot-scope="scope">
-          {{ scope.row.houseType[0] }}
-        </template>
-      </el-table-column>
-      <el-table-column label="户型(厅)">
-        <template slot-scope="scope">
-          {{ scope.row.houseType[1] }}
-        </template>
-      </el-table-column>
-      <el-table-column label="户型(卫)">
-        <template slot-scope="scope">
-          {{ scope.row.houseType[2] }}
-        </template>
-      </el-table-column>
-      <el-table-column label="户型(阳)">
-        <template slot-scope="scope">
-          {{ scope.row.houseType[3] }}
+          {{ scope.row.houseType}}
         </template>
       </el-table-column>
       <el-table-column label="朝向">
