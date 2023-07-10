@@ -40,6 +40,11 @@
           <house-property-table ref="HousePropertyTable" :search-form="searchForm" />
         </div>
       </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="chart-wrapper">
+          <house-reason-table ref="HouseReasonTable" :search-form="searchForm" />
+        </div>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -51,6 +56,7 @@ import HouseOfferTypeTable from './components/HouseOfferTypeTable'
 import HouseStatusTable from './components/HouseStatusTable'
 import HouseTagsTable from './components/HouseTagsTable'
 import HousePropertyTable from './components/HousePropertyTable'
+import HouseReasonTable from './components/HouseReasonTable'
 
 export default {
   name: 'DashboardAdmin',
@@ -59,7 +65,8 @@ export default {
     'house-offer-type-table': HouseOfferTypeTable,
     'house-status-table': HouseStatusTable,
     'house-tags-table': HouseTagsTable,
-    'house-property-table': HousePropertyTable
+    'house-property-table': HousePropertyTable,
+    'house-reason-table': HouseReasonTable
   },
   data() {
     return {
@@ -84,6 +91,7 @@ export default {
           this.$refs.HouseStatusTable.fetchData(newValue.erpName, newValue.enterpriseCode)
           this.$refs.HouseTagsTable.fetchData(newValue.erpName, newValue.enterpriseCode)
           this.$refs.HousePropertyTable.fetchData(newValue.erpName, newValue.enterpriseCode)
+          this.$refs.HouseReasonTable.fetchData(newValue.erpName, newValue.enterpriseCode)
         }
       },
       deep: true, // 深度监听，用以监听对象属性变化
