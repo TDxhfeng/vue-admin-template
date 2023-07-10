@@ -145,6 +145,8 @@ export default {
     background: #fff;
     padding: 16px 16px 0;
     margin-bottom: 32px;
+    height: 350px;
+    overflow: auto;
   }
 }
 
