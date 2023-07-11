@@ -1,5 +1,9 @@
 <template>
   <div class="app-container">
+    <!-- 导入部门对话框 -->
+    <el-dialog width="40%" :visible.sync="importDepVisble">
+      <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
+    </el-dialog>
     <el-form ref="searchForm" :model="searchForm" label-width="130px">
       <el-row>
         <el-col :span="4">
@@ -26,9 +30,19 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="4">
+        <el-col :span="2">
           <el-form-item>
             <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="handleSearch">搜索</el-button>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2">
+          <el-form-item>
+            <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="exportHouseDep">导出Excel</el-button>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2">
+          <el-form-item>
+            <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="showExportHouse">导入Excel</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -63,13 +77,17 @@
 
 <script>
 import { exportHouseDepartments } from '@/api/enterprise/enterprise_info'
+import { importHouseDepartments } from '@/api/enterprise/enterprise_info'
 import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
+import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 
 export default {
+  components: { UploadExcelComponent },
   data() {
     return {
       list: [],
       listLoading: false,
+      importDepVisble: false,
       searchForm: {
         erpName: '',
         enterpriseCode: ''
@@ -136,6 +154,80 @@ export default {
     handleSearch() {
       console.log('isExistsUserCode:', this.searchForm.isExistsUserCode)
       this.fetchData()
+    },
+    // 导出所有房源部门
+    exportHouseDep() {
+      const postData = {
+        comeFrom: 'FRONTEND',
+        enterpriseCode: this.searchForm.enterpriseCode,
+        erpName: this.searchForm.erpName
+      }
+      exportHouseDepartments(postData)
+        .then(response => {
+          this.exportExcel(response.data.list)
+          this.openExportMessage()
+        })
+    },
+    exportExcel(allDepartments) {
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['原系统所有部门', '所对应的(公盘部门/公共账号)', '录入人部门公共账号(默认0001)']
+        const filterVal = ['originDepartments', 'targetDepartmentsOrUserCode', 'targetInputUserCode']
+        const data = this.formatJson(filterVal, allDepartments)
+        const tfileName = this.searchForm.enterpriseCode + '_数据映射'
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: tfileName,
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        return v[j]
+      }))
+    },
+    // 弹框提示重要事项
+    openExportMessage() {
+      this.$alert('<li>1、【所对应的(公盘部门/公共账号)】如果填写的是部门，如：小鹿系统/技术部，如果维护人账号不匹配则会导为该公盘部门</li><li>2、【所对应的(公盘部门/公共账号)】如果填写的是账号，如：10010001，如果维护人账号不匹配则会导为该账号</li><li>3、【录入人部门公共账号(默认0001)】 录入人不存在默认是导为0001，也可以给对应部门导为指定的账号</li><li>4、系统提供默认行：【部门不存在时导为】填写账号or部门亦可，当经纪人或经纪人部门都不存在则会导为该情况</li><li>5、系统提供默认行：【部门不存在时导为】填写账号，当录入人部门不存在或不匹配则会导为该账号</li>', '部门清洗事项', {
+        confirmButtonText: '确定',
+        dangerouslyUseHTMLString: true,
+        customClass: 'msgBox'
+      })
+    },
+    // 导入部门
+    showExportHouse() {
+      this.importDepVisble = true
+    },
+    beforeUpload(file) {
+      const isLt1M = file.size / 1024 / 1024 < 1
+
+      if (isLt1M) {
+        return true
+      }
+
+      this.$message({
+        message: 'Please do not upload files larger than 1m in size.',
+        type: 'warning'
+      })
+      return false
+    },
+    handleSuccess({ results, header }) {
+      const data = results.map(({ '原系统所有部门': originDepartments = '', '所对应的(公盘部门/公共账号)': targetDepartmentsOrUserCode = '', '录入人部门公共账号(默认0001)': targetInputUserCode = '' }) => ({ originDepartments, targetDepartmentsOrUserCode, targetInputUserCode }))
+      console.log(data)
+      const postData = {
+        comeFrom: 'FRONTEND',
+        enterpriseCode: this.searchForm.enterpriseCode,
+        erpName: this.searchForm.erpName,
+        mapping: data
+      }
+      importHouseDepartments(postData)
+        .then(response => {
+          console.log(response.data)
+          this.importDepVisble = false
+          this.fetchData()
+        })
     }
   }
 }

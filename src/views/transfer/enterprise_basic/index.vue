@@ -93,8 +93,8 @@
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-house" @click="showAddRule(scope.row)">添加房源规则</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-s-custom" @click="showCustomerRule(scope.row)">查询客源规则</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-s-custom" @click="showAddCustomerRule(scope.row)">添加客源规则</el-button></el-dropdown-item>
-              <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-download" @click="exportHouseDep(scope.row)">导出部门</el-button></el-dropdown-item>
-              <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-upload2" @click="showExportHouse(scope.row)">导入部门</el-button></el-dropdown-item>
+              <!-- <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-download" @click="exportHouseDep(scope.row)">导出部门</el-button></el-dropdown-item> -->
+              <!-- <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-upload2" @click="showExportHouse(scope.row)">导入部门</el-button></el-dropdown-item> -->
             </el-dropdown-menu>
           </el-dropdown>
         </template>
