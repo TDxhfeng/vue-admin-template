@@ -100,11 +100,11 @@
           {{ scope.row.offerType }}
         </template>
       </el-table-column>
-      <el-table-column label="城市">
+      <!-- <el-table-column label="城市">
         <template slot-scope="scope">
           {{ scope.row.city }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="房源状态">
         <template slot-scope="scope">
           {{ scope.row.status }}
@@ -161,7 +161,7 @@
       </el-table-column>
       <el-table-column label="户型(室厅卫阳)">
         <template slot-scope="scope">
-          {{ scope.row.houseType }}
+          {{ scope.row.houseType.join("-") }}
         </template>
       </el-table-column>
       <el-table-column label="朝向">
@@ -196,7 +196,7 @@
           {{ scope.row.salePrice }}
         </template>
       </el-table-column>
-      <el-table-column label="售维护人">
+      <!-- <el-table-column label="售维护人">
         <template slot-scope="scope">
           {{ scope.row.saleUser }}
         </template>
@@ -205,13 +205,13 @@
         <template slot-scope="scope">
           {{ scope.row.saleUserDepartment }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="租价">
         <template slot-scope="scope">
           {{ scope.row.rentPrice }}
         </template>
       </el-table-column>
-      <el-table-column label="租期到期时间" width="110">
+      <!-- <el-table-column label="租期到期时间" width="110">
         <template slot-scope="scope">
           {{ scope.row.rentDaysRemaining }}
         </template>
@@ -292,7 +292,7 @@
         <template slot-scope="scope">
           {{ scope.row.attorneyUserDepartment }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="委托类型">
         <template slot-scope="scope">
           {{ scope.row.attorneyType }}
@@ -357,11 +357,11 @@
           {{ scope.row.tag }}
         </template>
       </el-table-column>
-      <el-table-column label="合租房间号" width="110">
+      <!-- <el-table-column label="合租房间号" width="110">
         <template slot-scope="scope">
           {{ scope.row.flatShareNum }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="爬取时间" width="100">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.createTime">
