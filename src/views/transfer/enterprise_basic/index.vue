@@ -207,6 +207,9 @@
             />
           </el-select>
         </el-form-item>
+        <el-form-item label="房源筛选条件" prop="transferFilter" label-width="180px">
+          <el-input v-model="addRuleForm.transferFilter" style="width: 220px;" clearable />
+        </el-form-item>
         <el-form-item
           label="是否启用公私盘标记："
           prop="isUseHouseProperty"
@@ -351,6 +354,10 @@
               <span style="color: #FF0000">【{{ scope.row.imgUserOriginField }}】</span>
             </div>
             <div>
+              <span>当前房源的清洗条件：</span>
+              <span style="color: #FF0000">【{{ scope.row.transferFilter }}】</span>
+            </div>
+            <div>
               <span>是否启用私盘标记：</span>
               <span style="color: #FF0000">【{{ scope.row.isUseHouseProperty == 1 ? '是': '否' }}】</span>
             </div>
@@ -490,6 +497,7 @@ export default {
         inputUserOriginField: '',
         saleUserOriginField: '',
         rentUserOriginField: '',
+        transferFilter: '',
         keyUserOriginField: 'keyUser',
         imgUserOriginField: 'imgUser',
         isUseHouseProperty: 0,
