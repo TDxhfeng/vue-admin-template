@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="searchForm" :model="searchForm" label-width="80px">
+    <el-form ref="searchForm" :model="searchForm" label-width="130px">
       <el-row>
         <el-col :span="4">
           <el-form-item
@@ -27,6 +27,16 @@
         <el-col :span="4">
           <el-form-item label="房源ID" prop="houseId">
             <el-input v-model="searchForm.houseId" style="width: 180px;" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4">
+          <el-form-item label="是否上传cos:">
+            <el-checkbox-group v-model="searchForm.isUploadOss">
+              <el-checkbox :key="1" label="1">是</el-checkbox>
+              <el-checkbox :key="0" label="0">否</el-checkbox>
+            </el-checkbox-group>
           </el-form-item>
         </el-col>
       </el-row>
@@ -124,7 +134,8 @@ export default {
       listLoading: false,
       searchForm: {
         erpName: '',
-        enterpriseCode: ''
+        enterpriseCode: '',
+        isUploadOss: []
       },
       // erp系统映射
       enterpriseOptions: [],
@@ -181,7 +192,9 @@ export default {
       if (this.searchForm.houseId) {
         filter.houseId = this.searchForm.houseId
       }
-
+      if (this.searchForm.isUploadOss.length === 1) {
+        filter.isUploadOss = this.searchForm.isUploadOss[0]
+      }
       const params = {
         comeFrom: 'FRONTEND',
         filter: filter
