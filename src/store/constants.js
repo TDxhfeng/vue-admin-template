@@ -60,8 +60,7 @@ export const taskStatus = [
 export const userMatch = [
   { label: '已匹配', value: 'MATCH' },
   { label: '未匹配', value: 'NO_MATCH' },
-  { label: '重名', value: 'DUP' },
-  { label: '同部门重名', value: 'DUP_BY_SAME_DEPARTMENT' }
+  { label: '重名', value: 'DUP' }
 ]
 
 export const taskTap = {

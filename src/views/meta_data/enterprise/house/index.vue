@@ -62,6 +62,13 @@
       highlight-current-row
       max-height="650"
     >
+      <el-table-column label="爬取时间" width="100">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.createTime">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.createTime }}</div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
       <el-table-column label="原系统相关人" width="300">
         <template slot-scope="scope">
           <div v-for="(item, index) in scope.row.allUsers" :key="index">
@@ -69,11 +76,11 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="企业号">
+      <!-- <el-table-column label="企业号">
         <template slot-scope="scope">
           {{ scope.row.enterpriseCode }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="小鹿编号" width="110">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.teamHouseCode">
@@ -362,13 +369,6 @@
           {{ scope.row.flatShareNum }}
         </template>
       </el-table-column> -->
-      <el-table-column label="爬取时间" width="100">
-        <template slot-scope="scope">
-          <el-tooltip :content="scope.row.createTime">
-            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.createTime }}</div>
-          </el-tooltip>
-        </template>
-      </el-table-column>
     </el-table>
     <!-- 翻页组件，用于控制显示数据条数和页码-->
     <el-pagination
