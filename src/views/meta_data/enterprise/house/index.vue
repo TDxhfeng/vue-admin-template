@@ -26,22 +26,27 @@
         </el-col>
         <el-col :span="4">
           <el-form-item label="外部Id" prop="houseId">
-            <el-input v-model="searchForm.houseId" style="width: 150px;" />
+            <el-input v-model="searchForm.houseId" style="width: 150px;" clearable />
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="房源编号" prop="houseNo">
-            <el-input v-model="searchForm.houseNo" style="width: 150px;" />
+            <el-input v-model="searchForm.houseNo" style="width: 150px;" clearable />
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="小鹿编号" prop="teamHouseCode">
-            <el-input v-model="searchForm.teamHouseCode" style="width: 150px;" />
+            <el-input v-model="searchForm.teamHouseCode" style="width: 150px;" clearable />
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="经纪人" prop="userNames">
-            <el-input v-model="searchForm.userNames" style="width: 150px;" />
+            <el-input v-model="searchForm.userNames" style="width: 150px;" clearable />
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="小区" prop="communityName">
+            <el-input v-model="searchForm.communityName" style="width: 150px;" clearable />
           </el-form-item>
         </el-col>
       </el-row>
@@ -447,6 +452,9 @@ export default {
       }
       if (this.searchForm.userNames) {
         filter.userNames = this.searchForm.userNames
+      }
+      if (this.searchForm.communityName) {
+        filter.communityName = this.searchForm.communityName
       }
 
       if (this.searchForm.houseId) {
