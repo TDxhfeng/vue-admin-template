@@ -71,8 +71,8 @@ export const constantRoutes = [
           {
             path: 'dashboard_data',
             component: () => import('@/views/meta_data/enterprise/dashboard_data'),
-            name: '数据统计看板',
-            meta: { title: '数据统计看板', icon: 'dashboard' }
+            name: '房源统计看板',
+            meta: { title: '房源统计看板', icon: 'dashboard' }
           },
           {
             path: 'user_info',

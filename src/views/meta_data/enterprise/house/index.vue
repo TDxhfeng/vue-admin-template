@@ -173,7 +173,7 @@
       </el-table-column>
       <el-table-column label="户型(室厅卫阳)">
         <template slot-scope="scope">
-          {{ scope.row.houseType.join("-") }}
+          {{ Array.isArray(scope.row.houseType) ? scope.row.houseType.join("-"): "" }}
         </template>
       </el-table-column>
       <el-table-column label="朝向">

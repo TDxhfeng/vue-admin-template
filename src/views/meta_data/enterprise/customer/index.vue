@@ -52,16 +52,18 @@
       highlight-current-row
       max-height="650"
     >
+      <el-table-column label="爬取时间" width="100">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.createTime">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.createTime }}</div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
       <el-table-column label="原系统相关人" width="300">
         <template slot-scope="scope">
           <div v-for="(item, index) in scope.row.allUsers" :key="index">
             <span style="color: #FF0000">{{ item.userFieldName }}:</span><span>{{ item.userName }}</span><span style="color: #999; margin: 0 4px;">|</span><span style="color: #FF0000">部门:</span><span>{{ item.userDepartment }}</span>
           </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="企业号">
-        <template slot-scope="scope">
-          {{ scope.row.enterpriseCode }}
         </template>
       </el-table-column>
       <el-table-column label="原系统客源ID" width="110">
@@ -110,22 +112,17 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="客户微信">
+      <!-- <el-table-column label="客户微信">
         <template slot-scope="scope">
           {{ scope.row.customerWeChat }}
         </template>
-      </el-table-column>
-      <el-table-column label="面积">
-        <template slot-scope="scope">
-          {{ scope.row.buildArea }}
-        </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="客户来源">
         <template slot-scope="scope">
           {{ scope.row.customerComeFrom }}
         </template>
       </el-table-column>
-      <el-table-column label="客源人">
+      <!-- <el-table-column label="客源人">
         <template slot-scope="scope">
           {{ scope.row.chargeUser }}
         </template>
@@ -149,7 +146,7 @@
         <template slot-scope="scope">
           {{ scope.row.publicDepartment }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="备注">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.remark">
@@ -182,13 +179,6 @@
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.delegateDate">
             <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.delegateDate }}</div>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-      <el-table-column label="爬取时间" width="100">
-        <template slot-scope="scope">
-          <el-tooltip :content="scope.row.createTime">
-            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.createTime }}</div>
           </el-tooltip>
         </template>
       </el-table-column>
