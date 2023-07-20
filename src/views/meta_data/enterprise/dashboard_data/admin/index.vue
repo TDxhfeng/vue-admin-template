@@ -8,7 +8,7 @@
       </el-col>
       <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 6}" :lg="{span: 6}" :xl="{span: 6}" style="padding-right:8px;margin-bottom:30px;">
         <el-select v-model="searchForm.enterpriseCode" placeholder="选择企业" clearable filterable>
-          <el-option v-for="value in codes" :key="value" :label="value" :value="value" />
+          <el-option v-for="value in codes" :key="value.enterpriseCode" :label="value.enterpriseName" :value="value.enterpriseCode" />
         </el-select>
       </el-col>
     </el-row>

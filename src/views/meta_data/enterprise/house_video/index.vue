@@ -20,7 +20,7 @@
         <el-col :span="4">
           <el-form-item label="企业号" prop="enterpriseCode" :rules="[{ required: true, message: '请输入企业号', trigger: 'blur' }]">
             <el-select v-model="searchForm.enterpriseCode" placeholder="选择企业" clearable filterable>
-              <el-option v-for="value in codes" :key="value" :label="value" :value="value" />
+              <el-option v-for="value in codes" :key="value.enterpriseCode" :label="value.enterpriseName" :value="value.enterpriseCode" />
             </el-select>
           </el-form-item>
         </el-col>
