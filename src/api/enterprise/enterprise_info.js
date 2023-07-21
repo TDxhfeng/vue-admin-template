@@ -261,3 +261,15 @@ export function totalEnterpriseHouse(params) {
     }
   })
 }
+
+// 房源验证
+export function verifyEnterpriseHouse(params) {
+  return request({
+    url: '/v3/enterprise/house/verify',
+    method: 'put',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-RV84OYUreJPkzipO'
+    }
+  })
+}

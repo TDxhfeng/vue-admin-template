@@ -51,9 +51,14 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="4">
+        <el-col :span="2">
           <el-form-item>
             <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="handleSearch">搜索</el-button>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2">
+          <el-form-item>
+            <el-button type="warning" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="verify_house">验证数据</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -390,12 +395,14 @@
 
 <script>
 import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
+import { verifyEnterpriseHouse } from '@/api/enterprise/enterprise_info'
 import { queryHouseList } from '@/api/enterprise/house'
 
 export default {
   data() {
     return {
       list: [],
+      verifyList: [],
       page: 1,
       pageSize: 40,
       total: 0,
@@ -444,6 +451,25 @@ export default {
         map[enterpriseOptions[i].erpName] = enterpriseOptions[i].codes
       }
       return map[erp]
+    },
+    verify_house() {
+      const params = {
+        comeFrom: 'FRONTEND',
+        erpName: this.searchForm.erpName,
+        enterpriseCode: this.searchForm.enterpriseCode
+      }
+      this.$message({ message: '正在验证' })
+      verifyEnterpriseHouse(params)
+        .then(response => {
+          this.verifyList = response.data.list
+          const message = '<p>' + this.verifyList.join('</br>') + '</p>'
+          this.$notify({
+            title: '验证结果',
+            dangerouslyUseHTMLString: true,
+            message: message,
+            duration: 0
+          })
+        })
     },
     fetchData() {
       const filter = {
