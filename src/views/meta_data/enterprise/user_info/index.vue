@@ -81,9 +81,14 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="4">
+        <el-col :span="2">
           <el-form-item>
             <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="handleSearch">搜索</el-button>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2">
+          <el-form-item>
+            <el-button type="warning" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="getUserInfo">获取最新数据</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -170,6 +175,7 @@
 
 <script>
 import { queryEnterpriseUser } from '@/api/enterprise/enterprise_info'
+import { getLeastEnterpriseUser } from '@/api/enterprise/enterprise_info'
 import { updateEnterpriseUser } from '@/api/enterprise/enterprise_info'
 import { userMatch } from '@/store/constants'
 import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
@@ -314,6 +320,19 @@ export default {
           this.handleSearch()
         }).finally(() => {
           this.modifyDialogVisible = false
+        })
+    },
+    getUserInfo() {
+      const params = {
+        comeFrom: 'FRONTEND',
+        enterpriseCode: this.searchForm.enterpriseCode,
+        erpName: this.searchForm.erpName
+      }
+      getLeastEnterpriseUser(params)
+        .then(response => {
+          this.$message({ message: '数据已更新', type: 'success' })
+        }).finally(() => {
+          this.handleSearch()
         })
     }
   }

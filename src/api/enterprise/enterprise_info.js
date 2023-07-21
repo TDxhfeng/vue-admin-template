@@ -226,6 +226,18 @@ export function queryEnterpriseUser(params) {
   })
 }
 
+// 获取最新用户
+export function getLeastEnterpriseUser(params) {
+  return request({
+    url: '/v3/enterprise/allUser/map/query',
+    method: 'put',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-8grHhZSAanh10QVv'
+    }
+  })
+}
+
 // 修改用户
 export function updateEnterpriseUser(params) {
   return request({
