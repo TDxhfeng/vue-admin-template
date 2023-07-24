@@ -117,6 +117,12 @@ export const constantRoutes = [
             meta: { title: '房源图片', icon: 'el-icon-s-grid' }
           },
           {
+            path: 'house_panorama',
+            component: () => import('@/views/meta_data/enterprise/house_panorama'),
+            name: '房源全景图',
+            meta: { title: '房源全景图', icon: 'el-icon-s-grid' }
+          },
+          {
             path: 'house_video',
             component: () => import('@/views/meta_data/enterprise/house_video'),
             name: '房源视频',

@@ -154,6 +154,18 @@ export function queryEnterpriseHousePhoto(params) {
   })
 }
 
+// 房源图片查询
+export function queryEnterpriseHousePanorama(params) {
+  return request({
+    url: '/v3/enterprise/house/panorama/query',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-9wlQKR6IZ7Soqxh5'
+    }
+  })
+}
+
 // 房源视频查询
 export function queryEnterpriseHouseVideo(params) {
   return request({
