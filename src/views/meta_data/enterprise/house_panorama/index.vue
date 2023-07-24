@@ -94,8 +94,8 @@
       <el-table-column label="图片链接" width="300">
         <template slot-scope="scope">
           <el-popover placement="right" trigger="hover">
-            <img v-if="scope.row.ossData && ossData.fullUrl" :src="scope.row.ossData.fullUrl" style="max-width:600px;max-height:600px;" referrerPolicy="no-referrer">
-            <img v-if="scope.row.ossData && ossData.fullUrl" slot="reference" :src="scope.row.ossData.fullUrl" style="max-width: 50px;max-height: 150px" referrerPolicy="no-referrer" @click="handleOpenNewWindow(scope.row.ossData.fullUrl)">
+            <img :src="scope.row.fullUrl" style="max-width:600px;max-height:600px;" referrerPolicy="no-referrer">
+            <img slot="reference" :src="scope.row.fullUrl" style="max-width: 50px;max-height: 150px" referrerPolicy="no-referrer" @click="handleOpenNewWindow(scope.row.fullUrl)">
           </el-popover>
         </template>
       </el-table-column>
