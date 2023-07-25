@@ -125,7 +125,7 @@
       <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
     </el-dialog>
     <!-- 添加房源规则对话框 -->
-    <el-dialog width="30%" title="添加规则" :visible.sync="addRuleVisible">
+    <el-dialog width="35%" title="添加规则" :visible.sync="addRuleVisible">
       <el-form ref="addRuleForm" :model="addRuleForm" label-width="80px">
         <el-form-item
           label="原系统录入人对应："
@@ -137,13 +137,14 @@
             trigger: 'blur'
           }]"
         >
-          <el-select v-model="addRuleForm.inputUserOriginField" style="width: 220px;" clearable placeholder="请选择原系统录入人字段">
-            <el-option
-              v-for="(value, index) in agentList"
-              :key="index"
-              :value="value"
-            />
-          </el-select>
+          <div style="display: flex;">
+            <el-select v-model="addRuleForm.inputUserOriginField" style="width: 150px; margin-right: 10px" clearable placeholder="原系统录入人">
+              <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
+            </el-select>
+            <el-select v-model="addRuleForm.secondInputUserOriginField" style="width: 180px; margin-right: 10px" clearable placeholder="(选填)递补录入人">
+              <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
+            </el-select>
+          </div>
         </el-form-item>
         <el-form-item
           label="原系统售维护人对应："
@@ -155,7 +156,7 @@
             trigger: 'blur'
           }]"
         >
-          <el-select v-model="addRuleForm.saleUserOriginField" style="width: 220px;" clearable placeholder="请选择原系统售维护人字段">
+          <el-select v-model="addRuleForm.saleUserOriginField" style="width: 150px;" clearable placeholder="原系统售维护人">
             <el-option
               v-for="(value, index) in agentList"
               :key="index"
@@ -173,7 +174,7 @@
             trigger: 'blur'
           }]"
         >
-          <el-select v-model="addRuleForm.rentUserOriginField" style="width: 220px;" clearable placeholder="请选择原系统租维护人字段">
+          <el-select v-model="addRuleForm.rentUserOriginField" style="width: 150px;" clearable placeholder="原系统租维护人">
             <el-option
               v-for="(value, index) in agentList"
               :key="index"
@@ -186,7 +187,7 @@
           prop="keyUserOriginField"
           label-width="180px"
         >
-          <el-select v-model="addRuleForm.keyUserOriginField" style="width: 220px;" clearable placeholder="系统默认值keyUser">
+          <el-select v-model="addRuleForm.keyUserOriginField" style="width: 150px;" clearable placeholder="系统默认值keyUser">
             <el-option
               v-for="(value, index) in agentList"
               :key="index"
@@ -199,7 +200,7 @@
           prop="imgUserOriginField"
           label-width="180px"
         >
-          <el-select v-model="addRuleForm.imgUserOriginField" style="width: 220px;" clearable placeholder="系统默认值imgUser">
+          <el-select v-model="addRuleForm.imgUserOriginField" style="width: 150px;" clearable placeholder="系统默认值imgUser">
             <el-option
               v-for="(value, index) in agentList"
               :key="index"
@@ -208,7 +209,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="房源筛选条件" prop="transferFilter" label-width="180px">
-          <el-input v-model="addRuleForm.transferFilter" style="width: 220px;" clearable />
+          <el-input v-model="addRuleForm.transferFilter" style="width: 150px;" clearable />
         </el-form-item>
         <el-form-item
           label="是否启用公私盘标记："
@@ -334,23 +335,27 @@
         <el-table-column label="清洗详情">
           <template slot-scope="scope">
             <div>
-              <span>原系统房源录入人字段为：</span>
+              <span>原系统房源</span><span style="color: #FF0000">录入人</span><span>字段为：</span>
               <span style="color: #FF0000">【{{ scope.row.inputUserOriginField }}】</span>
             </div>
             <div>
-              <span>原系统房源售维护人字段为：</span>
+              <span>递补</span><span style="color: #FF0000">录入人</span><span>字段为：</span>
+              <span style="color: #FF0000">【{{ scope.row.secondInputUserOriginField }}】</span>
+            </div>
+            <div>
+              <span>原系统房源</span><span style="color: #FF0000">售维护人</span><span>字段为：</span>
               <span style="color: #FF0000">【{{ scope.row.saleUserOriginField }}】</span>
             </div>
             <div>
-              <span>原系统房源租维护人字段为：</span>
+              <span>原系统房源</span><span style="color: #FF0000">租维护人</span><span>字段为：</span>
               <span style="color: #FF0000">【{{ scope.row.rentUserOriginField }}】</span>
             </div>
             <div>
-              <span>原系统房源钥匙人字段为：</span>
+              <span>原系统房源</span><span style="color: #FF0000">钥匙人</span><span>字段为：</span>
               <span style="color: #FF0000">【{{ scope.row.keyUserOriginField }}】</span>
             </div>
             <div>
-              <span>原系统房源实勘人字段为：</span>
+              <span>原系统房源</span><span style="color: #FF0000">实勘人</span><span>字段为：</span>
               <span style="color: #FF0000">【{{ scope.row.imgUserOriginField }}】</span>
             </div>
             <div>
@@ -495,6 +500,7 @@ export default {
         transferType: 'HOUSE',
         enterpriseCode: '',
         inputUserOriginField: '',
+        secondInputUserOriginField: '',
         saleUserOriginField: '',
         rentUserOriginField: '',
         transferFilter: '',
