@@ -60,7 +60,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="已上传全景图:">
+          <el-form-item label="已上传全景:">
             <el-checkbox-group v-model="searchForm.isImportPanorama">
               <el-checkbox :key="1" label="1">是</el-checkbox>
               <el-checkbox :key="0" label="0">否</el-checkbox>
@@ -96,7 +96,7 @@
       border
       fit
       highlight-current-row
-      max-height="650"
+      max-height="550"
     >
       <el-table-column label="爬取时间" width="100">
         <template slot-scope="scope">
@@ -202,7 +202,7 @@
           {{ scope.row.internalBuildArea }}
         </template>
       </el-table-column>
-      <el-table-column label="户型(室厅卫阳)">
+      <el-table-column label="户型(室厅卫阳)" width="120">
         <template slot-scope="scope">
           {{ Array.isArray(scope.row.houseType) ? scope.row.houseType.join("-"): "" }}
         </template>
