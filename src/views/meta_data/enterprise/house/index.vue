@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="searchForm" :model="searchForm" label-width="80px">
+    <el-form ref="searchForm" :model="searchForm" label-width="100px">
       <el-row>
         <el-col :span="4">
           <el-form-item
@@ -47,6 +47,32 @@
         <el-col :span="4">
           <el-form-item label="小区" prop="communityName">
             <el-input v-model="searchForm.communityName" style="width: 150px;" clearable />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4">
+          <el-form-item label="已上传图片:">
+            <el-checkbox-group v-model="searchForm.isImport">
+              <el-checkbox :key="1" label="1">是</el-checkbox>
+              <el-checkbox :key="0" label="0">否</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="已上传全景图:">
+            <el-checkbox-group v-model="searchForm.isImportPanorama">
+              <el-checkbox :key="1" label="1">是</el-checkbox>
+              <el-checkbox :key="0" label="0">否</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="已上传视频:">
+            <el-checkbox-group v-model="searchForm.isVideoImported">
+              <el-checkbox :key="1" label="1">是</el-checkbox>
+              <el-checkbox :key="0" label="0">否</el-checkbox>
+            </el-checkbox-group>
           </el-form-item>
         </el-col>
       </el-row>
@@ -409,7 +435,10 @@ export default {
       listLoading: false,
       searchForm: {
         erpName: '',
-        enterpriseCode: ''
+        enterpriseCode: '',
+        isImport: [],
+        isImportPanorama: [],
+        isVideoImported: []
       },
       // erp系统映射
       enterpriseOptions: []
@@ -492,6 +521,15 @@ export default {
       }
       if (this.searchForm.teamHouseCode) {
         filter.teamHouseCode = this.searchForm.teamHouseCode
+      }
+      if (this.searchForm.isImport.length === 1) {
+        filter.isImport = this.searchForm.isImport[0]
+      }
+      if (this.searchForm.isImportPanorama.length === 1) {
+        filter.isImportPanorama = this.searchForm.isImportPanorama[0]
+      }
+      if (this.searchForm.isVideoImported.length === 1) {
+        filter.isVideoImported = this.searchForm.isVideoImported[0]
       }
 
       const params = {
