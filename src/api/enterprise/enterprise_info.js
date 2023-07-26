@@ -295,3 +295,14 @@ export function verifyEnterpriseHouse(params) {
     }
   })
 }
+// 房源验证
+export function asyncEnterpriseHouseCode(params) {
+  return request({
+    url: '/v3/enterprise/house/teamHouseCode/async',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-zYbnSyMjCyXd'
+    }
+  })
+}

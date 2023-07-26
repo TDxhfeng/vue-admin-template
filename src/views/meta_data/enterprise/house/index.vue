@@ -87,6 +87,11 @@
             <el-button type="warning" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="verify_house">验证数据</el-button>
           </el-form-item>
         </el-col>
+        <el-col :span="2">
+          <el-form-item>
+            <el-button type="warning" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="async_house_team_code">同步小鹿编号</el-button>
+          </el-form-item>
+        </el-col>
       </el-row>
     </el-form>
     <el-table
@@ -422,6 +427,7 @@
 <script>
 import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
 import { verifyEnterpriseHouse } from '@/api/enterprise/enterprise_info'
+import { asyncEnterpriseHouseCode } from '@/api/enterprise/enterprise_info'
 import { queryHouseList } from '@/api/enterprise/house'
 
 export default {
@@ -497,6 +503,23 @@ export default {
             dangerouslyUseHTMLString: true,
             message: message,
             duration: 0
+          })
+        })
+    },
+    async_house_team_code() {
+      const params = {
+        comeFrom: 'FRONTEND',
+        erpName: this.searchForm.erpName,
+        enterpriseCode: this.searchForm.enterpriseCode
+      }
+      this.$message({ message: '正在同步小鹿编号' })
+      asyncEnterpriseHouseCode(params)
+        .then(response => {
+          this.$notify({
+            title: '成功',
+            message: '小鹿编号同步完毕',
+            type: 'success',
+            position: 'top-left'
           })
         })
     },
