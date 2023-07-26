@@ -93,8 +93,6 @@
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-house" @click="showAddRule(scope.row)">添加房源规则</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-s-custom" @click="showCustomerRule(scope.row)">查询客源规则</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-s-custom" @click="showAddCustomerRule(scope.row)">添加客源规则</el-button></el-dropdown-item>
-              <!-- <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-download" @click="exportHouseDep(scope.row)">导出部门</el-button></el-dropdown-item> -->
-              <!-- <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-upload2" @click="showExportHouse(scope.row)">导入部门</el-button></el-dropdown-item> -->
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -120,10 +118,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- 导入部门对话框 -->
-    <el-dialog width="40%" :visible.sync="importDepVisble">
-      <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
-    </el-dialog>
     <!-- 添加房源规则对话框 -->
     <el-dialog width="35%" title="添加规则" :visible.sync="addRuleVisible">
       <el-form ref="addRuleForm" :model="addRuleForm" label-width="80px">
@@ -251,6 +245,9 @@
     <!-- 添加客源规则对话框 -->
     <el-dialog width="30%" title="添加规则" :visible.sync="addCustomerRuleVisible">
       <el-form ref="addCustomerRuleForm" :model="addCustomerRuleForm" label-width="80px">
+        <el-form-item label="录入人全导为" prop="isTransferInputUserToCode" label-width="180px">
+          <el-input v-model="addCustomerRuleForm.isTransferInputUserToCode" style="width: 150px;" clearable />
+        </el-form-item>
         <el-form-item
           label="原系统录入人对应："
           prop="inputUserOriginField"
@@ -261,12 +258,8 @@
             trigger: 'blur'
           }]"
         >
-          <el-select v-model="addCustomerRuleForm.inputUserOriginField" style="width: 220px;" clearable placeholder="请选择原系统录入人字段">
-            <el-option
-              v-for="(value, index) in agentList"
-              :key="index"
-              :value="value"
-            />
+          <el-select v-model="addCustomerRuleForm.inputUserOriginField" style="width: 150px;" clearable placeholder="原系统录入人">
+            <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
           </el-select>
         </el-form-item>
         <el-form-item
@@ -279,37 +272,25 @@
             trigger: 'blur'
           }]"
         >
-          <el-select v-model="addCustomerRuleForm.chargeUserOriginField" style="width: 220px;" clearable placeholder="请选择原系统售维护人字段">
-            <el-option
-              v-for="(value, index) in agentList"
-              :key="index"
-              :value="value"
-            />
+          <el-select v-model="addCustomerRuleForm.chargeUserOriginField" style="width: 150px;" clearable placeholder="原系统维护人">
+            <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
           </el-select>
         </el-form-item>
-        <el-form-item
-          label="是否启用公私客标记："
-          prop="isUseCustomerProperty"
-          label-width="180px"
-        >
+        <el-form-item label="是否启用公私客标记：" prop="isUseCustomerProperty" label-width="180px">
           <el-radio v-model="addCustomerRuleForm.isUseCustomerProperty" :label="1">是</el-radio>
           <el-radio v-model="addCustomerRuleForm.isUseCustomerProperty" :label="0">否</el-radio>
         </el-form-item>
-        <el-form-item
-          label="是否启用公客部门映射"
-          prop="isUseCustomerPublicDepartmentsMap"
-          label-width="180px"
-        >
+        <el-form-item label="是否启用维护人部门映射" prop="isUseCustomerPublicDepartmentsMap" label-width="180px">
           <el-radio v-model="addCustomerRuleForm.isUseCustomerPublicDepartmentsMap" :label="1">是</el-radio>
           <el-radio v-model="addCustomerRuleForm.isUseCustomerPublicDepartmentsMap" :label="0">否</el-radio>
         </el-form-item>
-        <el-form-item
-          label="是否启用录入人部门映射："
-          prop="isUseCustomerInputUserMap"
-          label-width="180px"
-        >
+        <el-form-item label="是否启用录入人部门映射：" prop="isUseCustomerInputUserMap" label-width="180px">
           <el-radio v-model="addCustomerRuleForm.isUseCustomerInputUserMap" :label="1">是</el-radio>
           <el-radio v-model="addCustomerRuleForm.isUseCustomerInputUserMap" :label="0">否</el-radio>
+        </el-form-item>
+        <el-form-item label="是否全部导为公客：" prop="isTransferPublicCustomer" label-width="180px">
+          <el-radio v-model="addCustomerRuleForm.isTransferPublicCustomer" :label="1">是</el-radio>
+          <el-radio v-model="addCustomerRuleForm.isTransferPublicCustomer" :label="0">否</el-radio>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmitCustomerRule">立即添加</el-button>
@@ -407,11 +388,15 @@
         <el-table-column label="清洗详情">
           <template slot-scope="scope">
             <div>
-              <span>原系统客源录入人字段为：</span>
+              <span>(下方映射无效)</span><span style="color: #FF0000">录入人</span><span>全部导为：</span>
+              <span style="color: #FF0000">【{{ scope.row.isTransferInputUserToCode }}】</span>
+            </div>
+            <div>
+              <span>原系统客源</span><span style="color: #FF0000">录入人</span><span>字段为：</span>
               <span style="color: #FF0000">【{{ scope.row.inputUserOriginField }}】</span>
             </div>
             <div>
-              <span>原系统客源人字段为：</span>
+              <span>原系统客源</span><span style="color: #FF0000">维护人</span><span>字段为：</span>
               <span style="color: #FF0000">【{{ scope.row.chargeUserOriginField }}】</span>
             </div>
             <div>
@@ -419,12 +404,16 @@
               <span style="color: #FF0000">【{{ scope.row.isUseCustomerProperty == 1 ? '是': '否' }}】</span>
             </div>
             <div>
-              <span>是否启用公客部门映射：</span>
+              <span>是否启用维护人部门映射：</span>
               <span style="color: #FF0000">【{{ scope.row.isUseCustomerPublicDepartmentsMap == 1 ? '是': '否' }}】</span>
             </div>
             <div>
               <span>是否启用录入人部门映射：</span>
               <span style="color: #FF0000">【{{ scope.row.isUseCustomerInputUserMap == 1 ? '是': '否' }}】</span>
+            </div>
+            <div>
+              <span>是否全部导为</span><span style="color: #FF0000">公客</span><span>：</span>
+              <span style="color: #FF0000">【{{ scope.row.isTransferPublicCustomer == 1 ? '是': '否' }}】</span>
             </div>
           </template>
         </el-table-column>
@@ -458,16 +447,12 @@ import { createTaskInfo } from '@/api/enterprise/enterprise_info'
 import { deleteEnterpriseRule } from '@/api/enterprise/enterprise_info'
 import { queryEntepriseHouseAgent } from '@/api/enterprise/enterprise_info'
 import { addEnterpriseRule } from '@/api/enterprise/enterprise_info'
-import { exportHouseDepartments } from '@/api/enterprise/enterprise_info'
-import { importHouseDepartments } from '@/api/enterprise/enterprise_info'
 import { queryCustomerAgent } from '@/api/enterprise/enterprise_info'
 import { addEnterpriseCustomerRule } from '@/api/enterprise/enterprise_info'
 import { queryEnterpriseCustomerRule } from '@/api/enterprise/enterprise_info'
 import { deleteEnterpriseCustomerRule } from '@/api/enterprise/enterprise_info'
-import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 
 export default {
-  components: { UploadExcelComponent },
   data() {
     return {
       // 清洗规则展示对话框数据
@@ -476,7 +461,6 @@ export default {
       transferCustomerRuleDialogVisible: false,
       addCustomerRuleVisible: false,
       addRuleVisible: false,
-      importDepVisble: false,
       // 经纪人列表
       agentList: [],
       // 导入部门该行的参数
@@ -517,11 +501,13 @@ export default {
         erpName: '',
         transferType: 'CUSTOMER',
         enterpriseCode: '',
+        isTransferInputUserToCode: '',
         inputUserOriginField: '',
         chargeUserOriginField: '',
         isUseCustomerProperty: 0,
         isUseCustomerPublicDepartmentsMap: 0,
-        isUseCustomerInputUserMap: 0
+        isUseCustomerInputUserMap: 0,
+        isTransferPublicCustomer: 0
       },
       // erp系统映射
       erpOptions: erpOptions,
@@ -658,11 +644,11 @@ export default {
       this.addRuleForm.isUseHouseInputUserMap = 0
       this.addRuleForm.isUseTransferTags = 0
     },
-    // 添加规则
+    // 添加房源规则
     onSubmitRule() {
       addEnterpriseRule(this.addRuleForm)
         .then(response => {
-          console.log('addRuleRes: ', this.data.list)
+          this.$message({ message: '房源添加规则成功', type: 'success' })
         })
       this.addRuleVisible = false
     },
@@ -703,81 +689,7 @@ export default {
       this.transferRuleDialogVisible = false
       this.transferCustomerRuleDialogVisible = false
     },
-    // 导出所有房源部门
-    exportHouseDep(row) {
-      const postData = {
-        comeFrom: 'FRONTEND',
-        enterpriseCode: row.enterpriseCode,
-        erpName: row.erpName
-      }
-      exportHouseDepartments(postData)
-        .then(response => {
-          this.exportExcel(row, response.data.list)
-          this.openExportMessage()
-        })
-    },
-    exportExcel(row, allDepartments) {
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['原系统所有部门', '所对应的(公盘部门/公共账号)', '录入人部门公共账号(默认0001)']
-        const filterVal = ['originDepartments', 'targetDepartmentsOrUserCode', 'targetInputUserCode']
-        const data = this.formatJson(filterVal, allDepartments)
-        const tfileName = row.enterpriseName + '_数据映射'
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: tfileName,
-          autoWidth: true,
-          bookType: 'xlsx'
-        })
-      })
-    },
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        return v[j]
-      }))
-    },
-    // 弹框提示重要事项
-    openExportMessage() {
-      this.$alert('<li>1、【所对应的(公盘部门/公共账号)】如果填写的是部门，如：小鹿系统/技术部，如果维护人账号不匹配则会导为改公盘部门</li><li>2、【所对应的(公盘部门/公共账号)】如果填写的是账号，如：10010001，如果维护人账号不匹配则会导为该账号</li><li>3、【录入人部门公共账号(默认0001)】 录入人不存在默认是导为0001，也可以给指定的部门导为指定的账号</li><li>4、系统提供默认行：【部门不存在时导为】填写账号or部门亦可，当维护人既不匹配部门也不匹配，又或者部门和经纪人都不存在则会导为该情况</li><li>5、系统提供默认行：【部门不存在时导为】填写账号，当录入人部门不存在或不匹配则会导为该账号</li>', '部门清洗事项', {
-        confirmButtonText: '确定',
-        dangerouslyUseHTMLString: true,
-        customClass: 'msgBox'
-      })
-    },
-    // 导入部门
-    showExportHouse(row) {
-      this.importDepVisble = true
-      this.exportRow = row
-    },
-    beforeUpload(file) {
-      const isLt1M = file.size / 1024 / 1024 < 1
-
-      if (isLt1M) {
-        return true
-      }
-
-      this.$message({
-        message: 'Please do not upload files larger than 1m in size.',
-        type: 'warning'
-      })
-      return false
-    },
-    handleSuccess({ results, header }) {
-      const data = results.map(({ '原系统所有部门': originDepartments = '', '所对应的(公盘部门/公共账号)': targetDepartmentsOrUserCode = '', '录入人部门公共账号(默认0001)': targetInputUserCode = '' }) => ({ originDepartments, targetDepartmentsOrUserCode, targetInputUserCode }))
-      console.log(data)
-      const postData = {
-        comeFrom: 'FRONTEND',
-        enterpriseCode: this.exportRow.enterpriseCode,
-        erpName: this.exportRow.erpName,
-        mapping: data
-      }
-      importHouseDepartments(postData)
-        .then(response => {
-          console.log(response.data)
-          this.importDepVisble = false
-        })
-    },
-    // 添加客源规则
+    // 打开添加客源规则对话框
     showAddCustomerRule(row) {
       const ruleParams = {
         comeFrom: 'FRONTEND',
@@ -795,12 +707,13 @@ export default {
       this.addCustomerRuleForm.isUseCustomerProperty = 0
       this.addCustomerRuleForm.isUseCustomerPublicDepartmentsMap = 0
       this.addCustomerRuleForm.isUseCustomerInputUserMap = 0
+      this.addCustomerRuleForm.isTransferPublicCustomer = 0
     },
-    // 添加规则
+    // 添加客源规则
     onSubmitCustomerRule() {
       addEnterpriseCustomerRule(this.addCustomerRuleForm)
         .then(response => {
-          console.log('addCustomerRuleRes: ', this.data.list)
+          this.$message({ message: '客源添加规则成功', type: 'success' })
         })
       this.addCustomerRuleVisible = false
     },
