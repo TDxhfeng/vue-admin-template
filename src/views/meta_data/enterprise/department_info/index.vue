@@ -56,6 +56,10 @@
       highlight-current-row
       max-height="650"
     >
+      <el-table-column
+        type="index"
+        width="50"
+      />
       <el-table-column label="原系统部门" width="180">
         <template slot-scope="scope">
           {{ scope.row.originDepartments }}
@@ -78,6 +82,7 @@
 <script>
 import { exportHouseDepartments } from '@/api/enterprise/enterprise_info'
 import { importHouseDepartments } from '@/api/enterprise/enterprise_info'
+import { queryHouseDepartments } from '@/api/enterprise/enterprise_info'
 import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
 import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 
@@ -144,7 +149,7 @@ export default {
       params.enterpriseCode = this.searchForm.enterpriseCode
 
       this.listLoading = true
-      exportHouseDepartments(params)
+      queryHouseDepartments(params)
         .then(response => {
           this.list = response.data.list
         }).finally(() => {

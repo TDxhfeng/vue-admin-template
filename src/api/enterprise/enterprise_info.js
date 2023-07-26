@@ -70,6 +70,17 @@ export function addEnterpriseRule(params) {
     }
   })
 }
+// 查询已导入的部门
+export function queryHouseDepartments(params) {
+  return request({
+    url: '/v3/enterprise/departments/query',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-r47O0ONyJTpptUQ5'
+    }
+  })
+}
 // 导出所有部门
 export function exportHouseDepartments(params) {
   return request({
@@ -78,6 +89,17 @@ export function exportHouseDepartments(params) {
     data: params,
     headers: {
       'X-Access-Token': 'token-9iPTGgzNmuLVOx3j'
+    }
+  })
+}
+// 导入部门
+export function importHouseDepartments(params) {
+  return request({
+    url: '/v3/enterprise/departments/export',
+    method: 'put',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-NQyTZNDhV42qE5ya'
     }
   })
 }
@@ -90,18 +112,6 @@ export function createTaskInfo(params) {
     data: params,
     headers: {
       'X-Access-Token': 'token-HU5BupyGe5D0hi19'
-    }
-  })
-}
-
-// 导入部门
-export function importHouseDepartments(params) {
-  return request({
-    url: '/v3/enterprise/departments/export',
-    method: 'put',
-    data: params,
-    headers: {
-      'X-Access-Token': 'token-NQyTZNDhV42qE5ya'
     }
   })
 }
