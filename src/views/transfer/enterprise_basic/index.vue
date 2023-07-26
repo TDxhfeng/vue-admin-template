@@ -664,7 +664,7 @@ export default {
       }
       createTaskInfo(taskData)
         .then(response => {
-          console.log(response.data)
+          this.$message({ message: '创建成功', type: 'success' })
         })
       this.transferRuleDialogVisible = false
       this.transferCustomerRuleDialogVisible = false
