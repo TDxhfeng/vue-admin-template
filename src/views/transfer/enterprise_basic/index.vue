@@ -249,7 +249,7 @@
     <!-- 添加客源规则对话框 -->
     <el-dialog width="30%" title="添加规则" :visible.sync="addCustomerRuleVisible">
       <el-form ref="addCustomerRuleForm" :model="addCustomerRuleForm" label-width="80px">
-        <el-form-item label="录入人全导为" prop="isTransferInputUserToCode" label-width="180px">
+        <el-form-item label="(下方映射无效)录入人全导为" prop="isTransferInputUserToCode" label-width="200px">
           <el-input v-model="addCustomerRuleForm.isTransferInputUserToCode" style="width: 150px;" clearable />
         </el-form-item>
         <el-form-item
