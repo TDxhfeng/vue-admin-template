@@ -77,17 +77,17 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="2">
+        <el-col :span="3">
           <el-form-item>
             <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="handleSearch">搜索</el-button>
           </el-form-item>
         </el-col>
-        <el-col :span="2">
+        <el-col :span="3">
           <el-form-item>
             <el-button type="warning" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="verify_house">验证数据完整性</el-button>
           </el-form-item>
         </el-col>
-        <el-col :span="2">
+        <el-col :span="3">
           <el-form-item>
             <el-button type="warning" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="async_house_team_code">同步小鹿编号</el-button>
           </el-form-item>
