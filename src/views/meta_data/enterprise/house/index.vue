@@ -84,7 +84,7 @@
         </el-col>
         <el-col :span="2">
           <el-form-item>
-            <el-button type="warning" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="verify_house">验证数据</el-button>
+            <el-button type="warning" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="verify_house">验证数据完整性</el-button>
           </el-form-item>
         </el-col>
         <el-col :span="2">

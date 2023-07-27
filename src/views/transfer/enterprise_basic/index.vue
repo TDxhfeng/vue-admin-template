@@ -67,12 +67,16 @@
       </el-table-column>
       <el-table-column label="是否导入部门映射" width="150">
         <template slot-scope="scope">
-          {{ scope.row.isImportPublicDepartmentsMapping == 1 ? '是': '否' }}
+          <span :class="{'red-text': scope.row.isImportInputUserDepartmentsMapping == 1}">
+            {{ scope.row.isImportPublicDepartmentsMapping == 1 ? '是': '否' }}
+          </span>
         </template>
       </el-table-column>
       <el-table-column label="是否导入录入人映射" width="150">
         <template slot-scope="scope">
-          {{ scope.row.isImportInputUserDepartmentsMapping == 1 ? '是': '否' }}
+          <span :class="{'red-text': scope.row.isImportInputUserDepartmentsMapping == 1}">
+            {{ scope.row.isImportInputUserDepartmentsMapping == 1 ? '是': '否' }}
+          </span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" width="110">
@@ -758,5 +762,8 @@ export default {
 <style>
 .msgBox {
   width: 60%;
+}
+.red-text {
+  color: red;
 }
 </style>
