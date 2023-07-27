@@ -65,12 +65,12 @@
           {{ scope.row.originDepartments }}
         </template>
       </el-table-column>
-      <el-table-column label="现系统部门或账号" width="180">
+      <el-table-column label="维护人公共部门或账号" width="180">
         <template slot-scope="scope">
           {{ scope.row.targetDepartmentsOrUserCode }}
         </template>
       </el-table-column>
-      <el-table-column label="录入人部门公共账号" width="250">
+      <el-table-column label="录入人公共账号" width="180">
         <template slot-scope="scope">
           {{ scope.row.targetInputUserCode }}
         </template>
@@ -175,7 +175,7 @@ export default {
     },
     exportExcel(allDepartments) {
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['原系统所有部门', '所对应的(公盘部门/公共账号)', '录入人部门公共账号(默认0001)']
+        const tHeader = ['原系统部门', '维护人公共部门或账号', '录入人公共账号(默认0001)']
         const filterVal = ['originDepartments', 'targetDepartmentsOrUserCode', 'targetInputUserCode']
         const data = this.formatJson(filterVal, allDepartments)
         const tfileName = this.searchForm.enterpriseCode + '_数据映射'
@@ -195,7 +195,7 @@ export default {
     },
     // 弹框提示重要事项
     openExportMessage() {
-      this.$alert('<li>1、【所对应的(公盘部门/公共账号)】如果填写的是部门，如：小鹿系统/技术部，如果维护人账号不匹配则会导为该公盘部门</li><li>2、【所对应的(公盘部门/公共账号)】如果填写的是账号，如：10010001，如果维护人账号不匹配则会导为该账号</li><li>3、【录入人部门公共账号(默认0001)】 录入人不存在默认是导为0001，也可以给对应部门导为指定的账号</li><li>4、系统提供默认行：【部门不存在时导为】填写账号or部门亦可，当经纪人或经纪人部门都不存在则会导为该情况</li><li>5、系统提供默认行：【部门不存在时导为】填写账号，当录入人部门不存在或不匹配则会导为该账号</li>', '部门清洗事项', {
+      this.$alert('1、【维护人公共部门或账号】如果填写的是部门，如：小鹿系统/技术部，如果维护人账号不匹配则会导为该公盘部门</br>2、【维护人公共部门或账号】如果填写的是账号，如：10010001，如果维护人账号不匹配则会导为该账号</br>3、【录入人公共账号(默认0001)】 录入人不存在默认是导为0001，也可以给对应部门导为指定的账号</br>4、系统提供默认行：【部门不存在时导为】填写账号or部门亦可，当经纪人或经纪人部门都不存在则会导为该情况</br>5、系统提供默认行：【部门不存在时导为】填写账号，当录入人部门不存在或不匹配则会导为该账号', '部门清洗事项', {
         confirmButtonText: '确定',
         dangerouslyUseHTMLString: true,
         customClass: 'msgBox'
@@ -219,7 +219,7 @@ export default {
       return false
     },
     handleSuccess({ results, header }) {
-      const data = results.map(({ '原系统所有部门': originDepartments = '', '所对应的(公盘部门/公共账号)': targetDepartmentsOrUserCode = '', '录入人部门公共账号(默认0001)': targetInputUserCode = '' }) => ({ originDepartments, targetDepartmentsOrUserCode, targetInputUserCode }))
+      const data = results.map(({ '原系统部门': originDepartments = '', '维护人公共部门或账号': targetDepartmentsOrUserCode = '', '录入人公共账号(默认0001)': targetInputUserCode = '' }) => ({ originDepartments, targetDepartmentsOrUserCode, targetInputUserCode }))
       console.log(data)
       const postData = {
         comeFrom: 'FRONTEND',
