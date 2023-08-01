@@ -108,7 +108,6 @@
               更多<i class="el-icon-arrow-down el-icon--right" />
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-upload" @click="createOtherTask(scope.row, 'HOUSE_FOLLOW')">房源跟进清洗上传水星</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-upload" @click="createOtherTask(scope.row, 'HOUSE_PHOTO_UPLOAD')">房源图片上传COS</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-upload" @click="createOtherTask(scope.row, 'HOUSE_PANORAMA_UPLOAD')">房源全景图上传COS</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-upload" @click="createOtherTask(scope.row, 'CUSTOMER_FOLLOW')">客源跟进清洗上传水星</el-button></el-dropdown-item>
@@ -206,9 +205,6 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="房源筛选条件" prop="transferFilter" label-width="180px">
-          <el-input v-model="addRuleForm.transferFilter" style="width: 150px;" clearable />
-        </el-form-item>
         <el-form-item
           label="是否启用公私盘标记："
           prop="isUseHouseProperty"
@@ -240,6 +236,22 @@
         >
           <el-radio v-model="addRuleForm.isUseTransferTags" :label="1">是</el-radio>
           <el-radio v-model="addRuleForm.isUseTransferTags" :label="0">否</el-radio>
+        </el-form-item>
+        <el-form-item label="房源筛选条件" prop="transferFilter" label-width="180px">
+          <el-input v-model="addRuleForm.transferFilter" style="width: 200px;" clearable />
+        </el-form-item>
+        <el-form-item
+          label="需要转为跟进的角色人"
+          prop="UserToFollowFieldList"
+          label-width="180px"
+        >
+          <el-select v-model="addRuleForm.UserToFollowFieldList" multiple collapse-tags style="width: 200px;" clearable placeholder="(选填)">
+            <el-option
+              v-for="(value, index) in agentList"
+              :key="index"
+              :value="value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmitRule">立即添加</el-button>
@@ -305,19 +317,14 @@
     <el-dialog :visible.sync="transferRuleDialogVisible" width="70%" title="房源规则详情">
       <!-- 清洗规则展示对话框列表 -->
       <el-table v-if="transferRuleDialogVisible" :data="ruleData">
-        <el-table-column label="清洗类型" width="100">
-          <template slot-scope="scope">
-            {{ scope.row.transferType }}
-          </template>
-        </el-table-column>
-        <el-table-column label="创建时间" width="100">
+        <el-table-column label="创建时间" width="150">
           <template slot-scope="scope">
             <el-tooltip :content="scope.row.createTime">
               <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.createTime }}</div>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="清洗详情">
+        <el-table-column label="清洗详情" width="600">
           <template slot-scope="scope">
             <div>
               <span>原系统房源</span><span style="color: #FF0000">录入人</span><span>字段为：</span>
@@ -363,12 +370,17 @@
               <span>是否启用标签清洗：</span>
               <span style="color: #FF0000">【{{ scope.row.isUseTransferTags == 1 ? '是': '否' }}】</span>
             </div>
+            <div>
+              <span>角色人转跟进：</span>
+              <span style="color: #FF0000">【{{ Array.isArray(scope.row.UserToFollowFieldList) ? scope.row.UserToFollowFieldList.join("，"): "" }}】</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="400">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="createTask(scope.row)">创建清洗任务</el-button>
-            <el-button size="mini" type="danger" @click="deleteRule(scope.row)">删除</el-button>
+            <el-button size="mini" type="primary" @click="createTask(scope.row, 'HOUSE')">创建房源清洗任务</el-button>
+            <el-button size="mini" type="primary" @click="createTask(scope.row, 'HOUSE_FOLLOW')">创建房源跟进清洗任务</el-button>
+            <el-button size="mini" type="danger" @click="deleteRule(scope.row, 'HOUSE')">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -377,11 +389,6 @@
     <el-dialog :visible.sync="transferCustomerRuleDialogVisible" width="70%" title="房源规则详情">
       <!-- 清洗规则展示对话框列表 -->
       <el-table v-if="transferCustomerRuleDialogVisible" :data="ruleData">
-        <el-table-column label="清洗类型" width="100">
-          <template slot-scope="scope">
-            {{ scope.row.transferType }}
-          </template>
-        </el-table-column>
         <el-table-column label="创建时间" width="100">
           <template slot-scope="scope">
             <el-tooltip :content="scope.row.createTime">
@@ -423,8 +430,8 @@
         </el-table-column>
         <el-table-column label="操作" width="400">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="createTask(scope.row)">创建清洗任务</el-button>
-            <el-button size="mini" type="danger" @click="deleteRule(scope.row)">删除</el-button>
+            <el-button size="mini" type="primary" @click="createTask(scope.row, 'CUSTOMER')">创建清洗客源任务</el-button>
+            <el-button size="mini" type="danger" @click="deleteRule(scope.row, 'CUSTOMER')">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -497,7 +504,8 @@ export default {
         isUseHouseProperty: 0,
         isUseHousePublicDepartmentsMap: 0,
         isUseHouseInputUserMap: 0,
-        isUseTransferTags: 0
+        isUseTransferTags: 0,
+        UserToFollowFieldList: []
       },
       // 添加客源规则表单
       addCustomerRuleForm: {
@@ -657,12 +665,12 @@ export default {
       this.addRuleVisible = false
     },
     // 创建清洗任务
-    createTask(row) {
+    createTask(row, transferType) {
       const taskData = {
         comeFrom: 'FRONTEND',
         tasks: [{
           taskBelong: 'ENTERPRISE_TRANSFER',
-          taskType: row.transferType,
+          taskType: transferType,
           ruleId: row.ruleId
         }]
       }
@@ -674,20 +682,20 @@ export default {
       this.transferCustomerRuleDialogVisible = false
     },
     // 删除规则
-    deleteRule(row) {
+    deleteRule(row, transferType) {
       const ruleData = {
         comeFrom: 'FRONTEND',
         ruleIds: [row.ruleId]
       }
-      if (row.transferType === 'HOUSE') {
+      if (transferType === 'HOUSE') {
         deleteEnterpriseRule(ruleData)
           .then(response => {
-            console.log(response.data.list)
+            this.$message({ message: '删除成功', type: 'success' })
           })
-      } else if (row.transferType === 'CUSTOMER') {
+      } else if (transferType === 'CUSTOMER') {
         deleteEnterpriseCustomerRule(ruleData)
           .then(response => {
-            console.log(response.data.list)
+            this.$message({ message: '删除成功', type: 'success' })
           })
       }
       this.transferRuleDialogVisible = false
