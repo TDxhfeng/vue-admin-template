@@ -206,7 +206,7 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="是否启用公私盘标记："
+          label="原系统公盘是否导为公盘："
           prop="isUseHouseProperty"
           label-width="180px"
         >
@@ -261,9 +261,6 @@
     <!-- 添加客源规则对话框 -->
     <el-dialog width="30%" title="添加规则" :visible.sync="addCustomerRuleVisible">
       <el-form ref="addCustomerRuleForm" :model="addCustomerRuleForm" label-width="80px">
-        <el-form-item label="(下方映射无效)录入人全导为" prop="isTransferInputUserToCode" label-width="200px">
-          <el-input v-model="addCustomerRuleForm.isTransferInputUserToCode" style="width: 150px;" clearable />
-        </el-form-item>
         <el-form-item
           label="原系统录入人对应："
           prop="inputUserOriginField"
@@ -292,9 +289,19 @@
             <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
           </el-select>
         </el-form-item>
-        <el-form-item label="是否启用公私客标记：" prop="isUseCustomerProperty" label-width="180px">
-          <el-radio v-model="addCustomerRuleForm.isUseCustomerProperty" :label="1">是</el-radio>
-          <el-radio v-model="addCustomerRuleForm.isUseCustomerProperty" :label="0">否</el-radio>
+        <el-form-item
+          label="原系统公客导为"
+          prop="isUseCustomerProperty"
+          label-width="180px"
+          :rules="[{
+            required: true,
+            message: '原系统公客导为',
+            trigger: 'blur'
+          }]"
+        >
+          <el-select v-model="addCustomerRuleForm.isUseCustomerProperty" style="width: 150px;" placeholder="类型">
+            <el-option v-for="(value, index) in ['私有','企业', '部门']" :key="index" :value="value" />
+          </el-select>
         </el-form-item>
         <el-form-item label="是否启用维护人部门映射" prop="isUseCustomerPublicDepartmentsMap" label-width="180px">
           <el-radio v-model="addCustomerRuleForm.isUseCustomerPublicDepartmentsMap" :label="1">是</el-radio>
@@ -304,8 +311,16 @@
           <el-radio v-model="addCustomerRuleForm.isUseCustomerInputUserMap" :label="1">是</el-radio>
           <el-radio v-model="addCustomerRuleForm.isUseCustomerInputUserMap" :label="0">否</el-radio>
         </el-form-item>
-        <el-form-item label="是否全部导为公客：" prop="isTransferPublicCustomer" label-width="180px">
-          <el-radio v-model="addCustomerRuleForm.isTransferPublicCustomer" :label="1">是</el-radio>
+        <div class="divider"><h3 class="title">其它规则：</h3></div>
+        <el-form-item label="录入人全导为：" prop="isTransferInputUserToCode" label-width="180px">
+          <el-tooltip class="item" effect="dark" content="如下规则填写后会导致上方规则失效" placement="right">
+            <el-input v-model="addCustomerRuleForm.isTransferInputUserToCode" style="width: 150px;" clearable placeholder="请输入账号" />
+          </el-tooltip>
+        </el-form-item>
+        <el-form-item label="是否全部导为企业公客：" prop="isTransferPublicCustomer" label-width="180px">
+          <el-tooltip class="item" effect="dark" content="选择是会导致上方规则失效" placement="bottom">
+            <el-radio v-model="addCustomerRuleForm.isTransferPublicCustomer" :label="1">是</el-radio>
+          </el-tooltip>
           <el-radio v-model="addCustomerRuleForm.isTransferPublicCustomer" :label="0">否</el-radio>
         </el-form-item>
         <el-form-item>
@@ -355,7 +370,7 @@
               <span style="color: #FF0000">【{{ scope.row.transferFilter }}】</span>
             </div>
             <div>
-              <span>是否启用私盘标记：</span>
+              <span>原系统公盘是否导为公盘：</span>
               <span style="color: #FF0000">【{{ scope.row.isUseHouseProperty == 1 ? '是': '否' }}】</span>
             </div>
             <div>
@@ -399,10 +414,6 @@
         <el-table-column label="清洗详情">
           <template slot-scope="scope">
             <div>
-              <span>(下方映射无效)</span><span style="color: #FF0000">录入人</span><span>全部导为：</span>
-              <span style="color: #FF0000">【{{ scope.row.isTransferInputUserToCode }}】</span>
-            </div>
-            <div>
               <span>原系统客源</span><span style="color: #FF0000">录入人</span><span>字段为：</span>
               <span style="color: #FF0000">【{{ scope.row.inputUserOriginField }}】</span>
             </div>
@@ -411,8 +422,8 @@
               <span style="color: #FF0000">【{{ scope.row.chargeUserOriginField }}】</span>
             </div>
             <div>
-              <span>是否启用私盘标记：</span>
-              <span style="color: #FF0000">【{{ scope.row.isUseCustomerProperty == 1 ? '是': '否' }}】</span>
+              <span>原系统公客导为：</span>
+              <span style="color: #FF0000">【{{ scope.row.isUseCustomerProperty }}】</span>
             </div>
             <div>
               <span>是否启用维护人部门映射：</span>
@@ -422,8 +433,13 @@
               <span>是否启用录入人部门映射：</span>
               <span style="color: #FF0000">【{{ scope.row.isUseCustomerInputUserMap == 1 ? '是': '否' }}】</span>
             </div>
+            <div><span>----------------------------------------------</span></div>
             <div>
-              <span>是否全部导为</span><span style="color: #FF0000">公客</span><span>：</span>
+              <span style="color: #FF0000">录入人</span><span>全部导为：</span>
+              <span style="color: #FF0000">【{{ scope.row.isTransferInputUserToCode }}】</span>
+            </div>
+            <div>
+              <span>是否全部导为</span><span style="color: #FF0000">企业公客</span><span>：</span>
               <span style="color: #FF0000">【{{ scope.row.isTransferPublicCustomer == 1 ? '是': '否' }}】</span>
             </div>
           </template>
@@ -492,7 +508,6 @@ export default {
       addRuleForm: {
         comeFrom: 'FRONTEND',
         erpName: '',
-        transferType: 'HOUSE',
         enterpriseCode: '',
         inputUserOriginField: '',
         secondInputUserOriginField: '',
@@ -511,12 +526,11 @@ export default {
       addCustomerRuleForm: {
         comeFrom: 'FRONTEND',
         erpName: '',
-        transferType: 'CUSTOMER',
         enterpriseCode: '',
         isTransferInputUserToCode: '',
         inputUserOriginField: '',
         chargeUserOriginField: '',
-        isUseCustomerProperty: 0,
+        isUseCustomerProperty: '私有',
         isUseCustomerPublicDepartmentsMap: 0,
         isUseCustomerInputUserMap: 0,
         isTransferPublicCustomer: 0
@@ -649,12 +663,6 @@ export default {
       this.addRuleVisible = true
       this.addRuleForm.erpName = row.erpName
       this.addRuleForm.enterpriseCode = row.enterpriseCode
-      this.addRuleForm.keyUserOriginField = 'keyUser'
-      this.addRuleForm.imgUserOriginField = 'imgUser'
-      this.addRuleForm.isUseHouseProperty = 0
-      this.addRuleForm.isUseHousePublicDepartmentsMap = 0
-      this.addRuleForm.isUseHouseInputUserMap = 0
-      this.addRuleForm.isUseTransferTags = 0
     },
     // 添加房源规则
     onSubmitRule() {
@@ -716,10 +724,6 @@ export default {
       this.addCustomerRuleVisible = true
       this.addCustomerRuleForm.erpName = row.erpName
       this.addCustomerRuleForm.enterpriseCode = row.enterpriseCode
-      this.addCustomerRuleForm.isUseCustomerProperty = 0
-      this.addCustomerRuleForm.isUseCustomerPublicDepartmentsMap = 0
-      this.addCustomerRuleForm.isUseCustomerInputUserMap = 0
-      this.addCustomerRuleForm.isTransferPublicCustomer = 0
     },
     // 添加客源规则
     onSubmitCustomerRule() {
@@ -773,5 +777,10 @@ export default {
 }
 .red-text {
   color: red;
+}
+.divider {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  border-top: 1px solid #ccc;
 }
 </style>
