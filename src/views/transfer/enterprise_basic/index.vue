@@ -125,12 +125,12 @@
     <el-dialog width="35%" title="添加规则" :visible.sync="addRuleVisible">
       <el-form ref="addRuleForm" :model="addRuleForm" label-width="80px">
         <el-form-item
-          label="原系统录入人对应："
+          label="小鹿系统录入人对应："
           prop="inputUserOriginField"
           label-width="180px"
           :rules="[{
             required: true,
-            message: '原系统录入人对应',
+            message: '小鹿系统录入人对应',
             trigger: 'blur'
           }]"
         >
@@ -144,12 +144,12 @@
           </div>
         </el-form-item>
         <el-form-item
-          label="原系统售维护人对应："
+          label="小鹿系统售维护人对应："
           prop="saleUserOriginField"
           label-width="180px"
           :rules="[{
             required: true,
-            message: '原系统售维护人对应',
+            message: '小鹿系统售维护人对应',
             trigger: 'blur'
           }]"
         >
@@ -162,12 +162,12 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="原系统租维护人对应："
+          label="小鹿系统租维护人对应："
           prop="rentUserOriginField"
           label-width="180px"
           :rules="[{
             required: true,
-            message: '原系统租维护人对应',
+            message: '小鹿系统租维护人对应',
             trigger: 'blur'
           }]"
         >
@@ -180,7 +180,7 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="原系统钥匙人对应："
+          label="小鹿系统钥匙人对应："
           prop="keyUserOriginField"
           label-width="180px"
         >
@@ -193,7 +193,7 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="原系统实勘人对应："
+          label="小鹿系统实勘人对应："
           prop="imgUserOriginField"
           label-width="180px"
         >
@@ -262,12 +262,12 @@
     <el-dialog width="30%" title="添加规则" :visible.sync="addCustomerRuleVisible">
       <el-form ref="addCustomerRuleForm" :model="addCustomerRuleForm" label-width="80px">
         <el-form-item
-          label="原系统录入人对应："
+          label="小鹿系统录入人对应："
           prop="inputUserOriginField"
           label-width="180px"
           :rules="[{
             required: true,
-            message: '原系统录入人对应',
+            message: '小鹿系统录入人对应',
             trigger: 'blur'
           }]"
         >
@@ -276,12 +276,12 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="原系统客源人对应："
+          label="小鹿系统客源人对应："
           prop="chargeUserOriginField"
           label-width="180px"
           :rules="[{
             required: true,
-            message: '原系统客源人对应',
+            message: '小鹿系统客源人对应',
             trigger: 'blur'
           }]"
         >
@@ -342,27 +342,27 @@
         <el-table-column label="清洗详情" width="600">
           <template slot-scope="scope">
             <div>
-              <span>原系统房源</span><span style="color: #FF0000">录入人</span><span>字段为：</span>
+              <span>小鹿系统</span><span style="color: #FF0000">录入人</span><span>对应：</span>
               <span style="color: #FF0000">【{{ scope.row.inputUserOriginField }}】</span>
             </div>
             <div>
-              <span>递补</span><span style="color: #FF0000">录入人</span><span>字段为：</span>
+              <span>递补</span><span style="color: #FF0000">录入人</span><span>对应：</span>
               <span style="color: #FF0000">【{{ scope.row.secondInputUserOriginField }}】</span>
             </div>
             <div>
-              <span>原系统房源</span><span style="color: #FF0000">售维护人</span><span>字段为：</span>
+              <span>小鹿系统</span><span style="color: #FF0000">售维护人</span><span>对应：</span>
               <span style="color: #FF0000">【{{ scope.row.saleUserOriginField }}】</span>
             </div>
             <div>
-              <span>原系统房源</span><span style="color: #FF0000">租维护人</span><span>字段为：</span>
+              <span>小鹿系统</span><span style="color: #FF0000">租维护人</span><span>对应：</span>
               <span style="color: #FF0000">【{{ scope.row.rentUserOriginField }}】</span>
             </div>
             <div>
-              <span>原系统房源</span><span style="color: #FF0000">钥匙人</span><span>字段为：</span>
+              <span>小鹿系统</span><span style="color: #FF0000">钥匙人</span><span>对应：</span>
               <span style="color: #FF0000">【{{ scope.row.keyUserOriginField }}】</span>
             </div>
             <div>
-              <span>原系统房源</span><span style="color: #FF0000">实勘人</span><span>字段为：</span>
+              <span>小鹿系统</span><span style="color: #FF0000">实勘人</span><span>对应：</span>
               <span style="color: #FF0000">【{{ scope.row.imgUserOriginField }}】</span>
             </div>
             <div>
@@ -414,11 +414,11 @@
         <el-table-column label="清洗详情">
           <template slot-scope="scope">
             <div>
-              <span>原系统客源</span><span style="color: #FF0000">录入人</span><span>字段为：</span>
+              <span>小鹿系统</span><span style="color: #FF0000">录入人</span><span>对应：</span>
               <span style="color: #FF0000">【{{ scope.row.inputUserOriginField }}】</span>
             </div>
             <div>
-              <span>原系统客源</span><span style="color: #FF0000">维护人</span><span>字段为：</span>
+              <span>小鹿系统</span><span style="color: #FF0000">维护人</span><span>对应：</span>
               <span style="color: #FF0000">【{{ scope.row.chargeUserOriginField }}】</span>
             </div>
             <div>
