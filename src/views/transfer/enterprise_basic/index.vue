@@ -153,13 +153,14 @@
             trigger: 'blur'
           }]"
         >
-          <el-select v-model="addRuleForm.saleUserOriginField" style="width: 150px;" clearable placeholder="原系统售维护人">
-            <el-option
-              v-for="(value, index) in agentList"
-              :key="index"
-              :value="value"
-            />
-          </el-select>
+          <div style="display: flex;">
+            <el-select v-model="addRuleForm.saleUserOriginField" style="width: 150px; margin-right: 10px" clearable placeholder="原系统售维护人">
+              <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
+            </el-select>
+            <el-select v-model="addRuleForm.secondSaleUserOriginField" style="width: 180px; margin-right: 10px" clearable placeholder="(选填)递补售维护人">
+              <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
+            </el-select>
+          </div>
         </el-form-item>
         <el-form-item
           label="小鹿系统租维护人对应："
@@ -171,13 +172,14 @@
             trigger: 'blur'
           }]"
         >
-          <el-select v-model="addRuleForm.rentUserOriginField" style="width: 150px;" clearable placeholder="原系统租维护人">
-            <el-option
-              v-for="(value, index) in agentList"
-              :key="index"
-              :value="value"
-            />
-          </el-select>
+          <div style="display: flex;">
+            <el-select v-model="addRuleForm.rentUserOriginField" style="width: 150px; margin-right: 10px" clearable placeholder="原系统租维护人">
+              <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
+            </el-select>
+            <el-select v-model="addRuleForm.secondRentUserOriginField" style="width: 180px; margin-right: 10px" clearable placeholder="(选填)递补租维护人">
+              <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
+            </el-select>
+          </div>
         </el-form-item>
         <el-form-item
           label="小鹿系统钥匙人对应："
@@ -344,18 +346,23 @@
             <div>
               <span>小鹿系统</span><span style="color: #FF0000">录入人</span><span>对应：</span>
               <span style="color: #FF0000">【{{ scope.row.inputUserOriginField }}】</span>
-            </div>
-            <div>
-              <span>递补</span><span style="color: #FF0000">录入人</span><span>对应：</span>
+              <span>，没有则以</span>
               <span style="color: #FF0000">【{{ scope.row.secondInputUserOriginField }}】</span>
+              <span>递补</span>
             </div>
             <div>
               <span>小鹿系统</span><span style="color: #FF0000">售维护人</span><span>对应：</span>
               <span style="color: #FF0000">【{{ scope.row.saleUserOriginField }}】</span>
+              <span>，没有则以</span>
+              <span style="color: #FF0000">【{{ scope.row.secondSaleUserOriginField }}】</span>
+              <span>递补</span>
             </div>
             <div>
               <span>小鹿系统</span><span style="color: #FF0000">租维护人</span><span>对应：</span>
               <span style="color: #FF0000">【{{ scope.row.rentUserOriginField }}】</span>
+              <span>，没有则以</span>
+              <span style="color: #FF0000">【{{ scope.row.secondRentUserOriginField }}】</span>
+              <span>递补</span>
             </div>
             <div>
               <span>小鹿系统</span><span style="color: #FF0000">钥匙人</span><span>对应：</span>
@@ -385,6 +392,7 @@
               <span>是否启用标签清洗：</span>
               <span style="color: #FF0000">【{{ scope.row.isUseTransferTags == 1 ? '是': '否' }}】</span>
             </div>
+            <div><span>---------------------跟进清洗规则-------------------------</span></div>
             <div>
               <span>角色人转跟进：</span>
               <span style="color: #FF0000">【{{ Array.isArray(scope.row.UserToFollowFieldList) ? scope.row.UserToFollowFieldList.join("，"): "" }}】</span>
@@ -433,7 +441,7 @@
               <span>是否启用录入人部门映射：</span>
               <span style="color: #FF0000">【{{ scope.row.isUseCustomerInputUserMap == 1 ? '是': '否' }}】</span>
             </div>
-            <div><span>----------------------------------------------</span></div>
+            <div><span>----------------其它规则，启用会导致上方规则无效--------------</span></div>
             <div>
               <span style="color: #FF0000">录入人</span><span>全部导为：</span>
               <span style="color: #FF0000">【{{ scope.row.isTransferInputUserToCode }}】</span>
@@ -512,7 +520,9 @@ export default {
         inputUserOriginField: '',
         secondInputUserOriginField: '',
         saleUserOriginField: '',
+        secondSaleUserOriginField: '',
         rentUserOriginField: '',
+        secondRentUserOriginField: '',
         transferFilter: '',
         keyUserOriginField: 'keyUser',
         imgUserOriginField: 'imgUser',
