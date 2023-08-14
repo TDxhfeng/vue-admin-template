@@ -273,9 +273,14 @@
             trigger: 'blur'
           }]"
         >
-          <el-select v-model="addCustomerRuleForm.inputUserOriginField" style="width: 150px;" clearable placeholder="原系统录入人">
-            <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
-          </el-select>
+          <div style="display: flex;">
+            <el-select v-model="addCustomerRuleForm.inputUserOriginField" style="width: 150px; margin-right: 10px" clearable placeholder="原系统录入人">
+              <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
+            </el-select>
+            <el-select v-model="addCustomerRuleForm.secondInputUserOriginField" style="width: 180px; margin-right: 10px" clearable placeholder="(选填)递补录入人">
+              <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
+            </el-select>
+          </div>
         </el-form-item>
         <el-form-item
           label="小鹿系统客源人对应："
@@ -424,6 +429,9 @@
             <div>
               <span>小鹿系统</span><span style="color: #FF0000">录入人</span><span>对应：</span>
               <span style="color: #FF0000">【{{ scope.row.inputUserOriginField }}】</span>
+              <span>，没有则以</span>
+              <span style="color: #FF0000">【{{ scope.row.secondInputUserOriginField }}】</span>
+              <span>递补</span>
             </div>
             <div>
               <span>小鹿系统</span><span style="color: #FF0000">维护人</span><span>对应：</span>
@@ -539,6 +547,7 @@ export default {
         enterpriseCode: '',
         isTransferInputUserToCode: '',
         inputUserOriginField: '',
+        secondInputUserOriginField: '',
         chargeUserOriginField: '',
         isUseCustomerProperty: '私有',
         isUseCustomerPublicDepartmentsMap: 0,
