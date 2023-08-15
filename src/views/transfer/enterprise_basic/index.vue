@@ -125,20 +125,39 @@
     <el-dialog width="35%" title="添加规则" :visible.sync="addRuleVisible">
       <el-form ref="addRuleForm" :model="addRuleForm" label-width="80px">
         <el-form-item
-          label="小鹿系统录入人对应："
+          label="小鹿系统售录入对应："
           prop="inputUserOriginField"
           label-width="180px"
           :rules="[{
             required: true,
-            message: '小鹿系统录入人对应',
+            message: '小鹿系统售录入对应',
             trigger: 'blur'
           }]"
         >
           <div style="display: flex;">
-            <el-select v-model="addRuleForm.inputUserOriginField" style="width: 150px; margin-right: 10px" clearable placeholder="原系统录入人">
+            <el-select v-model="addRuleForm.inputUserOriginField" style="width: 150px; margin-right: 10px" clearable placeholder="原系统售录入">
               <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
             </el-select>
-            <el-select v-model="addRuleForm.secondInputUserOriginField" style="width: 180px; margin-right: 10px" clearable placeholder="(选填)递补录入人">
+            <el-select v-model="addRuleForm.secondInputUserOriginField" style="width: 180px; margin-right: 10px" clearable placeholder="(选填)递补售录入">
+              <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
+            </el-select>
+          </div>
+        </el-form-item>
+        <el-form-item
+          label="小鹿系统租录入对应："
+          prop="rentInputUserOriginField"
+          label-width="180px"
+          :rules="[{
+            required: true,
+            message: '小鹿系统售录入对应',
+            trigger: 'blur'
+          }]"
+        >
+          <div style="display: flex;">
+            <el-select v-model="addRuleForm.rentInputUserOriginField" style="width: 150px; margin-right: 10px" clearable placeholder="原系统租录入">
+              <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
+            </el-select>
+            <el-select v-model="addRuleForm.secondRentInputUserOriginField" style="width: 180px; margin-right: 10px" clearable placeholder="(选填)递补租录入">
               <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
             </el-select>
           </div>
@@ -349,10 +368,17 @@
         <el-table-column label="清洗详情" width="600">
           <template slot-scope="scope">
             <div>
-              <span>小鹿系统</span><span style="color: #FF0000">录入人</span><span>对应：</span>
+              <span>小鹿系统</span><span style="color: #FF0000">售录入人</span><span>对应：</span>
               <span style="color: #FF0000">【{{ scope.row.inputUserOriginField }}】</span>
               <span>，没有则以</span>
               <span style="color: #FF0000">【{{ scope.row.secondInputUserOriginField }}】</span>
+              <span>递补</span>
+            </div>
+            <div>
+              <span>小鹿系统</span><span style="color: #FF0000">租录入人</span><span>对应：</span>
+              <span style="color: #FF0000">【{{ scope.row.rentInputUserOriginField }}】</span>
+              <span>，没有则以</span>
+              <span style="color: #FF0000">【{{ scope.row.secondRentInputUserOriginField }}】</span>
               <span>递补</span>
             </div>
             <div>
@@ -527,6 +553,8 @@ export default {
         enterpriseCode: '',
         inputUserOriginField: '',
         secondInputUserOriginField: '',
+        rentInputUserOriginField: '',
+        secondRentInputUserOriginField: '',
         saleUserOriginField: '',
         secondSaleUserOriginField: '',
         rentUserOriginField: '',
