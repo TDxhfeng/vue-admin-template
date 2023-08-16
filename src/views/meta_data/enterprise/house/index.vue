@@ -75,6 +75,14 @@
             </el-checkbox-group>
           </el-form-item>
         </el-col>
+        <el-col :span="4">
+          <el-form-item label="已导入后台:">
+            <el-checkbox-group v-model="searchForm.isImportBackend">
+              <el-checkbox :key="1" label="1">是</el-checkbox>
+              <el-checkbox :key="0" label="0">否</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row>
         <el-col :span="3">
@@ -444,7 +452,8 @@ export default {
         enterpriseCode: '',
         isImport: [],
         isImportPanorama: [],
-        isVideoImported: []
+        isVideoImported: [],
+        isImportBackend: []
       },
       // erp系统映射
       enterpriseOptions: []
@@ -553,6 +562,9 @@ export default {
       }
       if (this.searchForm.isVideoImported.length === 1) {
         filter.isVideoImported = this.searchForm.isVideoImported[0]
+      }
+      if (this.searchForm.isImportBackend.length === 1) {
+        filter.isImportBackend = this.searchForm.isImportBackend[0]
       }
 
       const params = {
