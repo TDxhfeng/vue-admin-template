@@ -235,7 +235,7 @@
           <el-radio v-model="addRuleForm.isUseHouseProperty" :label="0">否</el-radio>
         </el-form-item>
         <el-form-item
-          label="是否启用维护人部门映射"
+          label="是否启用维护人部门映射："
           prop="isUseHousePublicDepartmentsMap"
           label-width="180px"
         >
