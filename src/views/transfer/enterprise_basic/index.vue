@@ -317,7 +317,7 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="原系统公客导为"
+          label="原系统公客导为："
           prop="isUseCustomerProperty"
           label-width="180px"
           :rules="[{
@@ -330,7 +330,7 @@
             <el-option v-for="(value, index) in ['私有','企业', '部门']" :key="index" :value="value" />
           </el-select>
         </el-form-item>
-        <el-form-item label="是否启用维护人部门映射" prop="isUseCustomerPublicDepartmentsMap" label-width="180px">
+        <el-form-item label="是否启用维护人部门映射：" prop="isUseCustomerPublicDepartmentsMap" label-width="180px">
           <el-radio v-model="addCustomerRuleForm.isUseCustomerPublicDepartmentsMap" :label="1">是</el-radio>
           <el-radio v-model="addCustomerRuleForm.isUseCustomerPublicDepartmentsMap" :label="0">否</el-radio>
         </el-form-item>
