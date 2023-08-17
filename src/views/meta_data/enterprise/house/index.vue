@@ -52,6 +52,11 @@
       </el-row>
       <el-row>
         <el-col :span="4">
+          <el-form-item label="展示租售合并丢弃的房源:" label-width="200px">
+            <el-switch v-model="searchForm.isDrop" active-color="#13ce66" inactive-color="#ff4949" :active-value="1" :inactive-value="0" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
           <el-form-item label="已上传图片:">
             <el-checkbox-group v-model="searchForm.isImport">
               <el-checkbox :key="1" label="1">是</el-checkbox>
@@ -453,7 +458,8 @@ export default {
         isImport: [],
         isImportPanorama: [],
         isVideoImported: [],
-        isImportBackend: []
+        isImportBackend: [],
+        isDrop: 0
       },
       // erp系统映射
       enterpriseOptions: []
@@ -565,6 +571,9 @@ export default {
       }
       if (this.searchForm.isImportBackend.length === 1) {
         filter.isImportBackend = this.searchForm.isImportBackend[0]
+      }
+      if (this.searchForm.isDrop === 1) {
+        filter.isDrop = this.searchForm.isDrop
       }
 
       const params = {
