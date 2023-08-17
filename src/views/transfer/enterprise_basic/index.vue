@@ -258,11 +258,12 @@
           <el-radio v-model="addRuleForm.isUseTransferTags" :label="1">是</el-radio>
           <el-radio v-model="addRuleForm.isUseTransferTags" :label="0">否</el-radio>
         </el-form-item>
-        <el-form-item label="房源筛选条件" prop="transferFilter" label-width="180px">
+        <el-form-item label="房源筛选条件：" prop="transferFilter" label-width="180px">
           <el-input v-model="addRuleForm.transferFilter" style="width: 200px;" clearable />
         </el-form-item>
+        <div class="divider"><h3 class="title">跟进清洗规则：</h3></div>
         <el-form-item
-          label="需要转为跟进的角色人"
+          label="需要转为跟进的角色人："
           prop="UserToFollowFieldList"
           label-width="180px"
         >
