@@ -103,6 +103,17 @@ export function importHouseDepartments(params) {
     }
   })
 }
+// 删除部门
+export function deleteHouseDepartments(params) {
+  return request({
+    url: '/v3/enterprise/departments/export',
+    method: 'delete',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-I518nbtp1HuGj6E4'
+    }
+  })
+}
 
 // 清洗任务创建接口
 export function createTaskInfo(params) {
@@ -295,7 +306,7 @@ export function verifyEnterpriseHouse(params) {
     }
   })
 }
-// 房源验证
+// 同步房源编号
 export function asyncEnterpriseHouseCode(params) {
   return request({
     url: '/v3/enterprise/house/teamHouseCode/async',

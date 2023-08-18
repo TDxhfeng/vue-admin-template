@@ -45,6 +45,11 @@
             <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="showExportHouse">导入Excel</el-button>
           </el-form-item>
         </el-col>
+        <el-col :span="2">
+          <el-form-item>
+            <el-button type="danger" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="deleteImportDep">删除导入</el-button>
+          </el-form-item>
+        </el-col>
       </el-row>
     </el-form>
     <el-table
@@ -84,6 +89,7 @@ import { exportHouseDepartments } from '@/api/enterprise/enterprise_info'
 import { importHouseDepartments } from '@/api/enterprise/enterprise_info'
 import { queryHouseDepartments } from '@/api/enterprise/enterprise_info'
 import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
+import { deleteHouseDepartments } from '@/api/enterprise/enterprise_info'
 import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 
 export default {
@@ -171,6 +177,17 @@ export default {
         .then(response => {
           this.exportExcel(response.data.list)
           this.openExportMessage()
+        })
+    },
+    deleteImportDep() {
+      const postData = {
+        comeFrom: 'FRONTEND',
+        enterpriseCode: this.searchForm.enterpriseCode,
+        erpName: this.searchForm.erpName
+      }
+      deleteHouseDepartments(postData)
+        .then(response => {
+          this.fetchData()
         })
     },
     exportExcel(allDepartments) {
