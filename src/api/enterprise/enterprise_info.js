@@ -317,3 +317,15 @@ export function asyncEnterpriseHouseCode(params) {
     }
   })
 }
+
+// 统计企业整体情况
+export function totalEnterprise(params) {
+  return request({
+    url: '/v3/enterprise/total',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-G1Uv0ITzSSPDJ0oX'
+    }
+  })
+}
