@@ -341,3 +341,15 @@ export function queryOrganization(params) {
     }
   })
 }
+
+// 组织架构导出excel
+export function exportOrganization(params) {
+  return request({
+    url: '/v3/enterprise/organization/export',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-iWrJo4ayG0OpI2GV'
+    }
+  })
+}

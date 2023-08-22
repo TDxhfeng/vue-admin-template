@@ -35,11 +35,6 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="状态" prop="status">
-            <el-input v-model="searchForm.status" style="width: 180px;" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="4">
           <el-form-item label="工号" prop="employeeNo">
             <el-input v-model="searchForm.employeeNo" style="width: 180px;" />
           </el-form-item>
@@ -47,8 +42,23 @@
       </el-row>
       <el-row>
         <el-col :span="4">
+          <el-form-item label="是否在职:">
+            <el-checkbox-group v-model="searchForm.status">
+              <el-checkbox :key="1" label="1">是</el-checkbox>
+              <el-checkbox :key="0" label="0">否</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="2">
           <el-form-item>
             <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="handleSearch">搜索</el-button>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2">
+          <el-form-item>
+            <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="exportData">导出Excel</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -138,6 +148,7 @@
 
 <script>
 import { queryOrganization } from '@/api/enterprise/enterprise_info'
+import { exportOrganization } from '@/api/enterprise/enterprise_info'
 import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
 
 export default {
@@ -150,7 +161,8 @@ export default {
       listLoading: false,
       searchForm: {
         erpName: '',
-        enterpriseCode: ''
+        enterpriseCode: '',
+        status: []
       },
       // erp系统映射
       enterpriseOptions: [],
@@ -210,8 +222,8 @@ export default {
       if (this.searchForm.employeeNo) {
         filter.employeeNo = this.searchForm.employeeNo
       }
-      if (this.searchForm.status) {
-        filter.status = this.searchForm.status
+      if (this.searchForm.status.length === 1) {
+        filter.status = this.searchForm.status[0]
       }
 
       const params = {
@@ -242,6 +254,40 @@ export default {
     handleSearch() {
       this.page = 1 // 添加此行代码
       this.fetchData()
+    },
+    // 导出数据
+    exportData() {
+      const filter = {}
+      const params = {
+        comeFrom: 'FRONTEND',
+        filter: filter
+      }
+      params.erpName = this.searchForm.erpName
+      params.enterpriseCode = this.searchForm.enterpriseCode
+      exportOrganization(params)
+        .then(response => {
+          this.exportExcel(response.data.list)
+        })
+    },
+    exportExcel(allDepartments) {
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['姓名', 'ID', '部门', '组织架构', '职位', '工号', '状态', '电话']
+        const filterVal = ['user', 'userId', 'userDepartment', 'userFullDepartment', 'positionName', 'employeeNo', 'status', 'phone']
+        const data = this.formatJson(filterVal, allDepartments)
+        const tfileName = this.searchForm.enterpriseCode + '_组织架构'
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: tfileName,
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        return v[j]
+      }))
     }
   }
 }
