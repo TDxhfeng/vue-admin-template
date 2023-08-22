@@ -1,0 +1,248 @@
+<template>
+  <div class="app-container">
+    <el-form ref="searchForm" :model="searchForm" label-width="80px">
+      <el-row>
+        <el-col :span="4">
+          <el-form-item
+            label="ERP名称"
+            prop="erpName"
+            :rules="[{
+              required: true,
+              message: '请输入ERP名称',
+              trigger: 'blur'
+            }]"
+          >
+            <el-select v-model="searchForm.erpName" placeholder="选择ERP" clearable filterable @change="resetCode">
+              <el-option v-for="option in enterpriseOptions" :key="option.erpName" :label="option.erpCnName" :value="option.erpName" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="企业号" prop="enterpriseCode" :rules="[{ required: true, message: '请输入企业号', trigger: 'blur' }]">
+            <el-select v-model="searchForm.enterpriseCode" placeholder="选择企业" clearable filterable>
+              <el-option v-for="value in codes" :key="value.enterpriseCode" :label="value.enterpriseName" :value="value.enterpriseCode" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="姓名" prop="user">
+            <el-input v-model="searchForm.user" style="width: 180px;" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="部门" prop="userDepartment">
+            <el-input v-model="searchForm.userDepartment" style="width: 180px;" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="状态" prop="status">
+            <el-input v-model="searchForm.status" style="width: 180px;" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="工号" prop="employeeNo">
+            <el-input v-model="searchForm.employeeNo" style="width: 180px;" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4">
+          <el-form-item>
+            <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="handleSearch">搜索</el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      element-loading-text="Loading"
+      border
+      fit
+      highlight-current-row
+      max-height="650"
+    >
+      <el-table-column label="经纪人ID" width="100">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.userId">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.userId }}</div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column label="工号" width="100">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.employeeNo">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.employeeNo }}</div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column label="姓名" width="100">
+        <template slot-scope="scope">
+          {{ scope.row.user }}
+        </template>
+      </el-table-column>
+      <el-table-column label="部门" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.userDepartment }}
+        </template>
+      </el-table-column>
+      <el-table-column label="组织架构" width="200">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.userFullDepartment">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.userFullDepartment }}</div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column label="职位" width="100">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.positionName">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.positionName }}</div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column label="性别" width="100">
+        <template slot-scope="scope">
+          {{ scope.row.gender }}
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" width="100">
+        <template slot-scope="scope">
+          {{ scope.row.status }}
+        </template>
+      </el-table-column>
+      <el-table-column label="上司" width="100">
+        <template slot-scope="scope">
+          {{ scope.row.gradeUser }}
+        </template>
+      </el-table-column>
+      <el-table-column label="上司ID" width="100">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.gradeUserId">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.gradeUserId }}</div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+    </el-table>
+    <!-- 翻页组件，用于控制显示数据条数和页码-->
+    <el-pagination
+      :current-page="page"
+      :page-size="pageSize"
+      :page-sizes="[20, 40, 60, 80]"
+      :total="total"
+      layout="total, sizes, prev, pager, next, jumper"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+  </div>
+</template>
+
+<script>
+import { queryOrganization } from '@/api/enterprise/enterprise_info'
+import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
+
+export default {
+  data() {
+    return {
+      list: [],
+      page: 1,
+      pageSize: 40,
+      total: 0,
+      listLoading: false,
+      searchForm: {
+        erpName: '',
+        enterpriseCode: ''
+      },
+      // erp系统映射
+      enterpriseOptions: [],
+      codes: []
+    }
+  },
+  watch: {
+    searchForm: {
+      handler(newValue) {
+        if (newValue.erpName) {
+          this.codes = this.erpCodeMap(newValue.erpName)
+        }
+      },
+      deep: true, // 深度监听，用以监听对象属性变化
+      immediate: true // 立即执行一次handler函数
+    }
+  },
+  created() {
+    this.queryCode()
+  },
+  methods: {
+    queryCode() {
+      const params = {
+        comeFrom: 'FRONTEND'
+      }
+      queryEnterpriseCode(params)
+        .then(response => {
+          this.enterpriseOptions = response.data.list
+        })
+    },
+    // erp变更时清空codes
+    resetCode() {
+      this.searchForm.enterpriseCode = ''
+    },
+    // 找出erp对应的codes
+    erpCodeMap(erp) {
+      const map = {}
+      const enterpriseOptions = this.enterpriseOptions
+      for (let i = 0; i < enterpriseOptions.length; i++) {
+        map[enterpriseOptions[i].erpName] = enterpriseOptions[i].codes
+      }
+      return map[erp]
+    },
+    // 渲染数据
+    fetchData() {
+      const filter = {
+        page: this.page,
+        size: this.pageSize
+      }
+
+      if (this.searchForm.user) {
+        filter.user = this.searchForm.user
+      }
+      if (this.searchForm.userDepartment) {
+        filter.userDepartment = this.searchForm.userDepartment
+      }
+      if (this.searchForm.employeeNo) {
+        filter.employeeNo = this.searchForm.employeeNo
+      }
+      if (this.searchForm.status) {
+        filter.status = this.searchForm.status
+      }
+
+      const params = {
+        comeFrom: 'FRONTEND',
+        filter: filter
+      }
+      params.erpName = this.searchForm.erpName
+      params.enterpriseCode = this.searchForm.enterpriseCode
+
+      this.listLoading = true
+      queryOrganization(params)
+        .then(response => {
+          this.total = response.data.totalCount
+          this.list = response.data.list
+        }).finally(() => {
+          this.listLoading = false
+        })
+    },
+    handleSizeChange(val) {
+      this.pageSize = val
+      this.page = 1
+      this.fetchData()
+    },
+    handleCurrentChange(val) {
+      this.page = val
+      this.fetchData()
+    },
+    handleSearch() {
+      this.page = 1 // 添加此行代码
+      this.fetchData()
+    }
+  }
+}
+</script>

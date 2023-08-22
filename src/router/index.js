@@ -87,6 +87,12 @@ export const constantRoutes = [
             meta: { title: '企业部门数据', icon: 'el-icon-s-grid' }
           },
           {
+            path: 'organization',
+            component: () => import('@/views/meta_data/enterprise/organization'),
+            name: '组织架构',
+            meta: { title: '组织架构', icon: 'el-icon-s-grid' }
+          },
+          {
             path: 'house',
             component: () => import('@/views/meta_data/enterprise/house'),
             name: '房源',

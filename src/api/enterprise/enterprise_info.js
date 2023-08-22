@@ -329,3 +329,15 @@ export function totalEnterprise(params) {
     }
   })
 }
+
+// 组织架构查询
+export function queryOrganization(params) {
+  return request({
+    url: '/v3/enterprise/organization/query',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-BS4u49Ekl6El2qao'
+    }
+  })
+}
