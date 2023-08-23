@@ -271,8 +271,8 @@ export default {
     },
     exportExcel(allDepartments) {
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['姓名', 'ID', '部门', '组织架构', '职位', '工号', '状态', '电话']
-        const filterVal = ['user', 'userId', 'userDepartment', 'userFullDepartment', 'positionName', 'employeeNo', 'status', 'phone']
+        const tHeader = ['姓名', 'ID', '部门', '组织架构', '职位', '工号', '状态', '电话', '小鹿账号']
+        const filterVal = ['user', 'userId', 'userDepartment', 'userFullDepartment', 'positionName', 'employeeNo', 'status', 'phone', 'userCode']
         const data = this.formatJson(filterVal, allDepartments)
         const tfileName = this.searchForm.enterpriseCode + '_组织架构'
         excel.export_json_to_excel({
