@@ -300,7 +300,7 @@ export default {
           '籍贯', '学历', '毕业院校', '执业证号', '个人号账号', '备注', '原系统经纪人id', '原系统经纪人编号', '资源导入账号', '状态'
         ]
         const filterVal = ['teamOrganization', 'user', 'code', 'phone', 'roleName', 'positionName', 'joinDate', 'probationDate',
-          'gender', 'bankName', 'bankCode', 'idCard', 'birthday', 'place', 'education', 'graduationInstitution', 'certificateNumber', 
+          'gender', 'bankName', 'bankCode', 'idCard', 'birthday', 'place', 'education', 'graduationInstitution', 'certificateNumber',
           'personalAccount', 'remark', 'userId', 'employeeNo', 'userCode', 'status'
         ]
         const data = this.formatJson(filterVal, allDepartments)
