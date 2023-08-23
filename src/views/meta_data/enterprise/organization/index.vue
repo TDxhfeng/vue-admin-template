@@ -145,6 +145,13 @@
           {{ scope.row.userCode }}
         </template>
       </el-table-column>
+      <el-table-column label="小鹿部门" width="200">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.teamOrganization">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.teamOrganization }}</div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 翻页组件，用于控制显示数据条数和页码-->
     <el-pagination
@@ -288,8 +295,8 @@ export default {
     },
     exportExcel(allDepartments) {
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['姓名', 'ID', '部门', '组织架构', '职位', '工号', '状态', '电话', '小鹿账号']
-        const filterVal = ['user', 'userId', 'userDepartment', 'userFullDepartment', 'positionName', 'employeeNo', 'status', 'phone', 'userCode']
+        const tHeader = ['姓名', 'ID', '部门', '组织架构', '职位', '工号', '状态', '电话', '小鹿账号', '小鹿部门']
+        const filterVal = ['user', 'userId', 'userDepartment', 'userFullDepartment', 'positionName', 'employeeNo', 'status', 'phone', 'userCode', 'teamOrganization']
         const data = this.formatJson(filterVal, allDepartments)
         const tfileName = this.searchForm.enterpriseCode + '_组织架构'
         excel.export_json_to_excel({
@@ -324,7 +331,7 @@ export default {
       return false
     },
     handleSuccess({ results, header }) {
-      const data = results.map(({ 'ID': userId = '', '小鹿账号': userCode = '' }) => ({ userId, userCode }))
+      const data = results.map(({ 'ID': userId = '', '小鹿账号': userCode = '', '小鹿部门': teamOrganization = '' }) => ({ userId, userCode, teamOrganization }))
       console.log(data)
       const postData = {
         comeFrom: 'FRONTEND',
