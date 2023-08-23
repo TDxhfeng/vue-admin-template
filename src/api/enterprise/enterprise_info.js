@@ -353,3 +353,15 @@ export function exportOrganization(params) {
     }
   })
 }
+
+// 导入小鹿账号
+export function importOrganization(params) {
+  return request({
+    url: '/v3/enterprise/organization/modify',
+    method: 'put',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-Tk3ucjCXz1C6fRv2'
+    }
+  })
+}

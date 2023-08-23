@@ -1,5 +1,8 @@
 <template>
   <div class="app-container">
+    <el-dialog width="40%" :visible.sync="importDepVisble">
+      <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
+    </el-dialog>
     <el-form ref="searchForm" :model="searchForm" label-width="80px">
       <el-row>
         <el-col :span="4">
@@ -59,6 +62,11 @@
         <el-col :span="2">
           <el-form-item>
             <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="exportData">导出Excel</el-button>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2">
+          <el-form-item>
+            <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="showImportData">导入小鹿账号</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -153,10 +161,13 @@
 
 <script>
 import { queryOrganization } from '@/api/enterprise/enterprise_info'
+import { importOrganization } from '@/api/enterprise/enterprise_info'
 import { exportOrganization } from '@/api/enterprise/enterprise_info'
 import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
+import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 
 export default {
+  components: { UploadExcelComponent },
   data() {
     return {
       list: [],
@@ -164,6 +175,7 @@ export default {
       pageSize: 40,
       total: 0,
       listLoading: false,
+      importDepVisble: false,
       searchForm: {
         erpName: '',
         enterpriseCode: '',
@@ -293,6 +305,39 @@ export default {
       return jsonData.map(v => filterVal.map(j => {
         return v[j]
       }))
+    },
+    // 导入小鹿账号
+    showImportData() {
+      this.importDepVisble = true
+    },
+    beforeUpload(file) {
+      const isLt1M = file.size / 1024 / 1024 < 1
+
+      if (isLt1M) {
+        return true
+      }
+
+      this.$message({
+        message: 'Please do not upload files larger than 1m in size.',
+        type: 'warning'
+      })
+      return false
+    },
+    handleSuccess({ results, header }) {
+      const data = results.map(({ 'ID': userId = '', '小鹿账号': userCode = '' }) => ({ userId, userCode }))
+      console.log(data)
+      const postData = {
+        comeFrom: 'FRONTEND',
+        enterpriseCode: this.searchForm.enterpriseCode,
+        erpName: this.searchForm.erpName,
+        organizations: data
+      }
+      importOrganization(postData)
+        .then(response => {
+          console.log(response.data)
+          this.importDepVisble = false
+          this.fetchData()
+        })
     }
   }
 }
