@@ -295,8 +295,14 @@ export default {
     },
     exportExcel(allDepartments) {
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['姓名', 'ID', '部门', '组织架构', '职位', '工号', '状态', '电话', '小鹿账号', '小鹿部门']
-        const filterVal = ['user', 'userId', 'userDepartment', 'userFullDepartment', 'positionName', 'employeeNo', 'status', 'phone', 'userCode', 'teamOrganization']
+        const tHeader = [
+          '部门', '姓名', '账号', '手机', '角色', '职位', '入职日期', '转正日期', '性别', '银行名称', '银行账号', '身份证号', '生日',
+          '籍贯', '学历', '毕业院校', '执业证号', '个人号账号', '备注', '原系统经纪人id', '原系统经纪人编号', '资源导入账号', '状态'
+        ]
+        const filterVal = ['teamOrganization', 'user', 'code', 'phone', 'roleName', 'positionName', 'joinDate', 'probationDate',
+          'gender', 'bankName', 'bankCode', 'idCard', 'birthday', 'place', 'education', 'graduationInstitution', 'certificateNumber', 
+          'personalAccount', 'remark', 'userId', 'employeeNo', 'userCode', 'status'
+        ]
         const data = this.formatJson(filterVal, allDepartments)
         const tfileName = this.searchForm.enterpriseCode + '_组织架构'
         excel.export_json_to_excel({
