@@ -337,13 +337,13 @@ export default {
       return false
     },
     handleSuccess({ results, header }) {
-      const data = results.map(({ '部门': teamOrganization = '', '账号': code = '', '手机': phone = '', '角色': roleName = '', '入职日期': joinDate = '', '转正日期': probationDate = '', '性别': gender = '', '银行名称': bankName = '', '银行账号': bankCode = '', '身份证号': idCard = '', '生日': birthday = '', '籍贯': place = '', '学历': education = '', '毕业院校': graduationInstitution = '', '执业证号': certificateNumber = '', '个人号账号': personalAccount = '', '备注': remark = '', '原系统经纪人id': userId = '', '资源导入账号': userCode = '' }) => ({ teamOrganization, code, phone, roleName, joinDate, probationDate, gender, bankName, bankCode, idCard, birthday, place, education, graduationInstitution, certificateNumber, personalAccount, remark, userId, userCode }))
-      console.log(data)
+      const new_data = results.map(({ '部门': teamOrganization = '', '账号': code = '', '手机': phone = '', '角色': roleName = '', '入职日期': joinDate = '', '转正日期': probationDate = '', '性别': gender = '', '银行名称': bankName = '', '银行账号': bankCode = '', '身份证号': idCard = '', '生日': birthday = '', '籍贯': place = '', '学历': education = '', '毕业院校': graduationInstitution = '', '执业证号': certificateNumber = '', '个人号账号': personalAccount = '', '备注': remark = '', '原系统经纪人id': userId = '', '资源导入账号': userCode = '' }) => ({ teamOrganization, code, phone, roleName, joinDate, probationDate, gender, bankName, bankCode, idCard, birthday, place, education, graduationInstitution, certificateNumber, personalAccount, remark, userId, userCode }))
+      console.log(new_data)
       const postData = {
         comeFrom: 'FRONTEND',
         enterpriseCode: this.searchForm.enterpriseCode,
         erpName: this.searchForm.erpName,
-        organizations: data
+        organizations: new_data
       }
       importOrganization(postData)
         .then(response => {
