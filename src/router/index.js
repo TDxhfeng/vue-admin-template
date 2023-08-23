@@ -77,14 +77,14 @@ export const constantRoutes = [
           {
             path: 'user_info',
             component: () => import('@/views/meta_data/enterprise/user_info'),
-            name: '企业用户数据',
-            meta: { title: '企业用户数据', icon: 'el-icon-s-grid' }
+            name: '房客关联经纪人',
+            meta: { title: '房客关联经纪人', icon: 'el-icon-s-grid' }
           },
           {
             path: 'department_info',
             component: () => import('@/views/meta_data/enterprise/department_info'),
-            name: '企业部门数据',
-            meta: { title: '企业部门数据', icon: 'el-icon-s-grid' }
+            name: '房客关联部门',
+            meta: { title: '房客关联部门', icon: 'el-icon-s-grid' }
           },
           {
             path: 'organization',
