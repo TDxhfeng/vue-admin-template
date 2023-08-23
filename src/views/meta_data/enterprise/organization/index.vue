@@ -132,6 +132,11 @@
           </el-tooltip>
         </template>
       </el-table-column>
+      <el-table-column label="小鹿账号" width="150">
+        <template slot-scope="scope">
+          {{ scope.row.userCode }}
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 翻页组件，用于控制显示数据条数和页码-->
     <el-pagination
