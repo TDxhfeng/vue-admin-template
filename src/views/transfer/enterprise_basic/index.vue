@@ -48,7 +48,7 @@
           {{ scope.row.enterpriseCode }}
         </template>
       </el-table-column>
-      <el-table-column label="ERP名称" width="200">
+      <el-table-column label="ERP名称" width="150">
         <template slot-scope="scope">
           {{ erpNameMap[scope.row.erpName] }}
         </template>
@@ -86,7 +86,7 @@
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" width="120">
         <template slot-scope="scope">
           <el-dropdown>
             <el-button type="info" size="mini">
@@ -101,7 +101,7 @@
           </el-dropdown>
         </template>
       </el-table-column>
-      <el-table-column label="创建其它任务" width="120">
+      <el-table-column label="创建清洗任务" width="120">
         <template slot-scope="scope">
           <el-dropdown>
             <el-button type="info" size="mini">
@@ -111,6 +111,17 @@
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-upload" @click="createOtherTask(scope.row, 'HOUSE_PHOTO_UPLOAD')">房源图片上传COS</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-upload" @click="createOtherTask(scope.row, 'HOUSE_PANORAMA_UPLOAD')">房源全景图上传COS</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-upload" @click="createOtherTask(scope.row, 'CUSTOMER_FOLLOW')">客源跟进清洗上传水星</el-button></el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </template>
+      </el-table-column>
+      <el-table-column label="创建导入任务" width="120">
+        <template slot-scope="scope">
+          <el-dropdown>
+            <el-button type="info" size="mini">
+              更多<i class="el-icon-arrow-down el-icon--right" />
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-finished" @click="createOtherTask(scope.row, 'HOUSE_FOLLOW_IMPORT')">房源跟进导入后台</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-finished" @click="createOtherTask(scope.row, 'HOUSE_PHOTO_IMPORT')">房源图片导入后台</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-finished" @click="createOtherTask(scope.row, 'HOUSE_VIDEO')">房源视频导入后台</el-button></el-dropdown-item>
