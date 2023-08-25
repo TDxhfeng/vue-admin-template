@@ -36,9 +36,14 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="4">
+        <el-col :span="3">
           <el-form-item>
             <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="handleSearch">搜索</el-button>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item>
+            <el-button type="warning" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="async_customer_team_code">同步小鹿编号</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -64,6 +69,13 @@
           <div v-for="(item, index) in scope.row.allUsers" :key="index">
             <span style="color: #FF0000">{{ item.userFieldName }}:</span><span>{{ item.userName }}</span><span style="color: #999; margin: 0 4px;">|</span><span style="color: #FF0000">部门:</span><span>{{ item.userDepartment }}</span>
           </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="小鹿编号" width="110">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.teamCustomerCode">
+            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.teamCustomerCode }}</div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="原系统客源ID" width="110">
@@ -198,6 +210,7 @@
 
 <script>
 import { queryEnterpriseCustomers } from '@/api/enterprise/enterprise_info'
+import { asyncEnterpriseCustomerCode } from '@/api/enterprise/enterprise_info'
 import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
 
 export default {
@@ -253,6 +266,23 @@ export default {
         map[enterpriseOptions[i].erpName] = enterpriseOptions[i].codes
       }
       return map[erp]
+    },
+    async_customer_team_code() {
+      const params = {
+        comeFrom: 'FRONTEND',
+        erpName: this.searchForm.erpName,
+        enterpriseCode: this.searchForm.enterpriseCode
+      }
+      this.$message({ message: '正在同步小鹿编号' })
+      asyncEnterpriseCustomerCode(params)
+        .then(response => {
+          this.$notify({
+            title: '成功',
+            message: '小鹿编号同步完毕',
+            type: 'success',
+            position: 'top-left'
+          })
+        })
     },
     // 渲染数据
     fetchData() {

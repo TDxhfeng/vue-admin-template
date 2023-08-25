@@ -318,6 +318,18 @@ export function asyncEnterpriseHouseCode(params) {
   })
 }
 
+// 同步房源编号
+export function asyncEnterpriseCustomerCode(params) {
+  return request({
+    url: '/v3/enterprise/customer/teamCustomerCode/async',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-Nqo9mJW573hl55nT'
+    }
+  })
+}
+
 // 统计企业整体情况
 export function totalEnterprise(params) {
   return request({
