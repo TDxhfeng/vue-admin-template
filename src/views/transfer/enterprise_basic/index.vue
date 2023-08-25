@@ -110,7 +110,6 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-upload" @click="createOtherTask(scope.row, 'HOUSE_PHOTO_UPLOAD')">房源图片上传COS</el-button></el-dropdown-item>
               <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-upload" @click="createOtherTask(scope.row, 'HOUSE_PANORAMA_UPLOAD')">房源全景图上传COS</el-button></el-dropdown-item>
-              <el-dropdown-item><el-button size="mini" type="text" icon="el-icon-upload" @click="createOtherTask(scope.row, 'CUSTOMER_FOLLOW')">客源跟进清洗上传水星</el-button></el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -501,6 +500,7 @@
         <el-table-column label="操作" width="400">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="createTask(scope.row, 'CUSTOMER')">创建清洗客源任务</el-button>
+            <el-button size="mini" type="primary" @click="createTask(scope.row, 'CUSTOMER_FOLLOW')">创建客源跟进清洗任务</el-button>
             <el-button size="mini" type="danger" @click="deleteRule(scope.row, 'CUSTOMER')">删除</el-button>
           </template>
         </el-table-column>
