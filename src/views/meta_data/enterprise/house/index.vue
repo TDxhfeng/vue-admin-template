@@ -88,6 +88,14 @@
             </el-checkbox-group>
           </el-form-item>
         </el-col>
+        <el-col :span="4">
+          <el-form-item label="待完善房源:">
+            <el-checkbox-group v-model="searchForm.isPreHouse">
+              <el-checkbox :key="1" label="1">是</el-checkbox>
+              <el-checkbox :key="0" label="0">否</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row>
         <el-col :span="3">
@@ -115,6 +123,7 @@
       fit
       highlight-current-row
       max-height="550"
+      :row-class-name="tableRowClassName"
     >
       <el-table-column label="爬取时间" width="100">
         <template slot-scope="scope">
@@ -459,6 +468,7 @@ export default {
         isImportPanorama: [],
         isVideoImported: [],
         isImportBackend: [],
+        isPreHouse: [],
         isDrop: 0
       },
       // erp系统映射
@@ -575,6 +585,9 @@ export default {
       if (this.searchForm.isDrop === 1) {
         filter.isDrop = this.searchForm.isDrop
       }
+      if (this.searchForm.isPreHouse.length === 1) {
+        filter.isPreHouse = this.searchForm.isPreHouse[0]
+      }
 
       const params = {
         comeFrom: 'FRONTEND',
@@ -604,7 +617,19 @@ export default {
     handleSearch() {
       this.page = 1 // 添加此行代码
       this.fetchData()
+    },
+    // 行状态
+    tableRowClassName({ row, rowIndex }) {
+      if (row.isPreHouse === 1) {
+        return 'warning-row'
+      }
+      return ''
     }
   }
 }
 </script>
+<style>
+.el-table .warning-row {
+    background: oldlace;
+  }
+</style>
