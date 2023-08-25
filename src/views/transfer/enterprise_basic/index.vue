@@ -270,7 +270,7 @@
           <el-radio v-model="addRuleForm.isUseTransferTags" :label="0">否</el-radio>
         </el-form-item>
         <el-form-item label="房源筛选条件：" prop="transferFilter" label-width="180px">
-          <el-input type="textarea"  :autosize="{ minRows: 1, maxRows: 1}" v-model="addRuleForm.transferFilter" style="width: 200px;" clearable />
+          <el-input v-model="addRuleForm.transferFilter" type="textarea" :autosize="{ minRows: 1, maxRows: 1}" style="width: 200px;" clearable />
         </el-form-item>
         <div class="divider"><h3 class="title">跟进清洗规则：</h3></div>
         <el-form-item
@@ -417,7 +417,7 @@
             </div>
             <div>
               <span>当前房源的清洗条件：</span>
-              <span style="color: #FF0000">【{{ scope.row.transferFilter }}】</span>
+              <span style="color: #FF0000">【{{ scope.row.transferFilter | ellipsis }}】</span>
             </div>
             <div>
               <span>原系统公盘是否导为公盘：</span>
@@ -534,6 +534,15 @@ import { queryEnterpriseCustomerRule } from '@/api/enterprise/enterprise_info'
 import { deleteEnterpriseCustomerRule } from '@/api/enterprise/enterprise_info'
 
 export default {
+  filters: {
+    ellipsis(value) {
+      if (!value) return ''
+      if (value.length > 8) {
+        return value.slice(0, 30) + '....'
+      }
+      return value
+    }
+  },
   data() {
     return {
       // 清洗规则展示对话框数据
