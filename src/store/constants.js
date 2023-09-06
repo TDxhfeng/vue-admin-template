@@ -14,7 +14,7 @@ export const erpOptions = [
   { label: '房朋', value: 'fangpeng' },
   { label: '房友v11-12', value: 'local_fangyou' },
   { label: '房友v1', value: 'line_fangyou' },
-  { label: '房讯', value: 'fanxun' },
+  { label: '梵讯', value: 'fanxun' },
   { label: '谷粒', value: 'guli' },
   { label: '荟居360', value: 'huiju360' },
   { label: '汇智凌云', value: 'huizhilingyun' },
