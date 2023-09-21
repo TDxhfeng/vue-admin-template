@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="searchForm" :model="searchForm" label-width="80px">
+    <el-form ref="searchForm" :model="searchForm" label-width="130px">
       <el-row>
         <el-col :span="4">
           <el-form-item
@@ -25,7 +25,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="房源ID" prop="houseId">
+          <el-form-item label="房源外部ID" prop="houseId">
             <el-input v-model="searchForm.houseId" style="width: 180px;" />
           </el-form-item>
         </el-col>
@@ -52,7 +52,7 @@
           {{ scope.row.enterpriseCode }}
         </template>
       </el-table-column>
-      <el-table-column label="原系统房源ID" width="200">
+      <el-table-column label="房源外部ID" width="200">
         <template slot-scope="scope">
           {{ scope.row.houseId }}
         </template>

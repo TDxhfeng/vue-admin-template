@@ -25,7 +25,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="外部Id" prop="houseId">
+          <el-form-item label="房源外部ID" prop="houseId">
             <el-input v-model="searchForm.houseId" style="width: 150px;" clearable />
           </el-form-item>
         </el-col>
@@ -151,7 +151,7 @@
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="原系统房源ID" width="110">
+      <el-table-column label="房源外部ID" width="110">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.houseId">
             <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ scope.row.houseId }}</div>
