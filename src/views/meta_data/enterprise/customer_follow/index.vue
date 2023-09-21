@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="searchForm" :model="searchForm" label-width="80px">
+    <el-form ref="searchForm" :model="searchForm" label-width="130px">
       <el-row>
         <el-col :span="4">
           <el-form-item
@@ -25,7 +25,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="客源ID" prop="customerId">
+          <el-form-item label="客源外部ID" prop="customerId">
             <el-input v-model="searchForm.customerId" style="width: 180px;" />
           </el-form-item>
         </el-col>
@@ -52,7 +52,7 @@
           {{ scope.row.enterpriseCode }}
         </template>
       </el-table-column>
-      <el-table-column label="原系统客源ID" width="110">
+      <el-table-column label="客源外部ID" width="110">
         <template slot-scope="scope">
           {{ scope.row.customerId }}
         </template>
