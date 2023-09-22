@@ -15,7 +15,7 @@
         </el-col>
         <el-col :span="4">
           <el-form-item label="企业号" prop="enterpriseCode">
-            <el-select v-model="searchForm.enterpriseCode" placeholder="选择企业" clearable filterable>
+            <el-select v-model="searchForm.enterpriseCode" placeholder="选择企业" allow-create clearable filterable>
               <el-option v-for="value in codes" :key="value.enterpriseCode" :label="value.enterpriseName" :value="value.enterpriseCode" />
             </el-select>
           </el-form-item>
