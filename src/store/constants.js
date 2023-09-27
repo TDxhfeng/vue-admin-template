@@ -25,7 +25,8 @@ export const erpOptions = [
   { label: '易房通', value: 'yifangtong' },
   { label: '易居房友/ETC门店管理系统', value: 'yiju_fangyou' },
   { label: '好房通', value: 'haofangtong' },
-  { label: '优家U+', value: 'youjia' }
+  { label: '优家U+', value: 'youjia' },
+  { label: '房融', value: 'fangrong' },
 ]
 
 export const taskBelong = [
