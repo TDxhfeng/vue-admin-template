@@ -336,9 +336,12 @@
             trigger: 'blur'
           }]"
         >
-          <el-select v-model="addCustomerRuleForm.isUseCustomerProperty" style="width: 150px;" placeholder="类型">
-            <el-option v-for="(value, index) in ['私有','企业', '部门']" :key="index" :value="value" />
-          </el-select>
+          <div style="display: flex;">
+            <el-select v-model="addCustomerRuleForm.isUseCustomerProperty" style="width: 150px; margin-right: 10px" placeholder="类型">
+              <el-option v-for="(value, index) in ['私有','企业', '部门']" :key="index" :value="value" />
+            </el-select>
+            <el-input v-model="addCustomerRuleForm.CustomerPublicPropertyToCode" :disabled="isCustomerPrivate" style="width: 180px;" clearable placeholder="请输入账号" />
+          </div>
         </el-form-item>
         <el-form-item label="是否启用维护人部门映射：" prop="isUseCustomerPublicDepartmentsMap" label-width="180px">
           <el-radio v-model="addCustomerRuleForm.isUseCustomerPublicDepartmentsMap" :label="1">是</el-radio>
@@ -599,6 +602,7 @@ export default {
         secondInputUserOriginField: '',
         chargeUserOriginField: '',
         isUseCustomerProperty: '私有',
+        CustomerPublicPropertyToCode: '',
         isUseCustomerPublicDepartmentsMap: 0,
         isUseCustomerInputUserMap: 0,
         isTransferPublicCustomer: 0
@@ -617,6 +621,9 @@ export default {
         map[erpOptions[i].value] = erpOptions[i].label
       }
       return map
+    },
+    isCustomerPrivate() {
+      return this.addCustomerRuleForm.isUseCustomerProperty !== '私有'
     }
   },
   watch: {
