@@ -237,12 +237,18 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="原系统公盘是否导为公盘："
+          label="原系统公盘导为："
           prop="isUseHouseProperty"
           label-width="180px"
         >
-          <el-radio v-model="addRuleForm.isUseHouseProperty" :label="1">是</el-radio>
-          <el-radio v-model="addRuleForm.isUseHouseProperty" :label="0">否</el-radio>
+          <div style="display: flex;">
+            <el-select v-model="addRuleForm.isUseHouseProperty" style="width: 150px; margin-right: 10px" placeholder="类型">
+              <el-option v-for="(value, index) in ['私有','企业', '部门']" :key="index" :value="value" />
+            </el-select>
+            <el-tooltip class="item" effect="dark" content="原系统公盘导为指定账号" placement="bottom">
+              <el-input v-model="addRuleForm.housePublicPropertyToCode" :disabled="isHousePrivate" style="width: 180px;" clearable placeholder="(选填)账号" />
+            </el-tooltip>
+          </div>
         </el-form-item>
         <el-form-item
           label="是否启用维护人部门映射："
@@ -407,8 +413,8 @@
               <span style="color: #FF0000">【{{ scope.row.transferFilter | ellipsis }}】</span>
             </div>
             <div>
-              <span>原系统公盘是否导为公盘：</span>
-              <span style="color: #FF0000">【{{ scope.row.isUseHouseProperty == 1 ? '是': '否' }}】</span>
+              <span>原系统公盘导为：</span>
+              <span style="color: #FF0000">【{{ addRuleForm.housePublicPropertyToCode ? addRuleForm.housePublicPropertyToCode: scope.row.isUseHouseProperty }}】</span>
             </div>
             <div>
               <span>是否启用维护人部门映射：</span>
@@ -573,7 +579,8 @@ export default {
         transferFilter: '',
         keyUserOriginField: 'keyUser',
         imgUserOriginField: 'imgUser',
-        isUseHouseProperty: 0,
+        isUseHouseProperty: '私有',
+        housePublicPropertyToCode: '',
         isUseHousePublicDepartmentsMap: 0,
         isUseHouseInputUserMap: 0,
         isUseTransferTags: 0,
@@ -611,6 +618,9 @@ export default {
     },
     isCustomerPrivate() {
       return this.addCustomerRuleForm.isUseCustomerProperty !== '私有'
+    },
+    isHousePrivate() {
+      return this.addRuleForm.isUseHouseProperty !== '私有'
     }
   },
   watch: {
@@ -626,6 +636,11 @@ export default {
     'addCustomerRuleForm.isUseCustomerProperty'(newVal) {
       if (newVal !== '私有') {
         this.addCustomerRuleForm.CustomerPublicPropertyToCode = ''
+      }
+    },
+    'addRuleForm.isUseHouseProperty'(newVal) {
+      if (newVal !== '私有') {
+        this.addRuleForm.housePublicPropertyToCode = ''
       }
     },
     'inputUserSelectedOption'(newVal) {
