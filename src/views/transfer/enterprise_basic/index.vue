@@ -340,7 +340,9 @@
             <el-select v-model="addCustomerRuleForm.isUseCustomerProperty" style="width: 150px; margin-right: 10px" placeholder="类型">
               <el-option v-for="(value, index) in ['私有','企业', '部门']" :key="index" :value="value" />
             </el-select>
-            <el-input v-model="addCustomerRuleForm.CustomerPublicPropertyToCode" :disabled="isCustomerPrivate" style="width: 180px;" clearable placeholder="请输入账号" />
+            <el-tooltip class="item" effect="dark" content="原系统公客导为指定账号" placement="bottom">
+              <el-input v-model="addCustomerRuleForm.CustomerPublicPropertyToCode" :disabled="isCustomerPrivate" style="width: 180px;" clearable placeholder="(选填)账号" />
+            </el-tooltip>
           </div>
         </el-form-item>
         <el-form-item label="是否启用维护人部门映射：" prop="isUseCustomerPublicDepartmentsMap" label-width="180px">
@@ -479,7 +481,7 @@
             </div>
             <div>
               <span>原系统公客导为：</span>
-              <span style="color: #FF0000">【{{ scope.row.isUseCustomerProperty }}】</span>
+              <span style="color: #FF0000">【{{ scope.row.CustomerPublicPropertyToCode ? scope.row.CustomerPublicPropertyToCode: scope.row.isUseCustomerProperty }}】</span>
             </div>
             <div>
               <span>是否启用维护人部门映射：</span>
@@ -635,6 +637,11 @@ export default {
       },
       deep: true, // 深度监听，用以监听对象属性变化
       immediate: true // 立即执行一次handler函数
+    },
+    'addCustomerRuleForm.isUseCustomerProperty'(newVal) {
+      if (newVal !== '私有') {
+        this.addCustomerRuleForm.CustomerPublicPropertyToCode = ''
+      }
     }
   },
   created() {
