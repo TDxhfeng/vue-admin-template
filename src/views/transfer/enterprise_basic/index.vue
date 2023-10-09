@@ -291,40 +291,35 @@
       </el-form>
     </el-dialog>
     <!-- 添加客源规则对话框 -->
-    <el-dialog width="30%" title="添加规则" :visible.sync="addCustomerRuleVisible">
-      <el-form ref="addCustomerRuleForm" :model="addCustomerRuleForm" label-width="80px">
-        <el-form-item
-          label="小鹿系统录入人对应："
-          prop="inputUserOriginField"
-          label-width="180px"
-          :rules="[{
-            required: true,
-            message: '小鹿系统录入人对应',
-            trigger: 'blur'
-          }]"
-        >
-          <div style="display: flex;">
-            <el-select v-model="addCustomerRuleForm.inputUserOriginField" style="width: 150px; margin-right: 10px" clearable placeholder="原系统录入人">
-              <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
-            </el-select>
-            <el-select v-model="addCustomerRuleForm.secondInputUserOriginField" style="width: 180px; margin-right: 10px" clearable placeholder="(选填)递补录入人">
-              <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
-            </el-select>
-          </div>
+    <el-dialog width="35%" title="添加规则" :visible.sync="addCustomerRuleVisible">
+      <el-form ref="addCustomerRuleForm" :model="addCustomerRuleForm" label-width="120px">
+        <el-form-item label="小鹿系统录入人清洗规则：" prop="inputUserOriginField" label-width="200px" :rules="[{ required: true, message: '小鹿系统录入人对应', trigger: 'blur' }]" class="form-item-container">
+          <el-radio v-model="inputUserSelectedOption" label="option1">导为指定角色</el-radio>
+          <el-radio v-model="inputUserSelectedOption" label="option2">导为指定账号</el-radio>
+          <template v-if="inputUserSelectedOption === 'option1'">
+            <div style="display: flex;">
+              <el-select v-model="addCustomerRuleForm.inputUserOriginField" style="width: 150px; margin-right: 10px" clearable placeholder="原系统录入人">
+                <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
+              </el-select>
+              <el-select v-model="addCustomerRuleForm.secondInputUserOriginField" style="width: 180px; margin-right: 10px" clearable placeholder="(选填)递补录入人">
+                <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
+              </el-select>
+            </div>
+          </template>
+          <template v-if="inputUserSelectedOption === 'option2'">
+            <el-tooltip class="item" effect="dark" content="录入人全导为该账号" placement="right">
+              <el-input v-model="addCustomerRuleForm.isTransferInputUserToCode" style="width: 150px;" clearable placeholder="请输入账号" />
+            </el-tooltip>
+          </template>
         </el-form-item>
-        <el-form-item
-          label="小鹿系统客源人对应："
-          prop="chargeUserOriginField"
-          label-width="180px"
-          :rules="[{
-            required: true,
-            message: '小鹿系统客源人对应',
-            trigger: 'blur'
-          }]"
-        >
-          <el-select v-model="addCustomerRuleForm.chargeUserOriginField" style="width: 150px;" clearable placeholder="原系统维护人">
-            <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
-          </el-select>
+        <el-form-item label="小鹿系统客源人对应：" prop="chargeUserOriginField" label-width="200px" :rules="[{required: true, message: '小鹿系统客源人对应', trigger: 'blur' }]" class="form-item-container">
+          <el-radio v-model="chargeUserSelectedOption" label="option1">导为指定角色</el-radio>
+          <el-radio v-model="chargeUserSelectedOption" label="option2">全导企业公客</el-radio>
+          <template v-if="chargeUserSelectedOption === 'option1'">
+            <el-select v-model="addCustomerRuleForm.chargeUserOriginField" style="width: 150px;" clearable placeholder="原系统维护人">
+              <el-option v-for="(value, index) in agentList" :key="index" :value="value" />
+            </el-select>
+          </template>
         </el-form-item>
         <el-form-item
           label="原系统公客导为："
@@ -352,18 +347,6 @@
         <el-form-item label="是否启用录入人部门映射：" prop="isUseCustomerInputUserMap" label-width="180px">
           <el-radio v-model="addCustomerRuleForm.isUseCustomerInputUserMap" :label="1">是</el-radio>
           <el-radio v-model="addCustomerRuleForm.isUseCustomerInputUserMap" :label="0">否</el-radio>
-        </el-form-item>
-        <div class="divider"><h3 class="title">其它规则：</h3></div>
-        <el-form-item label="录入人全导为：" prop="isTransferInputUserToCode" label-width="180px">
-          <el-tooltip class="item" effect="dark" content="如下规则填写后会导致上方规则失效" placement="right">
-            <el-input v-model="addCustomerRuleForm.isTransferInputUserToCode" style="width: 150px;" clearable placeholder="请输入账号" />
-          </el-tooltip>
-        </el-form-item>
-        <el-form-item label="是否全部导为企业公客：" prop="isTransferPublicCustomer" label-width="180px">
-          <el-tooltip class="item" effect="dark" content="选择是会导致上方规则失效" placement="bottom">
-            <el-radio v-model="addCustomerRuleForm.isTransferPublicCustomer" :label="1">是</el-radio>
-          </el-tooltip>
-          <el-radio v-model="addCustomerRuleForm.isTransferPublicCustomer" :label="0">否</el-radio>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmitCustomerRule">立即添加</el-button>
@@ -552,6 +535,8 @@ export default {
     return {
       // 清洗规则展示对话框数据
       ruleData: [],
+      inputUserSelectedOption: 'option1',
+      chargeUserSelectedOption: 'option1',
       transferRuleDialogVisible: false,
       transferCustomerRuleDialogVisible: false,
       addCustomerRuleVisible: false,
@@ -641,6 +626,23 @@ export default {
     'addCustomerRuleForm.isUseCustomerProperty'(newVal) {
       if (newVal !== '私有') {
         this.addCustomerRuleForm.CustomerPublicPropertyToCode = ''
+      }
+    },
+    'inputUserSelectedOption'(newVal) {
+      // 监听录入人规则选择器并清空
+      this.addCustomerRuleForm.inputUserOriginField = ''
+      this.addCustomerRuleForm.secondInputUserOriginField = ''
+      this.addCustomerRuleForm.isTransferInputUserToCode = ''
+      if (newVal === 'option2') {
+        this.addCustomerRuleForm.inputUserOriginField = 'inputUser'
+      }
+    },
+    'chargeUserSelectedOption'(newVal) {
+      this.addCustomerRuleForm.chargeUserOriginField = ''
+      this.addCustomerRuleForm.isTransferPublicCustomer = 0
+      if (newVal === 'option2') {
+        this.addCustomerRuleForm.chargeUserOriginField = 'chargeUser'
+        this.addCustomerRuleForm.isTransferPublicCustomer = 1
       }
     }
   },
@@ -864,5 +866,10 @@ export default {
   margin-top: 12px;
   margin-bottom: 12px;
   border-top: 1px solid #ccc;
+}
+.form-item-container {
+  border: 1px dashed #ccc;
+  padding: 10px;
+  border-radius: 4px;
 }
 </style>
