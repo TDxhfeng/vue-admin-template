@@ -414,7 +414,7 @@
             </div>
             <div>
               <span>原系统公盘导为：</span>
-              <span style="color: #FF0000">【{{ addRuleForm.housePublicPropertyToCode ? addRuleForm.housePublicPropertyToCode: scope.row.isUseHouseProperty }}】</span>
+              <span style="color: #FF0000">【{{ scope.row.housePublicPropertyToCode ? scope.row.housePublicPropertyToCode: scope.row.isUseHouseProperty }}】</span>
             </div>
             <div>
               <span>是否启用维护人部门映射：</span>
