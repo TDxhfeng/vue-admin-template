@@ -236,19 +236,19 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item
-          label="原系统公盘导为："
-          prop="isUseHouseProperty"
-          label-width="180px"
-        >
-          <div style="display: flex;">
+        <el-form-item label="原系统公盘导为：" prop="isUseHouseProperty" label-width="180px" class="form-item-container">
+          <el-radio v-model="housePropertySelectedOption" label="option1">导为指定选项</el-radio>
+          <el-radio v-model="housePropertySelectedOption" label="option2">导为指定账号</el-radio>
+          <template v-if="housePropertySelectedOption === 'option1'">
             <el-select v-model="addRuleForm.isUseHouseProperty" style="width: 150px; margin-right: 10px" placeholder="类型">
               <el-option v-for="(value, index) in ['私有','企业', '部门']" :key="index" :value="value" />
             </el-select>
+          </template>
+          <template v-if="housePropertySelectedOption === 'option2'">
             <el-tooltip class="item" effect="dark" content="原系统公盘导为指定账号" placement="bottom">
-              <el-input v-model="addRuleForm.housePublicPropertyToCode" :disabled="isHousePrivate" style="width: 180px;" clearable placeholder="(选填)账号" />
+              <el-input v-model="addRuleForm.housePublicPropertyToCode" style="width: 180px;" clearable placeholder="(选填)账号" />
             </el-tooltip>
-          </div>
+          </template>
         </el-form-item>
         <el-form-item
           label="是否启用维护人部门映射："
@@ -327,24 +327,19 @@
             </el-select>
           </template>
         </el-form-item>
-        <el-form-item
-          label="原系统公客导为："
-          prop="isUseCustomerProperty"
-          label-width="180px"
-          :rules="[{
-            required: true,
-            message: '原系统公客导为',
-            trigger: 'blur'
-          }]"
-        >
-          <div style="display: flex;">
+        <el-form-item label="原系统公客导为：" prop="isUseCustomerProperty" label-width="180px" :rules="[{ required: true, message: '原系统公客导为', trigger: 'blur' }]" class="form-item-container">
+          <el-radio v-model="customerPropertySelectedOption" label="option1">导为指定选项</el-radio>
+          <el-radio v-model="customerPropertySelectedOption" label="option2">导为指定账号</el-radio>
+          <template v-if="customerPropertySelectedOption === 'option1'">
             <el-select v-model="addCustomerRuleForm.isUseCustomerProperty" style="width: 150px; margin-right: 10px" placeholder="类型">
               <el-option v-for="(value, index) in ['私有','企业', '部门']" :key="index" :value="value" />
             </el-select>
+          </template>
+          <template v-if="customerPropertySelectedOption === 'option2'">
             <el-tooltip class="item" effect="dark" content="原系统公客导为指定账号" placement="bottom">
-              <el-input v-model="addCustomerRuleForm.CustomerPublicPropertyToCode" :disabled="isCustomerPrivate" style="width: 180px;" clearable placeholder="(选填)账号" />
+              <el-input v-model="addCustomerRuleForm.CustomerPublicPropertyToCode" style="width: 180px;" clearable placeholder="(选填)账号" />
             </el-tooltip>
-          </div>
+          </template>
         </el-form-item>
         <el-form-item label="是否启用维护人部门映射：" prop="isUseCustomerPublicDepartmentsMap" label-width="180px">
           <el-radio v-model="addCustomerRuleForm.isUseCustomerPublicDepartmentsMap" :label="1">是</el-radio>
@@ -541,8 +536,10 @@ export default {
     return {
       // 清洗规则展示对话框数据
       ruleData: [],
+      housePropertySelectedOption: 'option1',
       inputUserSelectedOption: 'option1',
       chargeUserSelectedOption: 'option1',
+      customerPropertySelectedOption: 'option1',
       transferRuleDialogVisible: false,
       transferCustomerRuleDialogVisible: false,
       addCustomerRuleVisible: false,
@@ -615,12 +612,6 @@ export default {
         map[erpOptions[i].value] = erpOptions[i].label
       }
       return map
-    },
-    isCustomerPrivate() {
-      return this.addCustomerRuleForm.isUseCustomerProperty !== '私有'
-    },
-    isHousePrivate() {
-      return this.addRuleForm.isUseHouseProperty !== '私有'
     }
   },
   watch: {
@@ -632,16 +623,6 @@ export default {
       },
       deep: true, // 深度监听，用以监听对象属性变化
       immediate: true // 立即执行一次handler函数
-    },
-    'addCustomerRuleForm.isUseCustomerProperty'(newVal) {
-      if (newVal !== '私有') {
-        this.addCustomerRuleForm.CustomerPublicPropertyToCode = ''
-      }
-    },
-    'addRuleForm.isUseHouseProperty'(newVal) {
-      if (newVal !== '私有') {
-        this.addRuleForm.housePublicPropertyToCode = ''
-      }
     },
     'inputUserSelectedOption'(newVal) {
       // 监听录入人规则选择器并清空
@@ -658,6 +639,20 @@ export default {
       if (newVal === 'option2') {
         this.addCustomerRuleForm.chargeUserOriginField = 'chargeUser'
         this.addCustomerRuleForm.isTransferPublicCustomer = 1
+      }
+    },
+    'customerPropertySelectedOption'(newVal) {
+      if (newVal === 'option2') {
+        this.addCustomerRuleForm.isUseCustomerProperty = '私有'
+      } else if (newVal === 'option1') {
+        this.addCustomerRuleForm.CustomerPublicPropertyToCode = ''
+      }
+    },
+    'housePropertySelectedOption'(newVal) {
+      if (newVal === 'option2') {
+        this.addRuleForm.isUseHouseProperty = '私有'
+      } else if (newVal === 'option1') {
+        this.addRuleForm.housePublicPropertyToCode = ''
       }
     }
   },
