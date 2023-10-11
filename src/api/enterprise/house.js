@@ -10,3 +10,14 @@ export function queryHouseList(params) {
     }
   })
 }
+
+export function exportHouseList(params) {
+  return request({
+    url: '/v3/enterprise/house/export',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-NksNSP875nZ3anpT'
+    }
+  })
+}

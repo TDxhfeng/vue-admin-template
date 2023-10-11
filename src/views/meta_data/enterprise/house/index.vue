@@ -113,6 +113,11 @@
             <el-button type="warning" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="async_house_team_code">同步小鹿编号</el-button>
           </el-form-item>
         </el-col>
+        <el-col :span="3">
+          <el-form-item>
+            <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="exportData">导出Excel</el-button>
+          </el-form-item>
+        </el-col>
       </el-row>
     </el-form>
     <el-table
@@ -450,7 +455,9 @@
 import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
 import { verifyEnterpriseHouse } from '@/api/enterprise/enterprise_info'
 import { asyncEnterpriseHouseCode } from '@/api/enterprise/enterprise_info'
+import { queryEntepriseHouseAgent } from '@/api/enterprise/enterprise_info'
 import { queryHouseList } from '@/api/enterprise/house'
+import { exportHouseList } from '@/api/enterprise/house'
 
 export default {
   data() {
@@ -472,7 +479,8 @@ export default {
         isDrop: 0
       },
       // erp系统映射
-      enterpriseOptions: []
+      enterpriseOptions: [],
+      codes: []
     }
   },
   watch: {
@@ -548,11 +556,7 @@ export default {
           })
         })
     },
-    fetchData() {
-      const filter = {
-        page: this.page,
-        size: this.pageSize
-      }
+    formatSearch(filter) {
       if (this.searchForm.userNames) {
         filter.userNames = this.searchForm.userNames
       }
@@ -588,7 +592,13 @@ export default {
       if (this.searchForm.isPreHouse.length === 1) {
         filter.isPreHouse = this.searchForm.isPreHouse[0]
       }
-
+    },
+    fetchData() {
+      const filter = {
+        page: this.page,
+        size: this.pageSize
+      }
+      this.formatSearch(filter)
       const params = {
         comeFrom: 'FRONTEND',
         filter: filter
@@ -617,6 +627,69 @@ export default {
     handleSearch() {
       this.page = 1 // 添加此行代码
       this.fetchData()
+    },
+    // 导出数据
+    exportData() {
+      const filter = {
+        page: this.page,
+        size: this.pageSize
+      }
+      this.formatSearch(filter)
+      const params = {
+        comeFrom: 'FRONTEND',
+        filter: filter
+      }
+      params.erpName = this.searchForm.erpName
+      params.enterpriseCode = this.searchForm.enterpriseCode
+      this.listLoading = true
+      exportHouseList(params)
+        .then(response => {
+          this.queryHouseAgent(response.data.list)
+        }).finally(() => {
+          this.listLoading = false
+        })
+    },
+    queryHouseAgent(houses) {
+      const ruleParams = {
+        comeFrom: 'FRONTEND',
+        enterpriseCode: this.searchForm.enterpriseCode,
+        erpName: this.searchForm.erpName
+      }
+      queryEntepriseHouseAgent(ruleParams)
+        .then(response => {
+          this.exportExcel(houses, response.data.list)
+        })
+    },
+    exportExcel(houses, agentList) {
+      import('@/vendor/Export2Excel').then(excel => {
+        const baseHeader = [
+          '小鹿编号', '房源外部ID', '原系统编号', '放盘类型', '房源状态', '小区名'
+        ]
+        const baseFilterVal = [
+          'teamHouseCode', 'houseId', 'houseNo', 'offerType', 'status', 'communityName'
+        ]
+        const tHeader = baseHeader.concat(agentList)
+        const filterVal = baseFilterVal.concat(agentList)
+        const data = this.formatJson(filterVal, houses, agentList)
+        const tfileName = this.searchForm.enterpriseCode + '_房源'
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: tfileName,
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+      })
+    },
+    formatJson(filterVal, jsonData, agentList) {
+      return jsonData.map(v => filterVal.map(j => {
+        if (agentList.includes(j)) {
+          const user = v.allUsers.find(u => u.userFieldName === j)
+          return user ? user.userName : ''
+        } else {
+          return v[j]
+        }
+      }))
     },
     // 行状态
     tableRowClassName({ row, rowIndex }) {
