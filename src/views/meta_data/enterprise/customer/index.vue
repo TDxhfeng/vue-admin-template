@@ -34,6 +34,11 @@
             <el-input v-model="searchForm.customerNo" style="width: 150px;" />
           </el-form-item>
         </el-col>
+        <el-col :span="4">
+          <el-form-item label="经纪人" prop="userNames">
+            <el-input v-model="searchForm.userNames" style="width: 150px;" clearable />
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row>
         <el-col :span="3">
@@ -297,6 +302,9 @@ export default {
 
       if (this.searchForm.customerNo) {
         filter.customerNo = this.searchForm.customerNo
+      }
+      if (this.searchForm.userNames) {
+        filter.userNames = this.searchForm.userNames
       }
 
       const params = {
