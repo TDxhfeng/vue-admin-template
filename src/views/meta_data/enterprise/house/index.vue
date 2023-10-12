@@ -663,10 +663,12 @@ export default {
     exportExcel(houses, agentList) {
       import('@/vendor/Export2Excel').then(excel => {
         const baseHeader = [
-          '是否待完善', '小鹿编号', '房源外部ID', '原系统编号', '放盘类型', '房源状态', '小区名'
+          '是否待完善', '小鹿编号', '房源外部ID', '原系统编号', '放盘类型', '房源状态', '小区名',
+          '原系统楼栋', '原系统单元', '原系统楼层', '原系统门牌'
         ]
         const baseFilterVal = [
-          'isPreHouse', 'teamHouseCode', 'houseId', 'houseNo', 'offerType', 'status', 'communityName'
+          'isPreHouse', 'teamHouseCode', 'houseId', 'houseNo', 'offerType', 'status', 'communityName',
+          'buildName', 'unitName', 'floorNum', 'roomNum'
         ]
         const tHeader = baseHeader.concat(agentList)
         const filterVal = baseFilterVal.concat(agentList)

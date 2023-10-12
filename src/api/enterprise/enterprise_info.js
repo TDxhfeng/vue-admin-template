@@ -139,6 +139,18 @@ export function queryEnterpriseCustomers(params) {
   })
 }
 
+// 客源导出
+export function exportEnterpriseCustomers(params) {
+  return request({
+    url: '/v3/enterprise/customer/export',
+    method: 'post',
+    data: params,
+    headers: {
+      'X-Access-Token': 'token-VLgJKiq2vZRHadMI'
+    }
+  })
+}
+
 // 房源跟进查询
 export function queryEnterpriseHouseFollow(params) {
   return request({

@@ -51,6 +51,11 @@
             <el-button type="warning" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="async_customer_team_code">同步小鹿编号</el-button>
           </el-form-item>
         </el-col>
+        <el-col :span="3">
+          <el-form-item>
+            <el-button type="primary" :disabled="!searchForm.erpName || !searchForm.enterpriseCode" @click="exportData">导出Excel</el-button>
+          </el-form-item>
+        </el-col>
       </el-row>
     </el-form>
     <el-table
@@ -215,6 +220,8 @@
 
 <script>
 import { queryEnterpriseCustomers } from '@/api/enterprise/enterprise_info'
+import { exportEnterpriseCustomers } from '@/api/enterprise/enterprise_info'
+import { queryCustomerAgent } from '@/api/enterprise/enterprise_info'
 import { asyncEnterpriseCustomerCode } from '@/api/enterprise/enterprise_info'
 import { queryEnterpriseCode } from '@/api/enterprise/enterprise_info'
 
@@ -289,31 +296,31 @@ export default {
           })
         })
     },
-    // 渲染数据
-    fetchData() {
-      const filter = {
-        page: this.page,
-        size: this.pageSize
-      }
-
+    // 格式化查询
+    formatSearch(filter) {
       if (this.searchForm.customerId) {
         filter.customerId = this.searchForm.customerId
       }
-
       if (this.searchForm.customerNo) {
         filter.customerNo = this.searchForm.customerNo
       }
       if (this.searchForm.userNames) {
         filter.userNames = this.searchForm.userNames
       }
-
+    },
+    // 渲染数据
+    fetchData() {
+      const filter = {
+        page: this.page,
+        size: this.pageSize
+      }
+      this.formatSearch(filter)
       const params = {
         comeFrom: 'FRONTEND',
-        filter: filter
+        filter: filter,
+        erpName: this.searchForm.erpName,
+        enterpriseCode: this.searchForm.enterpriseCode
       }
-      params.erpName = this.searchForm.erpName
-      params.enterpriseCode = this.searchForm.enterpriseCode
-
       this.listLoading = true
       queryEnterpriseCustomers(params)
         .then(response => {
@@ -335,6 +342,69 @@ export default {
     handleSearch() {
       this.page = 1 // 添加此行代码
       this.fetchData()
+    },
+    // 导出数据
+    exportData() {
+      const filter = {
+        page: this.page,
+        size: this.pageSize
+      }
+      this.formatSearch(filter)
+      const params = {
+        comeFrom: 'FRONTEND',
+        filter: filter,
+        erpName: this.searchForm.erpName,
+        enterpriseCode: this.searchForm.enterpriseCode
+      }
+      this.listLoading = true
+      exportEnterpriseCustomers(params)
+        .then(response => {
+          this.queryCustomerAgent(response.data.list)
+        }).finally(() => {
+          this.listLoading = false
+        })
+    },
+    queryCustomerAgent(customers) {
+      const ruleParams = {
+        comeFrom: 'FRONTEND',
+        enterpriseCode: this.searchForm.enterpriseCode,
+        erpName: this.searchForm.erpName
+      }
+      queryCustomerAgent(ruleParams)
+        .then(response => {
+          this.exportExcel(customers, response.data.list)
+        })
+    },
+    exportExcel(customers, agentList) {
+      import('@/vendor/Export2Excel').then(excel => {
+        const baseHeader = [
+          '小鹿编号', '客源外部ID', '原系统编号', '客户类型', '客户状态', '客户姓名'
+        ]
+        const baseFilterVal = [
+          'teamCustomerCode', 'customerId', 'customerNo', 'tradeType', 'status', 'customerName'
+        ]
+        const tHeader = baseHeader.concat(agentList)
+        const filterVal = baseFilterVal.concat(agentList)
+        const data = this.formatJson(filterVal, customers, agentList)
+        const tfileName = this.searchForm.enterpriseCode + '_客源'
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: tfileName,
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+      })
+    },
+    formatJson(filterVal, jsonData, agentList) {
+      return jsonData.map(v => filterVal.map(j => {
+        if (agentList.includes(j)) {
+          const user = v.allUsers.find(u => u.userFieldName === j)
+          return user ? user.userName : ''
+        } else {
+          return v[j]
+        }
+      }))
     }
   }
 }
