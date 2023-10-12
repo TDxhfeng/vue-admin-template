@@ -663,10 +663,10 @@ export default {
     exportExcel(houses, agentList) {
       import('@/vendor/Export2Excel').then(excel => {
         const baseHeader = [
-          '小鹿编号', '房源外部ID', '原系统编号', '放盘类型', '房源状态', '小区名'
+          '是否待完善', '小鹿编号', '房源外部ID', '原系统编号', '放盘类型', '房源状态', '小区名'
         ]
         const baseFilterVal = [
-          'teamHouseCode', 'houseId', 'houseNo', 'offerType', 'status', 'communityName'
+          'isPreHouse', 'teamHouseCode', 'houseId', 'houseNo', 'offerType', 'status', 'communityName'
         ]
         const tHeader = baseHeader.concat(agentList)
         const filterVal = baseFilterVal.concat(agentList)
@@ -683,7 +683,9 @@ export default {
     },
     formatJson(filterVal, jsonData, agentList) {
       return jsonData.map(v => filterVal.map(j => {
-        if (agentList.includes(j)) {
+        if (j === 'isPreHouse') {
+          return v[j] === 1 ? '是' : ''
+        } else if (agentList.includes(j)) {
           const user = v.allUsers.find(u => u.userFieldName === j)
           return user ? user.userName : ''
         } else {
